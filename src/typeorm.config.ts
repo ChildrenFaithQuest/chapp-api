@@ -7,11 +7,6 @@ import * as dotenv from 'dotenv';
 
 dotenv.config();
 
-const databaseUrl = `postgres://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}:${process.env.DB_PORT}/${process.env.DB_USERNAME}`;
-
-// Log the database URL
-console.log('Database URL:', databaseUrl);
-
 export const AppDataSource = new DataSource({
   type: 'postgres',
   host: process.env.DB_HOST,
