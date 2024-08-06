@@ -22,7 +22,5 @@ import { AttendanceModule } from './modules/attendance/attendance.module';
   providers: [AppService],
 })
 export class AppModule {
-  constructor(private dataSource: DataSource) {
-    console.log(process.env.DB_USERNAME);
-  }
+  constructor(private dataSource: DataSource) {}
 }
