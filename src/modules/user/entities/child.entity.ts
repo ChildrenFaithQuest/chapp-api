@@ -1,13 +1,20 @@
-import { Column, Entity, ManyToOne } from 'typeorm';
+import { Column, Entity, ManyToOne, OneToMany } from 'typeorm';
 import { User } from './user.entity';
 import { Parent } from './parent.entity';
+import { Attendance } from 'src/modules/attendance/entities/attendance.entity';
+import { Class } from 'src/modules/class/entities/class.entity';
 
 @Entity()
 export class Child extends User {
   @Column()
-  class: string;
   grade: number;
 
   @ManyToOne(() => Parent, (parent) => parent.children)
-  parent: User;
+  parent: Parent;
+
+  @OneToMany(() => Attendance, (attendance) => attendance.child)
+  attendance: Attendance;
+
+  @ManyToOne(() => Class, (classEntity) => classEntity.children)
+  class: Class;
 }
