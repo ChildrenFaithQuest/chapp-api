@@ -1,8 +1,8 @@
 import { Column, Entity, ManyToOne, OneToMany } from 'typeorm';
 import { User } from './user.entity';
 import { Parent } from './parent.entity';
-import { Attendance } from 'src/modules/attendance/entities/attendance.entity';
-import { Class } from 'src/modules/class/entities/class.entity';
+import { Attendance } from '@attendance/entities/attendance.entity';
+import { Class } from '@class/entities/class.entity';
 
 @Entity()
 export class Child extends User {

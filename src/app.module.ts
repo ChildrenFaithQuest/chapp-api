@@ -4,9 +4,9 @@ import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { DataSource } from 'typeorm';
 import { AppDataSource } from './typeorm.config';
-import { UserModule } from './modules/user/user.module';
 import { ClassModule } from './modules/class/class.module';
 import { AttendanceModule } from './modules/attendance/attendance.module';
+import { UserModule } from '@user/user.module';
 
 @Module({
   imports: [

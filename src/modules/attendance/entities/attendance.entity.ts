@@ -1,4 +1,4 @@
-import { Child } from 'src/modules/user/entities/child.entity';
+import { Child } from '@user/entities/child.entity';
 import {
   Entity,
   Column,

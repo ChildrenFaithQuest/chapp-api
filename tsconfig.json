@@ -9,7 +9,13 @@
     "target": "ES2021",
     "sourceMap": true,
     "outDir": "./dist",
-    "baseUrl": "./",
+    "baseUrl": "./src",
+    "paths": {
+      "@user/*": ["modules/user"],
+      "@attendance/*": ["modules/attendance/*"],
+      "@class/*": ["modules/class/*"]
+    },
+    "rootDir": ".",
     "incremental": true,
     "skipLibCheck": true,
     "strictNullChecks": true,

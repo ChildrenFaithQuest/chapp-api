@@ -1,5 +1,3 @@
-import { Child } from 'src/modules/user/entities/child.entity';
-import { Teacher } from 'src/modules/user/entities/teacher.entity';
 import {
   Entity,
   Column,
@@ -9,6 +7,9 @@ import {
   OneToMany,
   ManyToMany,
 } from 'typeorm';
+
+import { Child } from '@user/entities/child.entity';
+import { Teacher } from '@user/entities/teacher.entity';
 
 @Entity()
 export class Class {
