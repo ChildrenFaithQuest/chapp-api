@@ -1,5 +1,5 @@
-import { Class } from '@class/entities/class.entity';
-import { Teacher } from '@user/entities';
+import { Class } from '@app-modules/class/entities/class.entity';
+import { Teacher } from '@app-modules/user';
 import {
   Entity,
   Column,

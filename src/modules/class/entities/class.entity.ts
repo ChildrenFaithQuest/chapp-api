@@ -1,3 +1,5 @@
+import { Church } from '@app-modules/church/entities/church.entity';
+import { Child, Teacher } from '@app-modules/user';
 import {
   Entity,
   Column,
@@ -8,10 +10,6 @@ import {
   ManyToMany,
   ManyToOne,
 } from 'typeorm';
-
-import { Child } from '@user/entities/child.entity';
-import { Teacher } from '@user/entities/teacher.entity';
-import { Church } from 'modules/church/entities/church.entity';
 
 @Entity()
 export class Class {

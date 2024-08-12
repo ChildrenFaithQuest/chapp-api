@@ -13,9 +13,9 @@ dotenv.config();
 tsConfigPaths.register({
   baseUrl: resolve(__dirname),
   paths: {
-    '@user/*': ['src/modules/user'],
-    '@attendance/*': ['src/modules/attendance/*'],
-    '@class/*': ['src/modules/class/*'],
+    '@app-shared/*': ['src/shared/*'],
+    '@app-modules/*': ['src/modules/*'],
+    '@app-types/*': ['src/types/*'],
   },
 });
 

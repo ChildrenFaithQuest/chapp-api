@@ -1,4 +1,4 @@
-import { User } from '@user/entities';
+import { User } from '@app-modules/user';
 import { Entity, Column } from 'typeorm';
 
 @Entity()
