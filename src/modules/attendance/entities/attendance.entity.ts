@@ -1,4 +1,5 @@
 import { Child } from '@user/entities/child.entity';
+import { AttendanceStatus } from 'modules/module.types';
 import {
   Entity,
   Column,
@@ -10,7 +11,7 @@ import {
 
 @Entity()
 export class Attendance {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn('uuid')
   id: number;
 
   @Column()
@@ -19,8 +20,12 @@ export class Attendance {
   @Column()
   description: string;
 
-  @Column()
-  schedule: string;
+  @Column({
+    type: 'enum',
+    enum: AttendanceStatus,
+    default: AttendanceStatus.ABSENT,
+  })
+  status: string;
 
   @CreateDateColumn()
   createdAt: Date; // Creation date

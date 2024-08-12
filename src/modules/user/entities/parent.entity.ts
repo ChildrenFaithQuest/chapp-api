@@ -5,8 +5,7 @@ import { Child } from './child.entity';
 @Entity()
 export class Parent extends User {
   @Column()
-  childrenCount: string;
-  grade: number;
+  childCount: string;
 
   @OneToMany(() => Child, (child) => child.parent)
   children: Child[];
