@@ -23,6 +23,9 @@ export class User {
   @Column()
   email: string;
 
+  @Column()
+  password: string; // This will store the hashed password
+
   @CreateDateColumn()
   createdAt: Date; // Creation date
 
