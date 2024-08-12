@@ -4,6 +4,7 @@ import * as dotenv from 'dotenv';
 import { Child, Parent, Teacher, User } from '@user/entities';
 import { Class } from '@class/entities/class.entity';
 import { Attendance } from '@attendance/entities/attendance.entity';
+import { Church } from 'modules/church/entities/church.entity';
 
 dotenv.config();
 
@@ -14,7 +15,7 @@ export const AppDataSource = new DataSource({
   username: process.env.DB_USERNAME,
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME,
-  entities: [User, Parent, Teacher, Child, Class, Attendance], // Ensure this path is correct
-  migrations: ['dist/migrations/*.js'], // Ensure this path is correct
+  entities: [User, Parent, Teacher, Child, Class, Attendance, Church], // Ensure this path is correct
+  migrations: ['migrations/*.ts'], // Ensure this path is correct
   synchronize: false,
 });
