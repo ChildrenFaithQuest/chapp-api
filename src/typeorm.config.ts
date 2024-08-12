@@ -1,9 +1,7 @@
 import 'tsconfig-paths/register';
 import { DataSource } from 'typeorm';
 import * as dotenv from 'dotenv';
-import { Child, User } from '@user/entities/user.entity';
-import { Parent } from '@user/entities/parent.entity';
-import { Teacher } from '@user/entities/teacher.entity';
+import { Child, Parent, Teacher, User } from '@user/entities';
 import { Class } from '@class/entities/class.entity';
 import { Attendance } from '@attendance/entities/attendance.entity';
 

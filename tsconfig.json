@@ -11,7 +11,7 @@
     "outDir": "./dist",
     "baseUrl": "./src",
     "paths": {
-      "@user/*": ["modules/user"],
+      "@user/*": ["modules/user/*"],
       "@attendance/*": ["modules/attendance/*"],
       "@class/*": ["modules/class/*"]
     },
