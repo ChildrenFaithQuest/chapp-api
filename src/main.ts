@@ -5,6 +5,7 @@ import * as dotenv from 'dotenv';
 import * as tsConfigPaths from 'tsconfig-paths';
 import { resolve } from 'path';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+import { ValidationPipe } from '@nestjs/common';
 
 dotenv.config();
 
@@ -30,6 +31,7 @@ async function bootstrap() {
 
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
+  app.useGlobalPipes(new ValidationPipe());
   await app.listen(3001);
 }
 bootstrap();
