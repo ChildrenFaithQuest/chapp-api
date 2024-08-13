@@ -30,8 +30,8 @@ export class Church {
   updatedAt: Date; // Last Updated date
 
   @OneToMany(() => Teacher, (teacher) => teacher.church)
-  teachers: Teacher;
+  teachers: Teacher[];
 
   @OneToMany(() => Class, (teacher) => teacher.church)
-  classes: Teacher;
+  classes: Class[];
 }

@@ -13,7 +13,7 @@ export class Child extends User {
   parent: Parent;
 
   @OneToMany(() => Attendance, (attendance) => attendance.child)
-  attendance: Attendance;
+  attendance: Attendance[];
 
   @ManyToOne(() => Class, (classEntity) => classEntity.children)
   class: Class;

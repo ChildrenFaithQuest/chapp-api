@@ -1,4 +1,4 @@
-import { Column, Entity, JoinTable, ManyToOne } from 'typeorm';
+import { Column, Entity, JoinTable, ManyToMany, ManyToOne } from 'typeorm';
 import { Church } from '@app-modules/church/entities/church.entity';
 import { Class } from '@app-modules/class/entities/class.entity';
 import { UserBase } from '@app-shared/entities/user-base.entity';
@@ -9,9 +9,9 @@ export class Teacher extends User {
   @Column(() => UserBase)
   base: UserBase;
 
-  @ManyToOne(() => Class, (classEntity) => classEntity.teachers)
+  @ManyToMany(() => Class)
   @JoinTable()
-  classes: Class;
+  classes: Class[];
 
   @ManyToOne(() => Church, (church) => church.teachers)
   church: Church;

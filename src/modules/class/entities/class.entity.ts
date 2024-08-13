@@ -1,5 +1,5 @@
 import { Church } from '@app-modules/church/entities/church.entity';
-import { Child, Teacher } from '@app-modules/user';
+import { Child } from '@app-modules/user';
 import {
   Entity,
   Column,
@@ -7,7 +7,6 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   OneToMany,
-  ManyToMany,
   ManyToOne,
 } from 'typeorm';
 
@@ -32,10 +31,7 @@ export class Class {
   updatedAt: Date; // Last Updated date
 
   @OneToMany(() => Child, (child) => child.class)
-  children: Child;
-
-  @ManyToMany(() => Teacher, (teacher) => teacher.classes)
-  teachers: Teacher;
+  children: Child[];
 
   @ManyToOne(() => Church, (church) => church.classes)
   church: Church;
