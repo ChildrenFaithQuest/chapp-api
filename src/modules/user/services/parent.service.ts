@@ -5,7 +5,7 @@ import { Parent } from '../entities';
 import { ParentDto } from '../dto/parent.dto';
 
 @Injectable()
-export class UsersService {
+export class ParentsService {
   constructor(
     @InjectRepository(Parent)
     private parentsRepository: Repository<Parent>,
