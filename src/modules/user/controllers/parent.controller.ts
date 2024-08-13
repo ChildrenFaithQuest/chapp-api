@@ -1,14 +1,14 @@
 import { Controller, Post, Body, Get } from '@nestjs/common';
-import { UsersService } from '../services/user.service';
-import { UserBaseDto } from '../dto/user-base.dto';
+import { UsersService } from '../services/parent.service';
 import { User } from '../entities';
+import { ParentDto } from '../dto/parent.dto';
 
-@Controller('user-details')
+@Controller('parent-details')
 export class UserDetailsController {
   constructor(private readonly usersService: UsersService) {}
 
   @Post()
-  async submitForm(@Body() userDetailsDto: UserBaseDto): Promise<User> {
+  async submitForm(@Body() userDetailsDto: ParentDto): Promise<User> {
     return this.usersService.create(userDetailsDto);
   }
 
