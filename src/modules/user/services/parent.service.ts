@@ -2,18 +2,21 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Parent } from '../entities';
-import { encryptPassword } from '@app-shared/helpers/encrypt';
 import { ParentDto } from '../dto/parent.dto';
+import { PasswordService } from '@app-shared/services/password-service';
 
 @Injectable()
 export class ParentService {
   constructor(
     @InjectRepository(Parent)
     private parentsRepository: Repository<Parent>,
+    private passwordService: PasswordService,
   ) {}
 
   async create(parentDetails: ParentDto): Promise<Parent> {
-    const hashedPassword = await encryptPassword(parentDetails.password);
+    const hashedPassword = await this.passwordService.hashPassword(
+      parentDetails.password,
+    );
     const parent = this.parentsRepository.create({
       ...parentDetails,
       password: hashedPassword,
