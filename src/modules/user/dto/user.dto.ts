@@ -1,3 +1,4 @@
+import { UserGender } from '@app-types/module.types';
 import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 import {
@@ -7,6 +8,7 @@ import {
   MinLength,
   IsOptional,
   IsDate,
+  IsEnum,
 } from 'class-validator';
 
 export class UserDto {
@@ -30,6 +32,11 @@ export class UserDto {
   @MinLength(6)
   @ApiProperty()
   password: string;
+
+  @IsNotEmpty()
+  @ApiProperty()
+  @IsEnum(UserGender)
+  gender: UserGender;
 
   @IsOptional()
   @IsDate()
