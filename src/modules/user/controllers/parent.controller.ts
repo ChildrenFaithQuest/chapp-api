@@ -1,11 +1,11 @@
 import { Controller, Post, Body, Get } from '@nestjs/common';
-import { ParentsService } from '../services/parent.service';
+import { ParentService } from '../services/parent.service';
 import { Parent } from '../entities';
 import { ParentDto } from '../dto/parent.dto';
 
-@Controller('parent-details')
-export class UserDetailsController {
-  constructor(private readonly usersService: ParentsService) {}
+@Controller('parent')
+export class ParentDetailsController {
+  constructor(private readonly usersService: ParentService) {}
 
   @Post()
   async submitForm(@Body() userDetailsDto: ParentDto): Promise<Parent> {
