@@ -20,6 +20,9 @@ export class User {
   @Column()
   email: string;
 
+  @Column({ type: 'date', nullable: true })
+  dateOfBirth?: Date;
+
   @Column()
   password: string; // This will store the hashed password
 

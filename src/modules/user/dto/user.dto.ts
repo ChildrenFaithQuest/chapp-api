@@ -1,5 +1,13 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString, IsEmail, IsNotEmpty, MinLength } from 'class-validator';
+import { Type } from 'class-transformer';
+import {
+  IsString,
+  IsEmail,
+  IsNotEmpty,
+  MinLength,
+  IsOptional,
+  IsDate,
+} from 'class-validator';
 
 export class UserDto {
   @IsString()
@@ -22,4 +30,9 @@ export class UserDto {
   @MinLength(6)
   @ApiProperty()
   password: string;
+
+  @IsOptional()
+  @IsDate()
+  @Type(() => Date) // Ensures proper transformation from string to Date
+  dateOfBirth?: Date;
 }
