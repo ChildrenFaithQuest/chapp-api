@@ -39,6 +39,7 @@ export class UserDto {
   gender: UserGender;
 
   @IsOptional()
+  @ApiProperty()
   @IsDate()
   @Type(() => Date) // Ensures proper transformation from string to Date
   dateOfBirth?: Date;
