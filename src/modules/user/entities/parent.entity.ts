@@ -1,10 +1,10 @@
 import { Column, Entity, OneToMany } from 'typeorm';
 import { Child } from './child.entity';
-import { User } from './user.entity';
-import { ContactInfo } from '@app-shared/entities/contact-info.entity';
+import { ContactInfo } from '@app-modules/user/entities/contact-info.entity';
+import { UserBase } from './user-base.entity';
 
 @Entity()
-export class Parent extends User {
+export class Parent extends UserBase {
   @Column(() => ContactInfo)
   contact: ContactInfo;
 

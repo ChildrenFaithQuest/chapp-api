@@ -6,7 +6,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
-export abstract class User {
+export abstract class UserBase {
   @PrimaryGeneratedColumn('uuid')
   id: number;
 
@@ -16,9 +16,6 @@ export abstract class User {
   @Column()
   lastName: string;
 
-  @Column()
-  email: string;
-
   @Column({ type: 'date', nullable: true })
   dateOfBirth?: Date;
 
@@ -27,9 +24,6 @@ export abstract class User {
     enum: UserGender,
   })
   gender: UserGender;
-
-  @Column()
-  password: string; // This will store the hashed password
 
   @CreateDateColumn()
   createdAt: Date; // Creation date

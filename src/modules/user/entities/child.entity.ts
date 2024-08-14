@@ -1,11 +1,11 @@
 import { Column, Entity, ManyToOne, OneToMany } from 'typeorm';
-import { User } from './user.entity';
 import { Parent } from './parent.entity';
 import { Attendance } from '@app-modules/attendance/entities/attendance.entity';
 import { Class } from '@app-modules/class/entities/class.entity';
+import { UserBase } from './user-base.entity';
 
 @Entity()
-export class Child extends User {
+export class Child extends UserBase {
   @Column()
   grade: number;
 
