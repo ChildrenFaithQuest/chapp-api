@@ -25,7 +25,7 @@ export class Attendance {
     enum: AttendanceStatus,
     default: AttendanceStatus.ABSENT,
   })
-  status: string;
+  status: AttendanceStatus;
 
   @CreateDateColumn()
   createdAt: Date; // Creation date
