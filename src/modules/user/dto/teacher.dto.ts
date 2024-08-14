@@ -1,14 +1,13 @@
-import { IsArray, IsOptional } from 'class-validator';
+import { IsArray } from 'class-validator';
 import { UserBaseDto } from './user-base.dto';
-import { Child } from '../entities';
+import { Class } from '@app-modules/class/entities/class.entity';
 import { UserDto } from './user.dto';
 import { ApiProperty } from '@nestjs/swagger';
 
-export class ParentDto extends UserDto {
+export class TeacherDto extends UserDto {
   @ApiProperty()
   base: UserBaseDto;
 
   @IsArray()
-  @IsOptional()
-  children?: Child[];
+  classes: Class[];
 }
