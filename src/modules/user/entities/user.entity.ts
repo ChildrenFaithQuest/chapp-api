@@ -1,14 +1,12 @@
 import { UserGender } from '@app-types/module.types';
 import {
-  Entity,
   Column,
   PrimaryGeneratedColumn,
   CreateDateColumn,
   UpdateDateColumn,
 } from 'typeorm';
 
-@Entity()
-export class User {
+export abstract class User {
   @PrimaryGeneratedColumn('uuid')
   id: number;
 
