@@ -1,3 +1,4 @@
+import { UserGender } from '@app-types/module.types';
 import {
   Entity,
   Column,
@@ -22,6 +23,12 @@ export class User {
 
   @Column({ type: 'date', nullable: true })
   dateOfBirth?: Date;
+
+  @Column({
+    type: 'enum',
+    enum: UserGender,
+  })
+  gender: UserGender;
 
   @Column()
   password: string; // This will store the hashed password
