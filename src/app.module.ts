@@ -7,6 +7,7 @@ import { AppDataSource } from './typeorm.config';
 import { ClassModule } from './modules/class/class.module';
 import { AttendanceModule } from './modules/attendance/attendance.module';
 import { UserModule } from '@app-modules/user';
+import { AuthModule } from '@app-modules/auth/auth.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { UserModule } from '@app-modules/user';
       ...AppDataSource.options,
       autoLoadEntities: true,
     }),
+    AuthModule,
     UserModule,
     ClassModule,
     AttendanceModule,
