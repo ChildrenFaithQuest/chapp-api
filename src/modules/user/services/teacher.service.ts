@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { EntityManager, Repository } from 'typeorm';
 import { Teacher } from '../entities';
-import { TeacherDto } from '../dto/teacher.dto';
+import { CreateTeacherDto } from '../dto/create-teacher.dto';
 
 @Injectable()
 export class TeacherService {
@@ -11,9 +11,14 @@ export class TeacherService {
     private teachersRepository: Repository<Teacher>,
   ) {}
 
-  async create(teacherDetailsDto: TeacherDto): Promise<Teacher> {
-    const parentDetails = this.teachersRepository.create(teacherDetailsDto);
-    return this.teachersRepository.save(parentDetails);
+  async create(
+    parentDetails: CreateTeacherDto,
+    transactionalEntityManager: EntityManager,
+  ): Promise<Teacher> {
+    const parent = transactionalEntityManager.create(Teacher, {
+      ...parentDetails,
+    });
+    return transactionalEntityManager.save(Teacher, parent);
   }
 
   findAll(): Promise<Teacher[]> {

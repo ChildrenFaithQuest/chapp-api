@@ -1,27 +1,24 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { EntityManager, Repository } from 'typeorm';
 import { Parent } from '../entities';
-import { ParentDto } from '../dto/parent.dto';
-import { PasswordService } from '@app-shared/services/password-service';
+import { ParentDetailsDto } from '../dto/parent-details.dto';
 
 @Injectable()
 export class ParentService {
   constructor(
     @InjectRepository(Parent)
     private parentsRepository: Repository<Parent>,
-    private passwordService: PasswordService,
   ) {}
 
-  async create(parentDetails: ParentDto): Promise<Parent> {
-    const hashedPassword = await this.passwordService.hashPassword(
-      parentDetails.password,
-    );
-    const parent = this.parentsRepository.create({
+  async create(
+    parentDetails: ParentDetailsDto,
+    transactionalEntityManager: EntityManager,
+  ): Promise<Parent> {
+    const parent = transactionalEntityManager.create(Parent, {
       ...parentDetails,
-      password: hashedPassword,
     });
-    return this.parentsRepository.save(parent);
+    return transactionalEntityManager.save(Parent, parent);
   }
 
   findAll(): Promise<Parent[]> {

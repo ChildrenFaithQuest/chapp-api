@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { EntityManager, Repository } from 'typeorm';
 import { Child } from '../entities';
-import { UserDto } from '../dto/user.dto';
+import { UserBaseDto } from '../dto/user-base';
 
 @Injectable()
 export class ChildService {
@@ -11,9 +11,14 @@ export class ChildService {
     private childRepository: Repository<Child>,
   ) {}
 
-  async create(childDetailsDto: UserDto): Promise<Child> {
-    const parentDetails = this.childRepository.create(childDetailsDto);
-    return this.childRepository.save(parentDetails);
+  async create(
+    childDetails: UserBaseDto,
+    transactionalEntityManager: EntityManager,
+  ): Promise<Child> {
+    const parent = transactionalEntityManager.create(Child, {
+      ...childDetails,
+    });
+    return transactionalEntityManager.save(Child, parent);
   }
 
   findAll(): Promise<Child[]> {
