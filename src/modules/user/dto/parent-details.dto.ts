@@ -1,10 +1,10 @@
 import { IsArray, IsOptional } from 'class-validator';
 import { ContactInfoDto } from './contact-info.dto';
 import { Child } from '../entities';
-import { UserDto } from './user.dto';
 import { ApiProperty } from '@nestjs/swagger';
+import { RegisterDto } from '@app-modules/auth/dtos/register.dto';
 
-export class ParentDto extends UserDto {
+export class ParentDetailsDto extends RegisterDto {
   @ApiProperty()
   contact: ContactInfoDto;
 
