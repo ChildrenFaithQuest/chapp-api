@@ -6,7 +6,7 @@ import { UserBase } from './user-base.entity';
 
 @Entity()
 export class Child extends UserBase {
-  @Column()
+  @Column({ nullable: true })
   grade: number;
 
   @ManyToOne(() => Parent, (parent) => parent.children)
