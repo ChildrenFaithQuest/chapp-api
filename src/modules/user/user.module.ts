@@ -19,5 +19,6 @@ import { PasswordService } from '@app-shared/services/password-service';
     ChildDetailsController,
     TeacherDetailsController,
   ],
+  exports: [ParentService, TeacherService, ChildService],
 })
 export class UserModule {}
