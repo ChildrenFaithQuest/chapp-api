@@ -1,14 +1,17 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { EntityManager, Repository } from 'typeorm';
+import { DeepPartial, EntityManager, Repository } from 'typeorm';
 import { Teacher } from '../entities';
 import { CreateTeacherDto } from '../dto/create-teacher.dto';
+import { UpdateUserDto } from '../dto/update-user.dto';
+import { UserService } from './user.service';
 
 @Injectable()
 export class TeacherService {
   constructor(
     @InjectRepository(Teacher)
-    private teachersRepository: Repository<Teacher>,
+    private teacherRepository: Repository<Teacher>,
+    private readonly userService: UserService,
   ) {}
 
   async create(
@@ -22,14 +25,29 @@ export class TeacherService {
   }
 
   findAll(): Promise<Teacher[]> {
-    return this.teachersRepository.find();
+    return this.teacherRepository.find();
   }
 
-  findOne(id: number): Promise<Teacher | null> {
-    return this.teachersRepository.findOneBy({ id });
+  findOne(id: string): Promise<Teacher | null> {
+    return this.teacherRepository.findOneBy({ id });
   }
 
-  async remove(id: number): Promise<void> {
-    await this.teachersRepository.delete(id);
+  async update(id: string, updateUserDto: UpdateUserDto): Promise<Teacher> {
+    return this.userService.update(id, updateUserDto, this.teacherRepository);
+  }
+
+  async partialUpdate(
+    id: string,
+    updateUserDto: DeepPartial<Teacher>,
+  ): Promise<Teacher> {
+    return this.userService.partialUpdate(
+      id,
+      updateUserDto,
+      this.teacherRepository,
+    );
+  }
+
+  async remove(id: string): Promise<void> {
+    await this.teacherRepository.delete(id);
   }
 }
