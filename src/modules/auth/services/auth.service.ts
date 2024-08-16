@@ -12,9 +12,7 @@ import { ChildService } from '@app-modules/user/services/child.service';
 import { TeacherService } from '@app-modules/user/services/teacher.service';
 import { RegisterDto } from '../dtos/register.dto';
 import { LoginDto } from '../dtos/login.dto';
-import { UserBaseDto } from '@app-modules/user/dto/user-base';
-import { CreateTeacherDto } from '@app-modules/user/dto/create-teacher.dto';
-import { ParentDetailsDto } from '@app-modules/user/dto/parent-details.dto';
+import { CreateUserDto } from '@app-modules/user/dto/create-user.dto';
 
 @Injectable()
 export class AuthService {
@@ -66,13 +64,13 @@ export class AuthService {
               contact,
               gender,
               dateOfBirth,
-            } as ParentDetailsDto,
+            } as CreateUserDto,
             transactionalEntityManager,
           );
           auth.parent = userSpecificRecord;
         } else if (userType === 'child') {
           userSpecificRecord = await this.childService.create(
-            { firstName, lastName, gender, dateOfBirth } as UserBaseDto,
+            { firstName, lastName, gender, dateOfBirth } as CreateUserDto,
             transactionalEntityManager,
           );
           auth.child = userSpecificRecord;
@@ -84,7 +82,7 @@ export class AuthService {
               contact,
               gender,
               dateOfBirth,
-            } as CreateTeacherDto,
+            } as CreateUserDto,
             transactionalEntityManager,
           );
           auth.teacher = userSpecificRecord;

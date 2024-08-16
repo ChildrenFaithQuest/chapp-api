@@ -1,16 +1,9 @@
-import { ContactInfoDto } from '@app-modules/user/dto/contact-info.dto';
-import { UserBaseDto } from '@app-modules/user/dto/user-base';
+import { CreateUserDto } from '@app-modules/user/dto/create-user.dto';
 import { UserType } from '@app-types/module.types';
 import { ApiProperty } from '@nestjs/swagger';
-import {
-  IsEmail,
-  IsString,
-  MinLength,
-  IsEnum,
-  IsOptional,
-} from 'class-validator';
+import { IsEmail, IsString, MinLength, IsEnum } from 'class-validator';
 
-export class RegisterDto extends UserBaseDto {
+export class RegisterDto extends CreateUserDto {
   @ApiProperty()
   @IsEmail()
   email: string;
@@ -23,8 +16,4 @@ export class RegisterDto extends UserBaseDto {
   @ApiProperty()
   @IsEnum(UserType)
   userType: UserType;
-
-  @IsOptional()
-  @ApiProperty()
-  contact?: ContactInfoDto;
 }
