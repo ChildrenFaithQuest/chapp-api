@@ -8,7 +8,7 @@ import {
 
 export abstract class UserBase {
   @PrimaryGeneratedColumn('uuid')
-  id: number;
+  id: string;
 
   @Column()
   firstName: string;
