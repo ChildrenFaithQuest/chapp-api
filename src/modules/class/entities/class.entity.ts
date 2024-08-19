@@ -1,3 +1,4 @@
+import { Attendance } from '@app-modules/attendance/entities/attendance.entity';
 import { Church } from '@app-modules/church/entities/church.entity';
 import { Child } from '@app-modules/user';
 import {
@@ -35,4 +36,7 @@ export class Class {
 
   @ManyToOne(() => Church, (church) => church.classes)
   church: Church;
+
+  @OneToMany(() => Attendance, (attendance) => attendance.class)
+  attendances: Attendance[];
 }
