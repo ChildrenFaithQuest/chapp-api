@@ -10,8 +10,8 @@ import {
 
 @Entity()
 export class Auth {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Column({ unique: true })
   email: string;

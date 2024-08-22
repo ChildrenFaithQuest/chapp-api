@@ -29,7 +29,7 @@ export class UsersController {
     return [...parents, ...teachers, ...children];
   }
 
-  @Get(':id')
+  @Get(':userType/:id')
   async findOne(
     @Param('id') id: string,
     @Param('userType') userType: UserType,
