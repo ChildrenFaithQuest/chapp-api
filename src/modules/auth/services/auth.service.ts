@@ -2,6 +2,7 @@ import {
   Injectable,
   ConflictException,
   UnauthorizedException,
+  BadRequestException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, EntityManager } from 'typeorm';
@@ -13,6 +14,8 @@ import { TeacherService } from '@app-modules/user/services/teacher.service';
 import { RegisterDto } from '../dtos/register.dto';
 import { LoginDto } from '../dtos/login.dto';
 import { CreateUserDto } from '@app-modules/user/dto/create-user.dto';
+import { ForgotPasswordDto } from '../dtos/forgot-password.dto';
+import { ChangePasswordDto } from '../dtos/change-password.dto';
 
 @Injectable()
 export class AuthService {
@@ -110,5 +113,48 @@ export class AuthService {
       throw new UnauthorizedException('Invalid credentials');
     }
     return auth;
+  }
+
+  async forgotPassword(forgotPasswordDto: ForgotPasswordDto): Promise<string> {
+    const auth = await this.authRepository.findOne({
+      where: { email: forgotPasswordDto.email },
+    });
+    if (!auth) {
+      throw new UnauthorizedException('Invalid credentials');
+    }
+    //TODO Email service to send mail to user
+    return 'A mail has been sent to your email';
+  }
+
+  async changePassword(
+    authId: string,
+    changePasswordDto: ChangePasswordDto,
+  ): Promise<string> {
+    const { currentPassword, newPassword, confirmPassword } = changePasswordDto;
+    // Verify that current password is correct
+    const auth = await this.authRepository.findOneBy({ id: authId });
+    if (auth) {
+      const passwordMatches = await this.passwordService.comparePassword(
+        currentPassword,
+        auth.password,
+      );
+
+      if (!passwordMatches) {
+        throw new BadRequestException('Current password is incorrect');
+      }
+
+      // Ensure newPassword matches confirmPassword
+      if (newPassword !== confirmPassword) {
+        throw new BadRequestException(
+          'New password and confirmation do not match',
+        );
+      }
+
+      // Update password
+      auth.password = await this.passwordService.hashPassword(newPassword);
+      await this.authRepository.save(auth);
+      return 'Password successfully Changed';
+    }
+    throw new BadRequestException('No user Found');
   }
 }
