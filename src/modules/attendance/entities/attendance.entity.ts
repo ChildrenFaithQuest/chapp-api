@@ -1,5 +1,5 @@
 import { Class } from '@app-modules/class/entities/class.entity';
-import { Child } from '@app-modules/user';
+import { Child } from '@app-modules/user/entities/child.entity';
 import { AttendanceStatus } from '@app-types/module.types';
 import {
   Entity,
