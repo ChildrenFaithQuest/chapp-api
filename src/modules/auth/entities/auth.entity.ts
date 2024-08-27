@@ -1,4 +1,6 @@
-import { Child, Parent, Teacher } from '@app-modules/user';
+import { Child } from '@app-modules/user/entities/child.entity';
+import { Parent } from '@app-modules/user/entities/parent.entity';
+import { Teacher } from '@app-modules/user/entities/teacher.entity';
 import { UserType } from '@app-types/module.types';
 import {
   Entity,
