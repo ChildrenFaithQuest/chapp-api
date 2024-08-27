@@ -9,6 +9,9 @@ module.exports = {
   transform: {
     '^.+\\.(t|j)s$': ['ts-jest', { tsconfig: 'tsconfig.json' }],
   },
+  coverageDirectory: '<rootDir>/coverage',
+  collectCoverageFrom: ['src/**/*.(t|j)s', '!dist/**', '!**/migrations/**'],
+  coverageReporters: ['json-summary', 'json', 'lcov', 'text', 'clover'],
   moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths, {
     prefix: '<rootDir>/',
   }),
