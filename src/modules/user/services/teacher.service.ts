@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DeepPartial, EntityManager, Repository } from 'typeorm';
-import { Teacher } from '../entities';
+import { Teacher } from '../entities/teacher.entity';
 import { UpdateUserDto } from '../dto/update-user.dto';
 import { UserService } from './user.service';
 import { CreateUserDto } from '../dto/create-user.dto';

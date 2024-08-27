@@ -1,6 +1,6 @@
 import { Attendance } from '@app-modules/attendance/entities/attendance.entity';
 import { Church } from '@app-modules/church/entities/church.entity';
-import { Child } from '@app-modules/user';
+import { Child } from '@app-modules/user/entities/child.entity';
 import {
   Entity,
   Column,
