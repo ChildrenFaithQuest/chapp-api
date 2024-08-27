@@ -1,11 +1,13 @@
 import 'tsconfig-paths/register';
 import { DataSource } from 'typeorm';
 import * as dotenv from 'dotenv';
-import { Child, Parent, Teacher } from '@app-modules/user';
 import { Church } from '@app-modules/church/entities/church.entity';
 import { Class } from '@app-modules/class/entities/class.entity';
 import { Attendance } from '@app-modules/attendance/entities/attendance.entity';
 import { Auth } from '@app-modules/auth/entities/auth.entity';
+import { Child } from '@app-modules/user/entities/child.entity';
+import { Parent } from '@app-modules/user/entities/parent.entity';
+import { Teacher } from '@app-modules/user/entities/teacher.entity';
 
 dotenv.config();
 
