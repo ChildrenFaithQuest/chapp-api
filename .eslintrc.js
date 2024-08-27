@@ -1,4 +1,16 @@
 module.exports = {
+  overrides: [
+    {
+      files: ['jest.config.ts'],
+      rules: {
+        '@typescript-eslint/no-var-requires': 'off',
+        '@typescript-eslint/explicit-module-boundary-types': 'off',
+      },
+      parserOptions: {
+        project: null,
+      },
+    },
+  ],
   parser: '@typescript-eslint/parser',
   parserOptions: {
     project: 'tsconfig.json',
