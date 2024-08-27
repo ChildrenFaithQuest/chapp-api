@@ -13,7 +13,7 @@ import { ChildService } from '@app-modules/user/services/child.service';
 import { TeacherService } from '@app-modules/user/services/teacher.service';
 import { RegisterDto } from '../dtos/register.dto';
 import { LoginDto } from '../dtos/login.dto';
-import { CreateUserDto } from '@app-modules/user/dto/create-user.dto';
+import { CreateUserDto } from '@app-modules/user/dtos/create-user.dto';
 import { ForgotPasswordDto } from '../dtos/forgot-password.dto';
 import { ChangePasswordDto } from '../dtos/change-password.dto';
 
