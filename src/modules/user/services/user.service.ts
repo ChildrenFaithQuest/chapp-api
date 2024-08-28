@@ -5,7 +5,7 @@ import {
   ObjectLiteral,
   Repository,
 } from 'typeorm';
-import { UpdateUserDto } from '../dto/update-user.dto';
+import { UpdateUserDto } from '../dtos/update-user.dto';
 
 interface HasId {
   id: string;

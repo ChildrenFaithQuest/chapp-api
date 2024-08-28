@@ -2,9 +2,9 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DeepPartial, EntityManager, Repository } from 'typeorm';
 import { Parent } from '../entities/parent.entity';
-import { UpdateUserDto } from '../dto/update-user.dto';
+import { UpdateUserDto } from '../dtos/update-user.dto';
 import { UserService } from './user.service';
-import { CreateUserDto } from '../dto/create-user.dto';
+import { CreateUserDto } from '../dtos/create-user.dto';
 
 @Injectable()
 export class ParentService {

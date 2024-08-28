@@ -29,7 +29,9 @@ export class UpdateUserDto {
 
   @IsNotEmpty()
   @ApiPropertyOptional()
-  @IsEnum(UserGender)
+  @IsEnum(UserGender, {
+    message: 'gender must be a valid enum value (female, male)',
+  })
   gender?: UserGender;
 
   @IsOptional()

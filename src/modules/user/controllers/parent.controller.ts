@@ -1,7 +1,7 @@
 import { Body, Controller, Get, Param, Patch, Put } from '@nestjs/common';
 import { ParentService } from '../services/parent.service';
 import { Parent } from '../entities/parent.entity';
-import { UpdateUserDto } from '../dto/update-user.dto';
+import { UpdateUserDto } from '../dtos/update-user.dto';
 
 @Controller('parents')
 export class ParentDetailsController {

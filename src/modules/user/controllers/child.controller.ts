@@ -1,7 +1,7 @@
 import { Body, Controller, Get, Param, Patch, Put } from '@nestjs/common';
 import { Child } from '../entities/child.entity';
 import { ChildService } from '../services/child.service';
-import { UpdateUserDto } from '../dto/update-user.dto';
+import { UpdateUserDto } from '../dtos/update-user.dto';
 
 @Controller('child')
 export class ChildDetailsController {
