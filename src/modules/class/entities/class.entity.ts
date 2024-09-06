@@ -20,10 +20,15 @@ export class Class {
   name: string;
 
   @Column()
-  description: string;
+  ageGroup: string;
 
-  @Column()
-  schedule: string;
+  @Column({ type: 'json', nullable: true })
+  schedule: {
+    dayOfWeek?: string; // Example: "Sunday"
+    time?: string; // Example: "10:00 AM"
+    frequency?: string; // Example: "Weekly"
+    additionalDetails?: string; // Example: "Starting from April"
+  };
 
   @CreateDateColumn()
   createdAt: Date; // Creation date

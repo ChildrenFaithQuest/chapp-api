@@ -7,17 +7,15 @@ import { ClassDto } from '@app-modules/class/dtos/class.dto';
 import { AttendanceDto } from '@app-modules/attendance/dtos/attendance.dto';
 
 export class ChildDto extends UserBaseDto {
-  @IsString()
-  name: string;
-
   @IsOptional()
   @IsString()
   parent?: ParentDto;
 
+  @IsOptional()
   @IsArray({})
   @Type(() => AttendanceDto) // Important for nested validation
-  attendance: AttendanceDto[];
+  attendance?: AttendanceDto[];
 
   @Type(() => ClassDto) // Important for nested validation
-  class: ClassDto;
+  class?: ClassDto;
 }

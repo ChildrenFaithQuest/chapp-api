@@ -16,11 +16,8 @@ export class Attendance {
   @PrimaryGeneratedColumn('uuid')
   id: number;
 
-  @Column()
-  name: string;
-
-  @Column()
-  date: Date;
+  @Column({ type: 'date' })
+  date: string;
 
   @Column({
     type: 'enum',
@@ -35,7 +32,7 @@ export class Attendance {
   @UpdateDateColumn()
   updatedAt: Date; // Last Updated date
 
-  @ManyToOne(() => Child, (child) => child.attendance)
+  @ManyToOne(() => Child, (child) => child.attendances)
   child: Child;
 
   @ManyToOne(() => Class, (classEntity) => classEntity.attendances)
