@@ -13,6 +13,9 @@ import {
 
 export class UserBaseDto {
   @IsString()
+  id: string;
+
+  @IsString()
   @IsNotEmpty()
   @ApiProperty()
   firstName: string;

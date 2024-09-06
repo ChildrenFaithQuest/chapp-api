@@ -9,9 +9,6 @@ export class AttendanceDto {
   @IsString()
   id: string;
 
-  @IsString()
-  name: string;
-
   @IsDate()
   @Type(() => Date)
   date: Date;
@@ -30,7 +27,7 @@ export class AttendanceDto {
   updatedAt: Date; // Last Updated date
 
   @Type(() => ChildDto)
-  child: ChildDto;
+  child?: ChildDto;
 
   @Type(() => ClassDto)
   class: ClassDto;

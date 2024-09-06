@@ -1,5 +1,5 @@
 import { Type } from 'class-transformer';
-import { IsString, IsDate, IsArray } from 'class-validator';
+import { IsString, IsDate, IsArray, IsObject } from 'class-validator';
 
 import { AttendanceDto } from '@app-modules/attendance/dtos/attendance.dto';
 import { ChurchDto } from '@app-modules/church/dtos/church.dto';
@@ -13,10 +13,15 @@ export class ClassDto {
   name: string;
 
   @IsString()
-  description: string;
+  ageGroup: string;
 
-  @IsString()
-  schedule: string;
+  @IsObject()
+  schedule?: {
+    dayOfWeek?: string;
+    time?: string;
+    frequency?: string;
+    additionalDetails?: string;
+  };
 
   @IsDate()
   @Type(() => Date)
@@ -28,12 +33,12 @@ export class ClassDto {
 
   @IsArray({})
   @Type(() => ChildDto)
-  children: ChildDto[];
+  children?: ChildDto[];
 
   @Type(() => ChurchDto)
-  church: ChurchDto;
+  church?: ChurchDto;
 
   @IsArray({})
   @Type(() => AttendanceDto)
-  attendances: AttendanceDto[];
+  attendances?: AttendanceDto[];
 }

@@ -16,5 +16,5 @@ export class ParentDto extends UserBaseDto {
   children: ChildDto[];
 
   @Type(() => TeacherDto)
-  teacher: TeacherDto;
+  teacher?: TeacherDto;
 }
