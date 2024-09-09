@@ -3,6 +3,7 @@ import { Child } from '../entities/child.entity';
 import { ChildService } from '../services/child.service';
 import { UserService } from '../services/user.service';
 import { ChildDetailsController } from './child.controller';
+import { mockChildren } from '@app-root/mocks/child';
 
 describe('ChildController', () => {
   let childController: ChildDetailsController;
@@ -17,9 +18,7 @@ describe('ChildController', () => {
 
   describe('getAll', () => {
     it('should return an array of children', async () => {
-      const mockChildren = [{ id: '' }] as Child[];
       jest.spyOn(childService, 'findAll').mockResolvedValue(mockChildren);
-
       expect(await childController.getAll()).toBe(mockChildren);
     });
   });
