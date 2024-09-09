@@ -14,10 +14,10 @@ import {
 @Entity()
 export class Attendance {
   @PrimaryGeneratedColumn('uuid')
-  id: number;
+  id: string;
 
   @Column({ type: 'date' })
-  date: string;
+  date: string; // YYYY-MM-DD
 
   @Column({
     type: 'enum',
