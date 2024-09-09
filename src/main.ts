@@ -16,6 +16,7 @@ tsConfigPaths.register({
     '@app-shared/*': ['src/shared/*'],
     '@app-modules/*': ['src/modules/*'],
     '@app-types/*': ['src/types/*'],
+    '@app-root/*': ['./*'],
   },
 });
 
