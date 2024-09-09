@@ -14,7 +14,8 @@
     "paths": {
       "@app-shared/*": ["src/shared/*"],
       "@app-modules/*": ["src/modules/*"],
-      "@app-types/*": ["src/types/*"]
+      "@app-types/*": ["src/types/*"],
+      "@app-root/*": ["./*"]
     },
     "rootDir": ".",
     "incremental": true,
@@ -25,6 +26,6 @@
     "forceConsistentCasingInFileNames": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src/**/*", "**/*.test.ts", "**/*.e2e-test.ts"],
+  "include": ["src/**/*", "**/*.test.ts", "**/*.e2e-test.ts", "mocks/**/*"],
   "exclude": ["node_modules", "jest.config.ts"]
 }

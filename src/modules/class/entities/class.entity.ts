@@ -43,5 +43,5 @@ export class Class {
   church: Church;
 
   @OneToMany(() => Attendance, (attendance) => attendance.class)
-  attendances: Attendance[];
+  attendances?: Attendance[];
 }

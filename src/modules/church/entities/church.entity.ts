@@ -12,7 +12,7 @@ import {
 @Entity()
 export class Church {
   @PrimaryGeneratedColumn('uuid')
-  id: number;
+  id: string;
 
   @Column()
   name: string;

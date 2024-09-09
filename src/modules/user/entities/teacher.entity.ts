@@ -27,5 +27,5 @@ export class Teacher extends UserBase {
 
   @OneToOne(() => Parent, { nullable: true })
   @JoinColumn()
-  parent: Parent;
+  parent?: Parent;
 }

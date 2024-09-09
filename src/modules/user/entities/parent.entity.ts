@@ -1,8 +1,7 @@
-import { Column, Entity, OneToMany, OneToOne } from 'typeorm';
+import { Column, Entity, OneToMany } from 'typeorm';
 import { Child } from './child.entity';
 import { ContactInfo } from '@app-modules/user/entities/contact-info.entity';
 import { UserBase } from './user-base.entity';
-import { Teacher } from './teacher.entity';
 
 @Entity()
 export class Parent extends UserBase {
@@ -10,8 +9,5 @@ export class Parent extends UserBase {
   contact: ContactInfo;
 
   @OneToMany(() => Child, (child) => child.parent)
-  children: Child[];
-
-  @OneToOne(() => Teacher, { nullable: true })
-  teacher: Teacher;
+  children?: Child[];
 }
