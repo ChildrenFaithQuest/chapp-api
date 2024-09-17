@@ -32,8 +32,12 @@ export class TeacherService {
     return this.teacherRepository.findOneBy({ id });
   }
 
-  async update(id: string, updateUserDto: UpdateUserDto): Promise<Teacher> {
-    return this.userService.update(id, updateUserDto, this.teacherRepository);
+  async update(id: string, updateTeacherDto: UpdateUserDto): Promise<Teacher> {
+    return this.userService.update(
+      id,
+      updateTeacherDto,
+      this.teacherRepository,
+    );
   }
 
   async partialUpdate(
@@ -47,7 +51,7 @@ export class TeacherService {
     );
   }
 
-  async remove(id: string): Promise<void> {
+  async delete(id: string): Promise<void> {
     await this.teacherRepository.delete(id);
   }
 }

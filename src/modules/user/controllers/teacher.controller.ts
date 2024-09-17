@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Param, Patch, Put } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Put,
+} from '@nestjs/common';
 import { Teacher } from '../entities/teacher.entity';
 import { TeacherService } from '../services/teacher.service';
 import { UpdateUserDto } from '../dtos/update-user.dto';
@@ -23,7 +31,15 @@ export class TeacherDetailsController {
   }
 
   @Patch(':id')
-  partialUpdate(@Param('id') id: string, @Body() partialData: UpdateUserDto) {
+  partialUpdate(
+    @Param('id') id: string,
+    @Body() partialData: Partial<UpdateUserDto>,
+  ) {
     return this.teacherService.partialUpdate(id, partialData);
+  }
+
+  @Delete(':id')
+  delete(@Param('id') id: string) {
+    return this.teacherService.delete(id);
   }
 }

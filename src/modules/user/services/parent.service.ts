@@ -32,8 +32,8 @@ export class ParentService {
     return this.parentsRepository.findOneBy({ id });
   }
 
-  async update(id: string, updateUserDto: UpdateUserDto): Promise<Parent> {
-    return this.userService.update(id, updateUserDto, this.parentsRepository);
+  async update(id: string, updateParentDto: UpdateUserDto): Promise<Parent> {
+    return this.userService.update(id, updateParentDto, this.parentsRepository);
   }
 
   async partialUpdate(
@@ -47,7 +47,7 @@ export class ParentService {
     );
   }
 
-  async remove(id: string): Promise<void> {
+  async delete(id: string): Promise<void> {
     await this.parentsRepository.delete(id);
   }
 }

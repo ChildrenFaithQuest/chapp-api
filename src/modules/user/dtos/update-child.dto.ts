@@ -5,16 +5,11 @@ import {
   IsOptional,
   IsString,
 } from 'class-validator';
-import { ContactInfoDto } from './contact-info.dto';
 import { ApiPropertyOptional } from '@nestjs/swagger';
 import { UserGender } from '@app-types/module.types';
 import { Type } from 'class-transformer';
 
-export class UpdateUserDto {
-  @IsOptional()
-  @ApiPropertyOptional()
-  contact: ContactInfoDto;
-
+export class UpdateChildDto {
   @IsString()
   @IsOptional()
   @IsNotEmpty()
@@ -28,7 +23,6 @@ export class UpdateUserDto {
   lastName: string;
 
   @IsNotEmpty()
-  @IsOptional()
   @ApiPropertyOptional()
   @IsEnum(UserGender, {
     message: 'gender must be a valid enum value (female, male)',
