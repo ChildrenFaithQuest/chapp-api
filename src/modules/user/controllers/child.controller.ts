@@ -1,7 +1,15 @@
-import { Body, Controller, Get, Param, Patch, Put } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Put,
+} from '@nestjs/common';
 import { Child } from '../entities/child.entity';
 import { ChildService } from '../services/child.service';
-import { UpdateUserDto } from '../dtos/update-user.dto';
+import { UpdateChildDto } from '../dtos/update-child.dto';
 
 @Controller('child')
 export class ChildDetailsController {
@@ -18,12 +26,20 @@ export class ChildDetailsController {
   }
 
   @Put(':id')
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.childService.update(id, updateUserDto);
+  update(@Param('id') id: string, @Body() updateChildDto: UpdateChildDto) {
+    return this.childService.update(id, updateChildDto);
   }
 
   @Patch(':id')
-  partialUpdate(@Param('id') id: string, @Body() partialData: UpdateUserDto) {
+  partialUpdate(
+    @Param('id') id: string,
+    @Body() partialData: Partial<UpdateChildDto>,
+  ) {
     return this.childService.partialUpdate(id, partialData);
+  }
+
+  @Delete(':id')
+  delete(@Param('id') id: string) {
+    return this.childService.delete(id);
   }
 }
