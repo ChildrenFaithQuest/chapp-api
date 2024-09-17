@@ -2,9 +2,9 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DeepPartial, EntityManager, Repository } from 'typeorm';
 import { Child } from '../entities/child.entity';
-import { UpdateUserDto } from '../dtos/update-user.dto';
 import { UserService } from './user.service';
 import { CreateUserDto } from '../dtos/create-user.dto';
+import { UpdateChildDto } from '../dtos/update-child.dto';
 
 @Injectable()
 export class ChildService {
@@ -32,8 +32,8 @@ export class ChildService {
     return this.childRepository.findOneBy({ id });
   }
 
-  async update(id: string, updateUserDto: UpdateUserDto): Promise<Child> {
-    return this.userService.update(id, updateUserDto, this.childRepository);
+  async update(id: string, updateChildDto: UpdateChildDto): Promise<Child> {
+    return this.userService.update(id, updateChildDto, this.childRepository);
   }
 
   async partialUpdate(
@@ -47,7 +47,7 @@ export class ChildService {
     );
   }
 
-  async remove(id: number): Promise<void> {
+  async delete(id: string): Promise<void> {
     await this.childRepository.delete(id);
   }
 }

@@ -6,6 +6,7 @@ import {
   Repository,
 } from 'typeorm';
 import { UpdateUserDto } from '../dtos/update-user.dto';
+import { UpdateChildDto } from '../dtos/update-child.dto';
 
 interface HasId {
   id: string;
@@ -23,7 +24,7 @@ export class UserService {
    */
   async update<T extends ObjectLiteral & HasId>(
     id: string,
-    updateUserDto: UpdateUserDto,
+    updateUserDto: UpdateUserDto | UpdateChildDto,
     repository: Repository<T>,
   ): Promise<T> {
     const whereCondition: FindOptionsWhere<T> = { id } as FindOptionsWhere<T>;
