@@ -11,7 +11,7 @@ import { mockChurch } from '@app-root/mocks/church';
 import { Teacher } from '../entities/teacher.entity';
 import { UpdateUserDto } from '../dtos/update-user.dto';
 
-const mockParentRepository = () => ({
+const mockteacherRepository = () => ({
   findOne: jest.fn(),
   save: jest.fn(),
   delete: jest.fn(),
@@ -26,7 +26,7 @@ const mockUserService = () => ({
 describe('TeacherController', () => {
   let teacherController: TeacherDetailsController;
   let teacherService: TeacherService;
-  let parentRepository: Repository<Teacher>;
+  let teacherRepository: Repository<Teacher>;
   let userService: UserService;
 
   beforeEach(async () => {
@@ -36,7 +36,7 @@ describe('TeacherController', () => {
         TeacherService,
         {
           provide: getRepositoryToken(Teacher),
-          useValue: mockParentRepository(), // Mock repository
+          useValue: mockteacherRepository(), // Mock repository
         },
         {
           provide: UserService,
@@ -49,7 +49,7 @@ describe('TeacherController', () => {
       TeacherDetailsController,
     );
     teacherService = module.get<TeacherService>(TeacherService);
-    parentRepository = module.get<Repository<Teacher>>(
+    teacherRepository = module.get<Repository<Teacher>>(
       getRepositoryToken(Teacher),
     );
     userService = module.get<UserService>(UserService);
@@ -98,13 +98,13 @@ describe('TeacherController', () => {
       expect(userService.update).toHaveBeenCalledWith(
         id,
         updateTeacherDto,
-        parentRepository,
+        teacherRepository,
       );
     });
   });
 
   describe('partialUpdate', () => {
-    it('should return a parent', async () => {
+    it('should partially update a teacher record', async () => {
       const id = 'teacher_001';
       const partialUpdateTeacherDto: Partial<UpdateUserDto> = {
         gender: UserGender.MALE, // Only updating gender
@@ -141,7 +141,7 @@ describe('TeacherController', () => {
       expect(userService.partialUpdate).toHaveBeenCalledWith(
         id,
         partialUpdateTeacherDto,
-        parentRepository,
+        teacherRepository,
       );
       expect(result).toStrictEqual(updatedTeacher);
     });
@@ -151,7 +151,7 @@ describe('TeacherController', () => {
     it('should delete a teacher', async () => {
       const id = 'teacher_001';
       await teacherController.delete(id);
-      expect(parentRepository.delete).toHaveBeenCalledWith(id);
+      expect(teacherRepository.delete).toHaveBeenCalledWith(id);
     });
   });
 });
