@@ -11,21 +11,27 @@ import { ParentService } from '../services/parent.service';
 import { Parent } from '../entities/parent.entity';
 import { UpdateUserDto } from '../dtos/update-user.dto';
 import { UserType } from '@app-types/module.types';
+import { TeacherService } from '../services/teacher.service';
+import { ChildService } from '../services/child.service';
+import { Teacher } from '../entities/teacher.entity';
+import { Child } from '../entities/child.entity';
+import { UpdateChildDto } from '../dtos/update-child.dto';
+
+export type User = Parent | Teacher | Child;
 
 @Controller('users')
 export class UsersController {
   constructor(
     private readonly parentService: ParentService,
-    private readonly teacherService: ParentService,
-    private readonly childService: ParentService,
+    private readonly teacherService: TeacherService,
+    private readonly childService: ChildService,
   ) {}
 
   @Get()
-  async getAll(): Promise<Parent[]> {
-    const parents = await this.parentService.findAll();
+  async getAll(): Promise<User[]> {
     const teachers = await this.teacherService.findAll();
+    const parents = await this.parentService.findAll();
     const children = await this.childService.findAll();
-
     return [...parents, ...teachers, ...children];
   }
 
@@ -33,7 +39,7 @@ export class UsersController {
   async findOne(
     @Param('id') id: string,
     @Param('userType') userType: UserType,
-  ): Promise<Parent | null> {
+  ): Promise<User | null> {
     switch (userType) {
       case 'parent':
         return this.parentService.findOne(id);
@@ -50,13 +56,13 @@ export class UsersController {
   async update(
     @Param('id') id: string,
     @Param('userType') userType: UserType,
-    @Body() updateUserDto: UpdateUserDto,
+    @Body() updateUserDto: UpdateUserDto | UpdateChildDto,
   ) {
     switch (userType) {
       case 'parent':
-        return this.parentService.update(id, updateUserDto);
+        return this.parentService.update(id, updateUserDto as UpdateUserDto);
       case 'teacher':
-        return this.teacherService.update(id, updateUserDto);
+        return this.teacherService.update(id, updateUserDto as UpdateUserDto);
       case 'child':
         return this.childService.update(id, updateUserDto);
       default:
@@ -68,15 +74,24 @@ export class UsersController {
   async partialUpdate(
     @Param('id') id: string,
     @Param('userType') userType: UserType,
-    @Body() updateUserDto: UpdateUserDto,
+    @Body() updateUserDto: Partial<UpdateUserDto | UpdateChildDto>,
   ) {
     switch (userType) {
       case 'parent':
-        return this.parentService.update(id, updateUserDto);
+        return this.parentService.partialUpdate(
+          id,
+          updateUserDto as UpdateUserDto,
+        );
       case 'teacher':
-        return this.teacherService.update(id, updateUserDto);
+        return this.teacherService.partialUpdate(
+          id,
+          updateUserDto as UpdateUserDto,
+        );
       case 'child':
-        return this.childService.update(id, updateUserDto);
+        return this.childService.partialUpdate(
+          id,
+          updateUserDto as UpdateChildDto,
+        );
       default:
         throw new BadRequestException('Invalid user type');
     }
