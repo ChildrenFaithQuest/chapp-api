@@ -1,13 +1,14 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
+import { NotFoundException } from '@nestjs/common';
 import { EntityManager, Repository } from 'typeorm';
+
 import { UserService } from './user.service';
 import { UserGender } from '@app-types/module.types';
 import { UpdateUserDto } from '../dtos/update-user.dto';
 import { TeacherService } from './teacher.service';
 import { Teacher } from '../entities/teacher.entity';
 import { mockTeacherData, mockTeachers } from '@app-root/mocks/teacher';
-import { NotFoundException } from '@nestjs/common';
 
 describe('Teacher Service', () => {
   let teacherService: TeacherService;
