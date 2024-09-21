@@ -1,4 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
+import { NotFoundException } from '@nestjs/common';
+
 import { ChildService } from './child.service';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Child } from '../entities/child.entity';
@@ -79,13 +81,24 @@ describe('Child Service', () => {
     expect(result).toBe(mockChildren);
   });
 
-  it('should findOne children', async () => {
+  it('should findOne child', async () => {
+    const id = 'child_001';
     (mockChildRepository.findOneBy as jest.Mock).mockReturnValue(
       mockChildren[0],
     );
-    const result = await childService.findOne('child_001');
-    expect(mockChildRepository.findOneBy).toHaveBeenCalled();
+    const result = await childService.findOne(id);
+    expect(mockChildRepository.findOneBy).toHaveBeenCalledTimes(1);
+    expect(mockChildRepository.findOneBy).toHaveBeenCalledWith({ id });
+
     expect(result).toBe(mockChildren[0]);
+  });
+
+  it('should throw expection if child is not found', async () => {
+    (mockChildRepository.findOneBy as jest.Mock).mockResolvedValue(null);
+    const id = 'child_001';
+    await expect(childService.findOne(id)).rejects.toThrow(
+      new NotFoundException(`Child with ID ${id} not found`),
+    );
   });
 
   it('should update child details', async () => {
