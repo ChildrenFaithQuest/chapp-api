@@ -20,5 +20,5 @@ export class ChangePasswordDto {
   @IsNotEmpty()
   @ApiProperty()
   @MinLength(8)
-  confirmPassword: string;
+  confirmNewPassword: string;
 }

@@ -130,7 +130,8 @@ export class AuthService {
     authId: string,
     changePasswordDto: ChangePasswordDto,
   ): Promise<string> {
-    const { currentPassword, newPassword, confirmPassword } = changePasswordDto;
+    const { currentPassword, newPassword, confirmNewPassword } =
+      changePasswordDto;
     // Verify that current password is correct
     const auth = await this.authRepository.findOneBy({ id: authId });
     if (auth) {
@@ -143,8 +144,8 @@ export class AuthService {
         throw new BadRequestException('Current password is incorrect');
       }
 
-      // Ensure newPassword matches confirmPassword
-      if (newPassword !== confirmPassword) {
+      // Ensure newPassword matches confirmNewPassword
+      if (newPassword !== confirmNewPassword) {
         throw new BadRequestException(
           'New password and confirmation do not match',
         );
