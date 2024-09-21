@@ -7,6 +7,7 @@ import { UpdateUserDto } from '../dtos/update-user.dto';
 import { TeacherService } from './teacher.service';
 import { Teacher } from '../entities/teacher.entity';
 import { mockTeacherData, mockTeachers } from '@app-root/mocks/teacher';
+import { NotFoundException } from '@nestjs/common';
 
 describe('Teacher Service', () => {
   let teacherService: TeacherService;
@@ -86,6 +87,14 @@ describe('Teacher Service', () => {
     const result = await teacherService.findOne('teacher_001');
     expect(mockTeacherRepository.findOneBy).toHaveBeenCalled();
     expect(result).toBe(mockTeachers[0]);
+  });
+
+  it('should throw expection if teacher is not found', async () => {
+    (mockTeacherRepository.findOneBy as jest.Mock).mockResolvedValue(null);
+    const id = 'teacher_001';
+    await expect(teacherService.findOne(id)).rejects.toThrow(
+      new NotFoundException(`Teacher with ID ${id} not found`),
+    );
   });
 
   it('should update teacher details', async () => {
