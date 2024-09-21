@@ -3,6 +3,17 @@ import { Parent } from '@app-modules/user/entities/parent.entity';
 import { mockChildren } from './child';
 import { mockClass } from './class';
 
+export const mockParentData = {
+  gender: UserGender.FEMALE,
+  firstName: 'John',
+  lastName: 'Doe',
+  contact: {
+    phoneNumber: '+1234567890',
+    address: '788 Elm St, Springfield',
+  },
+  children: [],
+};
+
 export const mockParents: Parent[] = [
   {
     id: 'parent_001',

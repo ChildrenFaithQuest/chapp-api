@@ -3,6 +3,18 @@ import { UserGender } from '@app-types/module.types';
 import { mockClass } from './class';
 import { mockChurch } from './church';
 
+export const mockTeacherData = {
+  id: 'teacher_001',
+  gender: UserGender.FEMALE,
+  firstName: 'Olivia',
+  lastName: 'Williams',
+  contact: {
+    phoneNumber: '+1234567890',
+    address: '789 Elm St, Springfield',
+  },
+  classes: [mockClass.FAITHFULNESS],
+};
+
 export const mockTeachers: Teacher[] = [
   {
     id: 'teacher_001',

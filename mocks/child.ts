@@ -3,6 +3,12 @@ import { UserGender } from '@app-types/module.types';
 // import { mockParents } from './parent';
 import { mockClass } from './class';
 
+export const mockChildData = {
+  gender: UserGender.FEMALE,
+  firstName: 'Sophia',
+  lastName: 'Johnson',
+};
+
 export const mockChildren: Child[] = [
   {
     id: 'child_001',
