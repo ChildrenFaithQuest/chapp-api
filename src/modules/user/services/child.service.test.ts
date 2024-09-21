@@ -1,10 +1,10 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { NotFoundException } from '@nestjs/common';
+import { EntityManager, Repository } from 'typeorm';
+import { getRepositoryToken } from '@nestjs/typeorm';
 
 import { ChildService } from './child.service';
-import { getRepositoryToken } from '@nestjs/typeorm';
 import { Child } from '../entities/child.entity';
-import { EntityManager, Repository } from 'typeorm';
 import { mockChildData, mockChildren } from '@app-root/mocks/child';
 import { UserService } from './user.service';
 import { UserGender } from '@app-types/module.types';
