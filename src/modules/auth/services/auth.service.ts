@@ -103,16 +103,16 @@ export class AuthService {
     const auth = await this.authRepository.findOne({
       where: { email: loginDto.email },
     });
-    if (
-      !auth ||
-      !(await this.passwordService.comparePassword(
+    if (auth) {
+      const isValidCredentials = await this.passwordService.comparePassword(
         loginDto.password,
         auth.password,
-      ))
-    ) {
-      throw new UnauthorizedException('Invalid credentials');
+      );
+      if (isValidCredentials) {
+        return auth;
+      }
     }
-    return auth;
+    throw new UnauthorizedException('Invalid credentials');
   }
 
   async forgotPassword(forgotPasswordDto: ForgotPasswordDto): Promise<string> {
@@ -132,6 +132,7 @@ export class AuthService {
   ): Promise<string> {
     const { currentPassword, newPassword, confirmNewPassword } =
       changePasswordDto;
+
     // Verify that current password is correct
     const auth = await this.authRepository.findOneBy({ id: authId });
     if (auth) {
