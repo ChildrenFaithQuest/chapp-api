@@ -1,12 +1,15 @@
+import { NotFoundException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { EntityManager, Repository } from 'typeorm';
-import { UserService } from './user.service';
+
 import { UserGender } from '@app-types/module.types';
+import { mockParentData, mockParents } from '@app-root/mocks/parent';
+
 import { Parent } from '../entities/parent.entity';
+import { UserService } from './user.service';
 import { ParentService } from './parent.service';
 import { UpdateUserDto } from '../dtos/update-user.dto';
-import { mockParentData, mockParents } from '@app-root/mocks/parent';
 
 describe('Parent Service', () => {
   let parentService: ParentService;
@@ -86,6 +89,14 @@ describe('Parent Service', () => {
     const result = await parentService.findOne('parent_001');
     expect(mockParentRepository.findOneBy).toHaveBeenCalled();
     expect(result).toBe(mockParents[0]);
+  });
+
+  it('should throw expection if parent is not found', async () => {
+    (mockParentRepository.findOneBy as jest.Mock).mockResolvedValue(null);
+    const id = 'parent_001';
+    await expect(parentService.findOne(id)).rejects.toThrow(
+      new NotFoundException(`Parent with ID ${id} not found`),
+    );
   });
 
   it('should update parent details', async () => {

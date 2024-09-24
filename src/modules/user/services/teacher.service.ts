@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DeepPartial, EntityManager, Repository } from 'typeorm';
 import { Teacher } from '../entities/teacher.entity';
@@ -15,21 +15,25 @@ export class TeacherService {
   ) {}
 
   async create(
-    parentDetails: CreateUserDto,
+    teacherDetails: CreateUserDto,
     transactionalEntityManager: EntityManager,
   ): Promise<Teacher> {
-    const parent = transactionalEntityManager.create(Teacher, {
-      ...parentDetails,
+    const teacher = transactionalEntityManager.create(Teacher, {
+      ...teacherDetails,
     });
-    return transactionalEntityManager.save(Teacher, parent);
+    return transactionalEntityManager.save(Teacher, teacher);
   }
 
   findAll(): Promise<Teacher[]> {
     return this.teacherRepository.find();
   }
 
-  findOne(id: string): Promise<Teacher | null> {
-    return this.teacherRepository.findOneBy({ id });
+  async findOne(id: string): Promise<Teacher | null> {
+    const teacher = await this.teacherRepository.findOneBy({ id });
+    if (!teacher) {
+      throw new NotFoundException(`Teacher with ID ${id} not found`);
+    }
+    return teacher;
   }
 
   async update(id: string, updateTeacherDto: UpdateUserDto): Promise<Teacher> {

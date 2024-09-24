@@ -1,13 +1,14 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
+import { mock } from 'jest-mock-extended';
 import { Repository } from 'typeorm';
+import { NotFoundException } from '@nestjs/common';
+
 import { UserService } from './user.service';
 import { UserGender } from '@app-types/module.types';
 import { UpdateUserDto } from '../dtos/update-user.dto';
 import { Teacher } from '../entities/teacher.entity';
 import { mockTeachers } from '@app-root/mocks/teacher';
-import { NotFoundException } from '@nestjs/common';
-import { mock } from 'jest-mock-extended';
 
 describe('User Service', () => {
   let userService: UserService;
@@ -51,9 +52,9 @@ describe('User Service', () => {
         mockRepository as unknown as Repository<Teacher>,
       );
 
-      expect(mockRepository.findOne).toHaveBeenCalled();
-      expect(mockRepository.save).toHaveBeenCalled();
-
+      expect(mockRepository.findOne).toHaveBeenCalledTimes(1);
+      expect(mockRepository.findOne).toHaveBeenCalledWith({ where: { id } });
+      expect(mockRepository.save).toHaveBeenCalledTimes(1);
       expect(result).toBe(mockTeachers[0]);
     });
 

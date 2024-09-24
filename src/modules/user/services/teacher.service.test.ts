@@ -1,6 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
+import { NotFoundException } from '@nestjs/common';
 import { EntityManager, Repository } from 'typeorm';
+
 import { UserService } from './user.service';
 import { UserGender } from '@app-types/module.types';
 import { UpdateUserDto } from '../dtos/update-user.dto';
@@ -86,6 +88,14 @@ describe('Teacher Service', () => {
     const result = await teacherService.findOne('teacher_001');
     expect(mockTeacherRepository.findOneBy).toHaveBeenCalled();
     expect(result).toBe(mockTeachers[0]);
+  });
+
+  it('should throw expection if teacher is not found', async () => {
+    (mockTeacherRepository.findOneBy as jest.Mock).mockResolvedValue(null);
+    const id = 'teacher_001';
+    await expect(teacherService.findOne(id)).rejects.toThrow(
+      new NotFoundException(`Teacher with ID ${id} not found`),
+    );
   });
 
   it('should update teacher details', async () => {

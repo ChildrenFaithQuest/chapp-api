@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DeepPartial, EntityManager, Repository } from 'typeorm';
 import { Child } from '../entities/child.entity';
@@ -28,8 +28,12 @@ export class ChildService {
     return this.childRepository.find();
   }
 
-  findOne(id: string): Promise<Child | null> {
-    return this.childRepository.findOneBy({ id });
+  async findOne(id: string): Promise<Child | null> {
+    const child = await this.childRepository.findOneBy({ id });
+    if (!child) {
+      throw new NotFoundException(`Child with ID ${id} not found`);
+    }
+    return child;
   }
 
   async update(id: string, updateChildDto: UpdateChildDto): Promise<Child> {
