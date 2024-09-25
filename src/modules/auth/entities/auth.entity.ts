@@ -8,6 +8,8 @@ import {
   Column,
   OneToOne,
   JoinColumn,
+  CreateDateColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 
 @Entity()
@@ -35,4 +37,10 @@ export class Auth {
   @OneToOne(() => Teacher, { nullable: true })
   @JoinColumn()
   teacher?: Teacher;
+
+  @CreateDateColumn()
+  createdAt: Date; // Creation date
+
+  @UpdateDateColumn()
+  updatedAt: Date; // Last Updated date
 }
