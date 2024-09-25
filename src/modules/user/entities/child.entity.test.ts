@@ -48,8 +48,6 @@ describe('Child Entity', () => {
     const table = await queryRunner.getTable('child');
 
     expect(table).toBeDefined();
-    ``;
-
     const idColumn = table?.findColumnByName('id');
     const firstNameColumn = table?.findColumnByName('firstName');
     const lastNameColumn = table?.findColumnByName('lastName');
