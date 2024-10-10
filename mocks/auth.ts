@@ -11,6 +11,8 @@ export const mockAuths: Auth[] = [
     password: 'password123',
     userType: UserType.PARENT,
     parent: mockParents[0],
+    createdAt: new Date('2021-10-12T22:45:00Z'),
+    updatedAt: new Date('2021-10-12T22:45:00Z'),
   },
   {
     id: 'auth_002',
@@ -18,6 +20,8 @@ export const mockAuths: Auth[] = [
     password: 'password123',
     userType: UserType.CHILD,
     child: mockChildren[0],
+    createdAt: new Date('2021-10-12T22:45:00Z'),
+    updatedAt: new Date('2021-10-12T22:45:00Z'),
   },
   {
     id: 'auth_003',
@@ -25,6 +29,8 @@ export const mockAuths: Auth[] = [
     password: 'password123',
     userType: UserType.TEACHER,
     teacher: mockTeachers[0],
+    createdAt: new Date('2021-10-12T22:45:00Z'),
+    updatedAt: new Date('2021-10-12T22:45:00Z'),
   },
   {
     id: 'auth_004',
@@ -32,6 +38,8 @@ export const mockAuths: Auth[] = [
     password: 'password123',
     userType: UserType.PARENT,
     parent: mockParents[1],
+    createdAt: new Date('2021-10-12T22:45:00Z'),
+    updatedAt: new Date('2021-10-12T22:45:00Z'),
   },
   {
     id: 'auth_005',
@@ -39,6 +47,8 @@ export const mockAuths: Auth[] = [
     password: 'password123',
     userType: UserType.CHILD,
     child: mockChildren[1],
+    createdAt: new Date('2021-10-12T22:45:00Z'),
+    updatedAt: new Date('2021-10-12T22:45:00Z'),
   },
   {
     id: 'auth_006',
@@ -46,6 +56,8 @@ export const mockAuths: Auth[] = [
     password: 'password123',
     userType: UserType.TEACHER,
     teacher: mockTeachers[1],
+    createdAt: new Date('2021-10-12T22:45:00Z'),
+    updatedAt: new Date('2021-10-12T22:45:00Z'),
   },
   {
     id: 'auth_007',
@@ -53,6 +65,8 @@ export const mockAuths: Auth[] = [
     password: 'password123',
     userType: UserType.PARENT,
     parent: mockParents[2],
+    createdAt: new Date('2021-10-12T22:45:00Z'),
+    updatedAt: new Date('2021-10-12T22:45:00Z'),
   },
   {
     id: 'auth_008',
@@ -60,6 +74,8 @@ export const mockAuths: Auth[] = [
     password: 'password123',
     userType: UserType.CHILD,
     child: mockChildren[2],
+    createdAt: new Date('2021-10-12T22:45:00Z'),
+    updatedAt: new Date('2021-10-12T22:45:00Z'),
   },
   {
     id: 'auth_009',
@@ -67,6 +83,8 @@ export const mockAuths: Auth[] = [
     password: 'password123',
     userType: UserType.TEACHER,
     teacher: mockTeachers[2],
+    createdAt: new Date('2021-10-12T22:45:00Z'),
+    updatedAt: new Date('2021-10-12T22:45:00Z'),
   },
   {
     id: 'auth_010',
@@ -74,6 +92,8 @@ export const mockAuths: Auth[] = [
     password: 'password123',
     userType: UserType.PARENT,
     parent: mockParents[3],
+    createdAt: new Date('2021-10-12T22:45:00Z'),
+    updatedAt: new Date('2021-10-12T22:45:00Z'),
   },
   {
     id: 'auth_011',
@@ -81,6 +101,8 @@ export const mockAuths: Auth[] = [
     password: 'password123',
     userType: UserType.CHILD,
     child: mockChildren[3],
+    createdAt: new Date('2021-10-12T22:45:00Z'),
+    updatedAt: new Date('2021-10-12T22:45:00Z'),
   },
   {
     id: 'auth_012',
@@ -88,6 +110,8 @@ export const mockAuths: Auth[] = [
     password: 'password123',
     userType: UserType.TEACHER,
     teacher: mockTeachers[3],
+    createdAt: new Date('2021-10-12T22:45:00Z'),
+    updatedAt: new Date('2021-10-12T22:45:00Z'),
   },
   {
     id: 'auth_013',
@@ -95,6 +119,8 @@ export const mockAuths: Auth[] = [
     password: 'password123',
     userType: UserType.PARENT,
     parent: mockParents[4],
+    createdAt: new Date('2021-10-12T22:45:00Z'),
+    updatedAt: new Date('2021-10-12T22:45:00Z'),
   },
   {
     id: 'auth_014',
@@ -102,6 +128,8 @@ export const mockAuths: Auth[] = [
     password: 'password123',
     userType: UserType.CHILD,
     child: mockChildren[4],
+    createdAt: new Date('2021-10-12T22:45:00Z'),
+    updatedAt: new Date('2021-10-12T22:45:00Z'),
   },
   {
     id: 'auth_015',
@@ -109,6 +137,8 @@ export const mockAuths: Auth[] = [
     password: 'password123',
     userType: UserType.TEACHER,
     teacher: mockTeachers[4],
+    createdAt: new Date('2021-10-12T22:45:00Z'),
+    updatedAt: new Date('2021-10-12T22:45:00Z'),
   },
   {
     id: 'auth_016',
@@ -116,6 +146,8 @@ export const mockAuths: Auth[] = [
     password: 'password123',
     userType: UserType.PARENT,
     parent: mockParents[5],
+    createdAt: new Date('2021-10-12T22:45:00Z'),
+    updatedAt: new Date('2021-10-12T22:45:00Z'),
   },
   {
     id: 'auth_017',
@@ -123,6 +155,8 @@ export const mockAuths: Auth[] = [
     password: 'password123',
     userType: UserType.CHILD,
     child: mockChildren[5],
+    createdAt: new Date('2021-10-12T22:45:00Z'),
+    updatedAt: new Date('2021-10-12T22:45:00Z'),
   },
   {
     id: 'auth_018',
@@ -130,6 +164,8 @@ export const mockAuths: Auth[] = [
     password: 'password123',
     userType: UserType.TEACHER,
     teacher: mockTeachers[5],
+    createdAt: new Date('2021-10-12T22:45:00Z'),
+    updatedAt: new Date('2021-10-12T22:45:00Z'),
   },
   {
     id: 'auth_019',
@@ -137,6 +173,8 @@ export const mockAuths: Auth[] = [
     password: 'password123',
     userType: UserType.PARENT,
     parent: mockParents[6],
+    createdAt: new Date('2021-10-12T22:45:00Z'),
+    updatedAt: new Date('2021-10-12T22:45:00Z'),
   },
   {
     id: 'auth_020',
@@ -144,6 +182,8 @@ export const mockAuths: Auth[] = [
     password: 'password123',
     userType: UserType.CHILD,
     child: mockChildren[6],
+    createdAt: new Date('2021-10-12T22:45:00Z'),
+    updatedAt: new Date('2021-10-12T22:45:00Z'),
   },
   {
     id: 'auth_021',
@@ -151,6 +191,8 @@ export const mockAuths: Auth[] = [
     password: 'password123',
     userType: UserType.TEACHER,
     teacher: mockTeachers[6],
+    createdAt: new Date('2021-10-12T22:45:00Z'),
+    updatedAt: new Date('2021-10-12T22:45:00Z'),
   },
   {
     id: 'auth_022',
@@ -158,6 +200,8 @@ export const mockAuths: Auth[] = [
     password: 'password123',
     userType: UserType.PARENT,
     parent: mockParents[7],
+    createdAt: new Date('2021-10-12T22:45:00Z'),
+    updatedAt: new Date('2021-10-12T22:45:00Z'),
   },
   {
     id: 'auth_023',
@@ -165,6 +209,8 @@ export const mockAuths: Auth[] = [
     password: 'password123',
     userType: UserType.CHILD,
     child: mockChildren[7],
+    createdAt: new Date('2021-10-12T22:45:00Z'),
+    updatedAt: new Date('2021-10-12T22:45:00Z'),
   },
   {
     id: 'auth_024',
@@ -172,6 +218,8 @@ export const mockAuths: Auth[] = [
     password: 'password123',
     userType: UserType.TEACHER,
     teacher: mockTeachers[7],
+    createdAt: new Date('2021-10-12T22:45:00Z'),
+    updatedAt: new Date('2021-10-12T22:45:00Z'),
   },
   {
     id: 'auth_025',
@@ -179,6 +227,8 @@ export const mockAuths: Auth[] = [
     password: 'password123',
     userType: UserType.PARENT,
     parent: mockParents[8],
+    createdAt: new Date('2021-10-12T22:45:00Z'),
+    updatedAt: new Date('2021-10-12T22:45:00Z'),
   },
   {
     id: 'auth_026',
@@ -186,6 +236,8 @@ export const mockAuths: Auth[] = [
     password: 'password123',
     userType: UserType.CHILD,
     child: mockChildren[8],
+    createdAt: new Date('2021-10-12T22:45:00Z'),
+    updatedAt: new Date('2021-10-12T22:45:00Z'),
   },
   {
     id: 'auth_027',
@@ -193,6 +245,8 @@ export const mockAuths: Auth[] = [
     password: 'password123',
     userType: UserType.TEACHER,
     teacher: mockTeachers[8],
+    createdAt: new Date('2021-10-12T22:45:00Z'),
+    updatedAt: new Date('2021-10-12T22:45:00Z'),
   },
   {
     id: 'auth_028',
@@ -200,6 +254,8 @@ export const mockAuths: Auth[] = [
     password: 'password123',
     userType: UserType.PARENT,
     parent: mockParents[9],
+    createdAt: new Date('2021-10-12T22:45:00Z'),
+    updatedAt: new Date('2021-10-12T22:45:00Z'),
   },
   {
     id: 'auth_029',
@@ -207,6 +263,8 @@ export const mockAuths: Auth[] = [
     password: 'password123',
     userType: UserType.CHILD,
     child: mockChildren[9],
+    createdAt: new Date('2021-10-12T22:45:00Z'),
+    updatedAt: new Date('2021-10-12T22:45:00Z'),
   },
   {
     id: 'auth_030',
@@ -214,5 +272,7 @@ export const mockAuths: Auth[] = [
     password: 'password123',
     userType: UserType.TEACHER,
     teacher: mockTeachers[9],
+    createdAt: new Date('2021-10-12T22:45:00Z'),
+    updatedAt: new Date('2021-10-12T22:45:00Z'),
   },
 ];
