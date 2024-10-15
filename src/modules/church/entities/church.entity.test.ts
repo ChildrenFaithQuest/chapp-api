@@ -1,6 +1,5 @@
 import { DataSource } from 'typeorm';
 import { TestingModule } from '@nestjs/testing';
-import { AttendanceStatus } from '@app-types/module.types';
 import { Attendance } from '@app-modules/attendance/entities/attendance.entity';
 import { Class } from '@app-modules/class/entities/class.entity';
 import { Church } from '@app-modules/church/entities/church.entity';
@@ -15,18 +14,8 @@ import { mockChildren } from '@app-root/mocks/child';
 import { mockClass } from '@app-root/mocks/class';
 import { mockChurch } from '@app-root/mocks/church';
 
-describe('Attendance Entity', () => {
+describe('Church Entity', () => {
   let dataSource: DataSource;
-
-  const mockAttendance = {
-    id: '4dca01c6-b834-4b47-88a1-c612dff74254',
-    status: AttendanceStatus.ABSENT,
-    date: '2021-10-12',
-    createdAt: new Date('2021-10-12T22:45:00Z'),
-    updatedAt: new Date('2021-10-12T22:45:00Z'),
-    child: mockChildren[0],
-    class: mockClass.FAITHFULNESS,
-  };
   let module: TestingModule;
 
   beforeAll(async () => {
@@ -46,66 +35,51 @@ describe('Attendance Entity', () => {
     await closeTestModule(module);
   });
 
-  it('should create an Attendance entity table with proper columns', async () => {
+  it('should create a Church entity table with proper columns', async () => {
     const queryRunner = dataSource.createQueryRunner();
-    const table = await queryRunner.getTable('attendance');
+    const table = await queryRunner.getTable('church');
 
     expect(table).toBeDefined();
     const idColumn = table?.findColumnByName('id');
-    const status = table?.findColumnByName('status');
+    const name = table?.findColumnByName('name');
+    const description = table?.findColumnByName('description');
+    const address = table?.findColumnByName('address');
 
     const createdAtColumn = table?.findColumnByName('createdAt');
     const updatedAtColumn = table?.findColumnByName('updatedAt');
-
-    const parentColumn = table?.columns.find((col) => col.name === 'classId');
-    const childColumn = table?.columns.find((col) => col.name === 'childId');
-
     expect(idColumn).toBeDefined();
-    expect(status).toBeDefined();
-    expect(parentColumn).toBeDefined();
-    expect(childColumn).toBeDefined();
+    expect(name).toBeDefined();
+    expect(description).toBeDefined();
+    expect(address).toBeDefined();
     expect(createdAtColumn).toBeDefined();
     expect(updatedAtColumn).toBeDefined();
   });
 
-  it('should validate that Attendance has all necessary fields constraints', async () => {
-    const queryRunner = dataSource.createQueryRunner();
-    const table = await queryRunner.getTable('attendance');
-
-    // Validate that certain constraints are set up properly
-    const statusColumn = table?.findColumnByName('status');
-    expect(statusColumn?.type).toBe('enum');
-  });
-
-  it('should save and retrieve a Attendance entity successfully', async () => {
+  it('should save and retrieve a Church entity successfully', async () => {
     const classRepository = dataSource.getRepository(Class);
     const childRepository = dataSource.getRepository(Child);
     const churchRepository = dataSource.getRepository(Church);
-
-    const attendanceRepository = dataSource.getRepository(Attendance);
-    await churchRepository.save(mockChurch.A);
     await classRepository.save(mockClass.FAITHFULNESS);
     await childRepository.save(mockChildren[0]);
 
-    const attendanceEntity = attendanceRepository.create(mockAttendance);
-    const savedAttendance = await attendanceRepository.save(attendanceEntity);
+    const churchEntity = churchRepository.create(mockChurch.A);
+    const savedChurch = await churchRepository.save(churchEntity);
 
-    expect(savedAttendance).toBeDefined();
-    expect(savedAttendance.id).toEqual(mockAttendance.id);
-    expect(savedAttendance.status).toEqual(mockAttendance.status);
+    expect(savedChurch).toBeDefined();
+    expect(savedChurch.id).toEqual(mockChurch.A.id);
+    expect(savedChurch.address).toEqual(mockChurch.A.address);
 
-    const foundAttendance = await attendanceRepository.findOneBy({
-      id: mockAttendance.id,
+    const foundChurch = await churchRepository.findOneBy({
+      id: mockChurch.A.id,
     });
-    expect(foundAttendance).toBeDefined();
+    expect(foundChurch).toBeDefined();
   });
 
   it('should handle entity validation on creation', async () => {
-    const repository = dataSource.getRepository(Attendance);
+    const repository = dataSource.getRepository(Church);
 
     const invalidAttendance = repository.create({
       id: 'testInvalidID', // invalidid
-      status: AttendanceStatus.ABSENT,
     });
 
     try {
