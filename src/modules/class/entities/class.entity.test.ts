@@ -10,11 +10,9 @@ import {
 import { Child } from '@app-modules/user/entities/child.entity';
 import { Parent } from '@app-modules/user/entities/parent.entity';
 import { Teacher } from '@app-modules/user/entities/teacher.entity';
-import { mockChildren } from '@app-root/mocks/child';
 import { mockClass } from '@app-root/mocks/class';
-import { mockChurch } from '@app-root/mocks/church';
 
-describe('Church Entity', () => {
+describe('Class Entity', () => {
   let dataSource: DataSource;
   let module: TestingModule;
 
@@ -35,55 +33,54 @@ describe('Church Entity', () => {
     await closeTestModule(module);
   });
 
-  it('should create a Church entity table with proper columns', async () => {
+  it('should create a Class entity table with proper columns', async () => {
     const queryRunner = dataSource.createQueryRunner();
-    const table = await queryRunner.getTable('church');
+    const table = await queryRunner.getTable('class');
 
     expect(table).toBeDefined();
     const idColumn = table?.findColumnByName('id');
     const name = table?.findColumnByName('name');
-    const description = table?.findColumnByName('description');
-    const address = table?.findColumnByName('address');
+    const ageGroup = table?.findColumnByName('ageGroup');
+    const schedule = table?.findColumnByName('schedule');
+
+    const churchColumn = table?.columns.find((col) => col.name === 'churchId');
 
     const createdAtColumn = table?.findColumnByName('createdAt');
     const updatedAtColumn = table?.findColumnByName('updatedAt');
     expect(idColumn).toBeDefined();
     expect(name).toBeDefined();
-    expect(description).toBeDefined();
-    expect(address).toBeDefined();
+    expect(churchColumn).toBeDefined();
+    expect(ageGroup).toBeDefined();
+    expect(schedule).toBeDefined();
     expect(createdAtColumn).toBeDefined();
     expect(updatedAtColumn).toBeDefined();
   });
 
-  it('should save and retrieve a Church entity successfully', async () => {
+  it('should save and retrieve a Class entity successfully', async () => {
     const classRepository = dataSource.getRepository(Class);
-    const childRepository = dataSource.getRepository(Child);
-    const churchRepository = dataSource.getRepository(Church);
-    await classRepository.save(mockClass.FAITHFULNESS);
-    await childRepository.save(mockChildren[0]);
 
-    const churchEntity = churchRepository.create(mockChurch.A);
-    const savedChurch = await churchRepository.save(churchEntity);
+    const classEntity = classRepository.create(mockClass.FAITHFULNESS);
+    const savedClass = await classRepository.save(classEntity);
 
-    expect(savedChurch).toBeDefined();
-    expect(savedChurch.id).toEqual(mockChurch.A.id);
-    expect(savedChurch.address).toEqual(mockChurch.A.address);
+    expect(savedClass).toBeDefined();
+    expect(savedClass.id).toEqual(mockClass.FAITHFULNESS.id);
+    expect(savedClass.name).toEqual(mockClass.FAITHFULNESS.name);
 
-    const foundChurch = await churchRepository.findOneBy({
-      id: mockChurch.A.id,
+    const foundClass = await classRepository.findOneBy({
+      id: mockClass.FAITHFULNESS.id,
     });
-    expect(foundChurch).toBeDefined();
+    expect(foundClass).toBeDefined();
   });
 
   it('should handle entity validation on creation', async () => {
-    const repository = dataSource.getRepository(Church);
+    const repository = dataSource.getRepository(Class);
 
-    const invalidChurch = repository.create({
+    const invalidClass = repository.create({
       id: 'testInvalidID', // invalidid
     });
 
     try {
-      await repository.save(invalidChurch);
+      await repository.save(invalidClass);
     } catch (error) {
       expect(error).toBeDefined();
     }
