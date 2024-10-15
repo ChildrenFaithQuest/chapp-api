@@ -19,6 +19,9 @@ export const AppDataSource = new DataSource({
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME,
   entities: [Auth, Child, Parent, Teacher, Class, Attendance, Church], // Ensure this path is correct
-  migrations: ['dist/src/migrations/*.js'], // Ensure this path is correct
+  migrations:
+    process.env.NODE_ENV === 'test'
+      ? ['src/migrations/*.ts']
+      : ['dist/src/migrations/*.js'], // Ensure this path is correct
   synchronize: false,
 });

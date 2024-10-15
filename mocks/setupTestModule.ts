@@ -11,6 +11,10 @@ export async function setupTestModule(
       TypeOrmModule.forRoot({
         type: 'postgres',
         database: process.env.DB_NAME, // Use in-memory database for testing
+        port: 5432,
+        host: process.env.DB_HOST,
+        password: process.env.DB_PASSWORD,
+        username: process.env.DB_USERNAME,
         entities: entities, // Entities to test
         synchronize: true, // Auto-sync schema
       }),
