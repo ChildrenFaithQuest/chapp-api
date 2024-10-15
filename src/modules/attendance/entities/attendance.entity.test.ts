@@ -13,6 +13,7 @@ import { Parent } from '@app-modules/user/entities/parent.entity';
 import { Teacher } from '@app-modules/user/entities/teacher.entity';
 import { mockChildren } from '@app-root/mocks/child';
 import { mockClass } from '@app-root/mocks/class';
+import { mockChurch } from '@app-root/mocks/church';
 
 describe('Attendance Entity', () => {
   let dataSource: DataSource;
@@ -68,44 +69,39 @@ describe('Attendance Entity', () => {
     expect(updatedAtColumn).toBeDefined();
   });
 
-  it.skip('should validate that Attendance has all necessary fields constraints', async () => {
+  it('should validate that Attendance has all necessary fields constraints', async () => {
     const queryRunner = dataSource.createQueryRunner();
     const table = await queryRunner.getTable('attendance');
 
     // Validate that certain constraints are set up properly
-    const emailColumn = table?.findColumnByName('email');
-    const userTypeColumn = table?.findColumnByName('userType');
-    const parentColumn = table?.columns.find((col) => col.name === 'parentId');
-    const childColumn = table?.columns.find((col) => col.name === 'childId');
-    const teacherColumn = table?.columns.find(
-      (col) => col.name === 'teacherId',
-    );
-
-    expect(emailColumn?.isUnique).toBe(true);
-    expect(parentColumn?.isNullable).toBe(true);
-    expect(childColumn?.isNullable).toBe(true);
-    expect(teacherColumn?.isNullable).toBe(true);
-
-    expect(userTypeColumn?.type).toBe('enum');
+    const statusColumn = table?.findColumnByName('status');
+    expect(statusColumn?.type).toBe('enum');
   });
 
-  it.skip('should save and retrieve a Attendance entity successfully', async () => {
-    const repository = dataSource.getRepository(Attendance);
+  it('should save and retrieve a Attendance entity successfully', async () => {
+    const classRepository = dataSource.getRepository(Class);
+    const childRepository = dataSource.getRepository(Child);
+    const churchRepository = dataSource.getRepository(Church);
 
-    const attendanceEntity = repository.create(mockAttendance);
-    const savedAttendance = await repository.save(attendanceEntity);
+    const attendanceRepository = dataSource.getRepository(Attendance);
+    await churchRepository.save(mockChurch.A);
+    await classRepository.save(mockClass.FAITHFULNESS);
+    await childRepository.save(mockChildren[0]);
+
+    const attendanceEntity = attendanceRepository.create(mockAttendance);
+    const savedAttendance = await attendanceRepository.save(attendanceEntity);
 
     expect(savedAttendance).toBeDefined();
     expect(savedAttendance.id).toEqual(mockAttendance.id);
     expect(savedAttendance.status).toEqual(mockAttendance.status);
 
-    const foundAttendance = await repository.findOneBy({
+    const foundAttendance = await attendanceRepository.findOneBy({
       id: mockAttendance.id,
     });
     expect(foundAttendance).toBeDefined();
   });
 
-  it.skip('should handle entity validation on creation', async () => {
+  it('should handle entity validation on creation', async () => {
     const repository = dataSource.getRepository(Attendance);
 
     const invalidAttendance = repository.create({
