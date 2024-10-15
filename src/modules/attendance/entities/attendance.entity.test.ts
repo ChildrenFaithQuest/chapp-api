@@ -18,7 +18,6 @@ import { mockChurch } from '@app-root/mocks/church';
 describe('Attendance Entity', () => {
   let dataSource: DataSource;
 
-  // Mock child data
   const mockAttendance = {
     id: '4dca01c6-b834-4b47-88a1-c612dff74254',
     status: AttendanceStatus.ABSENT,
