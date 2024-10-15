@@ -1,0 +1,35 @@
+name: CI Test Workflow
+
+# Trigger this workflow on pull requests
+on:
+  pull_request:
+    branches:
+      - main # Specify the branch you want to test against (e.g., `main`, `develop`)
+
+jobs:
+  test:
+    name: Run Tests
+    runs-on: ubuntu-latest # Use the latest Ubuntu runner
+
+    steps:
+      # Checkout the code
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Set up Node.js environment
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '22.4.0' # Specify your Node.js version
+
+      # Install dependencies
+      - name: Install dependencies
+        run: yarn install # Use yarn or npm, depending on your project
+
+      # Run your tests (replace with the appropriate test command)
+      - name: Run Tests
+        run: yarn test # Change to your test command (e.g., `npm run test` or `yarn test`)
+
+      # Optionally, you can add additional checks like linting
+      - name: Run Lint
+        run: yarn run lint # Only if you have linting configured
