@@ -22,7 +22,7 @@ const mockUserService = () => ({
   partialUpdate: jest.fn(),
 });
 
-describe.skip('ChildController', () => {
+describe('ChildController', () => {
   let childController: ChildDetailsController;
   let childService: ChildService;
   let userService: UserService;

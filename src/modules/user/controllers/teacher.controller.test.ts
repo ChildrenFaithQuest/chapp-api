@@ -23,7 +23,7 @@ const mockUserService = () => ({
   partialUpdate: jest.fn(),
 });
 
-describe.skip('TeacherController', () => {
+describe('TeacherController', () => {
   let teacherController: TeacherDetailsController;
   let teacherService: TeacherService;
   let teacherRepository: Repository<Teacher>;

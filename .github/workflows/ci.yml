@@ -47,12 +47,6 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: '22.4.0' # Specify your Node.js version
-      - name: Check Postgres Service
-        run: |
-          echo "Postgres User: ${{ secrets.POSTGRES_USER }}"
-          echo "Postgres Password: ${{ secrets.POSTGRES_PASSWORD }}"
-          echo "Postgres DB: ${{ secrets.POSTGRES_DB }}"
-          pg_isready -h localhost -p 5432
       # Step 3: Install dependencies (npm or yarn)
       - name: Install dependencies
         run: yarn install # or yarn install
