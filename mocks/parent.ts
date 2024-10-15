@@ -16,7 +16,7 @@ export const mockParentData = {
 
 export const mockParents: Parent[] = [
   {
-    id: 'parent_001',
+    id: 'a67b78bb-a9c3-4ac8-b05e-28027618db89',
     gender: UserGender.FEMALE,
     firstName: 'John',
     lastName: 'Doe',
@@ -29,7 +29,7 @@ export const mockParents: Parent[] = [
     updatedAt: new Date('2021-10-12T22:45:00Z'),
   },
   {
-    id: 'parent_002',
+    id: 'febbfca1-1496-4228-b448-5ee0ffc1608b',
     gender: UserGender.MALE,
     firstName: 'David',
     lastName: 'Johnson',
@@ -40,7 +40,7 @@ export const mockParents: Parent[] = [
     },
     children: [
       {
-        id: 'child_002',
+        id: '29c34f03-bf95-4b41-938b-fce55208a3d9',
         gender: UserGender.MALE,
         firstName: 'Liam',
         lastName: 'Smith',
@@ -54,7 +54,7 @@ export const mockParents: Parent[] = [
     updatedAt: new Date('2021-10-12T22:45:00Z'),
   },
   {
-    id: 'parent_003',
+    id: 'b215b0d7-a9e9-4e8e-84ee-ad0e46107caa',
     gender: UserGender.FEMALE,
     firstName: 'Sarah',
     lastName: 'Taylor',
@@ -67,7 +67,7 @@ export const mockParents: Parent[] = [
     updatedAt: new Date('2021-10-12T22:45:00Z'),
   },
   {
-    id: 'parent_004',
+    id: 'ca3f2f5c-f2c9-46ff-a6a5-6a3adfd3765b',
     gender: UserGender.MALE,
     firstName: 'Daniel',
     lastName: 'Johnson',
@@ -80,7 +80,7 @@ export const mockParents: Parent[] = [
     updatedAt: new Date('2021-10-12T22:45:00Z'),
   },
   {
-    id: 'parent_005',
+    id: '85d73f3a-6684-4d4b-8f56-11e34b9a5cd4',
     gender: UserGender.FEMALE,
     firstName: 'Laura',
     lastName: 'Davis',
@@ -93,7 +93,7 @@ export const mockParents: Parent[] = [
     updatedAt: new Date('2021-10-12T22:45:00Z'),
   },
   {
-    id: 'parent_006',
+    id: 'f0fce5ef-b743-4561-8968-793fe131e48f',
     gender: UserGender.MALE,
     firstName: 'Thomas',
     lastName: 'Wilson',
@@ -106,7 +106,7 @@ export const mockParents: Parent[] = [
     updatedAt: new Date('2021-10-12T22:45:00Z'),
   },
   {
-    id: 'parent_007',
+    id: 'ff9d8970-e96c-4274-af76-e1ebd08db900',
     gender: UserGender.FEMALE,
     firstName: 'Jessica',
     lastName: 'Martinez',
@@ -119,7 +119,7 @@ export const mockParents: Parent[] = [
     updatedAt: new Date('2021-10-12T22:45:00Z'),
   },
   {
-    id: 'parent_008',
+    id: '1ef514fe-fe10-4b24-a22e-fcc015242a90',
     gender: UserGender.MALE,
     firstName: 'Noah',
     lastName: 'Garcia',
@@ -132,7 +132,7 @@ export const mockParents: Parent[] = [
     updatedAt: new Date('2021-10-12T22:45:00Z'),
   },
   {
-    id: 'parent_009',
+    id: '8f36f83a-8cd5-459d-a7ab-1fc00df9cc2e',
     gender: UserGender.FEMALE,
     firstName: 'Amanda',
     lastName: 'Rodriguez',
@@ -145,7 +145,7 @@ export const mockParents: Parent[] = [
     updatedAt: new Date('2021-10-12T22:45:00Z'),
   },
   {
-    id: 'parent_010',
+    id: '644919c2-f208-42ce-a547-ba4075047e1e',
     gender: UserGender.MALE,
     firstName: 'Elijah',
     lastName: 'Hernandez',

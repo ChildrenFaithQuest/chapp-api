@@ -4,7 +4,7 @@ type KeyValues = 'A' | 'B' | 'C' | 'D' | 'E' | 'F' | 'G' | 'H' | 'I' | 'J';
 
 export const mockChurch: { [key in KeyValues]: Church } = {
   A: {
-    id: 'church_001',
+    id: '6a75d024-0aef-453e-8861-9f5e84dd72c6',
     name: 'Grace Community Church',
     address: '123 Main St, Springfield',
     description: 'A vibrant community of believers.',
@@ -14,7 +14,7 @@ export const mockChurch: { [key in KeyValues]: Church } = {
     classes: [],
   },
   B: {
-    id: 'church_002',
+    id: 'a24adc5b-da6d-420d-b018-6bc5966ff9cc',
     name: 'Living Waters Church',
     address: '456 Oak Ave, Riverdale',
     description: 'A church committed to the word of God.',
@@ -24,7 +24,7 @@ export const mockChurch: { [key in KeyValues]: Church } = {
     classes: [],
   },
   C: {
-    id: 'church_003',
+    id: '3fa545cb-fd3e-402e-a80a-e373c36a4d23',
     name: 'City of Refuge Church',
     address: '789 Pine St, Maplewood',
     description: 'A house of refuge and prayer.',
@@ -34,7 +34,7 @@ export const mockChurch: { [key in KeyValues]: Church } = {
     classes: [],
   },
   D: {
-    id: 'church_004',
+    id: '985d8fa4-dd81-44ed-9e07-db038e88696d',
     name: 'New Hope Church',
     address: '321 Cedar St, Forest Hills',
     description: 'Bringing hope to the hopeless.',
@@ -44,7 +44,7 @@ export const mockChurch: { [key in KeyValues]: Church } = {
     classes: [],
   },
   E: {
-    id: 'church_005',
+    id: 'f4a7aa42-b759-498a-853e-95de7cd7a48a',
     name: 'Faith Baptist Church',
     address: '654 Maple Ave, Brookhaven',
     description: 'A bible-based, faith-building community.',
@@ -54,7 +54,7 @@ export const mockChurch: { [key in KeyValues]: Church } = {
     classes: [],
   },
   F: {
-    id: 'church_006',
+    id: 'e7491c4a-48b4-4774-887a-0ffed6584956',
     name: 'Riverside Fellowship',
     address: '987 Elm St, Green Valley',
     description: "Flowing with God's love and grace.",
@@ -64,7 +64,7 @@ export const mockChurch: { [key in KeyValues]: Church } = {
     classes: [],
   },
   G: {
-    id: 'church_007',
+    id: '70c5db95-384e-4bda-a197-4430c557571c',
     name: 'Cornerstone Church',
     address: '231 Oakwood Rd, Hilltown',
     description: 'Building on the foundation of Christ.',
@@ -74,7 +74,7 @@ export const mockChurch: { [key in KeyValues]: Church } = {
     classes: [],
   },
   H: {
-    id: 'church_008',
+    id: '55f67f16-4f27-46d4-90f5-a3c616595045',
     name: 'Victory Outreach Church',
     address: '432 Birch Ave, Summitville',
     description: 'Victory in Jesus Christ.',
@@ -84,7 +84,7 @@ export const mockChurch: { [key in KeyValues]: Church } = {
     classes: [],
   },
   I: {
-    id: 'church_009',
+    id: '41628a40-5da2-4b14-ad66-71e86c25eb31',
     name: 'Kingdom Life Church',
     address: '753 Walnut St, Palm Grove',
     description: 'Living the kingdom life on earth.',
@@ -94,7 +94,7 @@ export const mockChurch: { [key in KeyValues]: Church } = {
     classes: [],
   },
   J: {
-    id: 'church_010',
+    id: '2971b549-fc6f-4489-8dce-ea07e71168a1',
     name: 'Christ the Redeemer Church',
     address: '654 Pinewood Ave, Clearfield',
     description: 'Redeemed by the blood of Christ.',
