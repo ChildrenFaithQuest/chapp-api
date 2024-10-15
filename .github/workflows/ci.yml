@@ -18,11 +18,11 @@ jobs:
       postgres:
         image: postgres:16 # Specify the PostgreSQL version
         env:
-          POSTGRES_USER: test_user # Set the PostgreSQL user
+          POSTGRES_USER: testuser # Set the PostgreSQL user
           POSTGRES_PASSWORD: testpass # Set the PostgreSQL password
           POSTGRES_DB: testdb # Set the PostgreSQL database
         options: >- # Options to wait for PostgreSQL to start
-          --health-cmd "pg_isready -U test_user" 
+          --health-cmd "pg_isready -U testuser" 
           --health-interval 10s 
           --health-timeout 5s 
           --health-retries 5
@@ -32,7 +32,7 @@ jobs:
     env:
       DB_HOST: 127.0.0.1 # PostgreSQL is running locally in the container
       DB_PORT: 5432 # PostgreSQL default port
-      DB_USERNAME: test_user # Match the user set in the postgres service
+      DB_USERNAME: testuser # Match the user set in the postgres service
       DB_PASSWORD: testpass # Match the password set in the postgres service
       DB_NAME: testdb # Match the database set in the postgres service
       NODE_ENV: test # Set the Node.js environment to test
