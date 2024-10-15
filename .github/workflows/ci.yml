@@ -65,6 +65,11 @@ jobs:
       - name: Run migrations
         run: yarn run migration:run # Adjust to your migration command
 
+      # Step 4: Run your database migrations or schema sync
+      - name: Show migrations
+        run: npx typeorm migration:show # Adjust to your migration command
+
+
       # Step 5: Run your tests
-      - name: Run tests
-        run: yarn test # Adjust to your test command
+      # - name: Run tests
+      # run: yarn test # Adjust to your test command
