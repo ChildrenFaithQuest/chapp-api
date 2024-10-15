@@ -32,7 +32,7 @@ jobs:
     env:
       DB_HOST: 127.0.0.1 # PostgreSQL is running locally in the container
       DB_PORT: 5432 # PostgreSQL default port
-      DB_USER: test_user # Match the user set in the postgres service
+      DB_USERNAME: test_user # Match the user set in the postgres service
       DB_PASSWORD: test_pass # Match the password set in the postgres service
       DB_NAME: test_db # Match the database set in the postgres service
       NODE_ENV: test # Set the Node.js environment to test
