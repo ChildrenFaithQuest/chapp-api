@@ -78,12 +78,12 @@ describe('Church Entity', () => {
   it('should handle entity validation on creation', async () => {
     const repository = dataSource.getRepository(Church);
 
-    const invalidAttendance = repository.create({
+    const invalidChurch = repository.create({
       id: 'testInvalidID', // invalidid
     });
 
     try {
-      await repository.save(invalidAttendance);
+      await repository.save(invalidChurch);
     } catch (error) {
       expect(error).toBeDefined();
     }
