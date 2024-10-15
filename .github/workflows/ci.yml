@@ -46,20 +46,20 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: '22.4.0' # Specify your Node.js version
-      # Step 3: Install dependencies (npm or yarn)
+          node-version: '22.4.0'
+
+      # Step 3: Install dependencies
       - name: Install dependencies
-        run: yarn install # or yarn install
+        run: yarn install
 
-      # Step 4: Run your database migrations or schema sync
+      # Step 4: Generate database migrations
       - name: Generate migrations
-        run: yarn run migration:generate # Adjust to your migration command
+        run: yarn run migration:generate
 
-      # Step 4: Run your database migrations or schema sync
+      # Step 4: Run database migrations
       - name: Run migrations
-        run: yarn run migration:run # Adjust to your migration command
+        run: yarn run migration:run
 
-      # Step 5: Run your tests
+      # Step 5: Run tests
       - name: Run tests
-        run: yarn test # Adjust to your test command
-
+        run: yarn test
