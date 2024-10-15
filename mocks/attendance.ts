@@ -15,7 +15,7 @@ export const mockAttendance: Attendance = {
 
 export const mockAttendances: Attendance[] = [
   {
-    id: '12345',
+    id: '4b684f87-a165-4904-af21-3871a3dc5f09',
     status: AttendanceStatus.ABSENT,
     date: '2021-10-12',
     createdAt: new Date('2021-10-12T22:45:00Z'),
@@ -24,7 +24,7 @@ export const mockAttendances: Attendance[] = [
     class: mockClass.GENTLENESS,
   },
   {
-    id: '12346',
+    id: '115c4186-fa0a-4962-8218-75e09bdba93e',
     status: AttendanceStatus.ABSENT,
     date: '2021-10-12',
     createdAt: new Date('2021-10-12T22:45:00Z'),
@@ -33,7 +33,7 @@ export const mockAttendances: Attendance[] = [
     class: mockClass.GOODNESS,
   },
   {
-    id: '12347',
+    id: 'bf4fd12d-34b0-4a65-95ce-6da38474b86c',
     status: AttendanceStatus.ABSENT,
     date: '2021-10-12',
     createdAt: new Date('2021-10-12T22:45:00Z'),
@@ -42,7 +42,7 @@ export const mockAttendances: Attendance[] = [
     class: mockClass.GOODNESS,
   },
   {
-    id: '12348',
+    id: '03532ccf-d917-481c-aebc-e000ef1836e7',
     status: AttendanceStatus.ABSENT,
     date: '2021-10-12',
     createdAt: new Date('2021-10-12T22:45:00Z'),
@@ -51,7 +51,7 @@ export const mockAttendances: Attendance[] = [
     class: mockClass.JOY,
   },
   {
-    id: '12349',
+    id: 'd46c0651-1a79-4a5a-a764-ac227839c2b2',
     status: AttendanceStatus.ABSENT,
     date: '2021-11-12',
     createdAt: new Date('2021-10-12T22:45:00Z'),
@@ -60,7 +60,7 @@ export const mockAttendances: Attendance[] = [
     class: mockClass.GOODNESS,
   },
   {
-    id: '12340',
+    id: '4368d3bb-fb6d-43b6-b26d-fc3018ad4d9e',
     status: AttendanceStatus.ABSENT,
     date: '2021-09-12',
     createdAt: new Date('2021-10-12T22:45:00Z'),

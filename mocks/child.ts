@@ -11,7 +11,7 @@ export const mockChildData = {
 
 export const mockChildren: Child[] = [
   {
-    id: 'child_001',
+    id: 'd653e032-34f4-4470-b604-15878b186a99',
     gender: UserGender.FEMALE,
     firstName: 'Sophia',
     lastName: 'Johnson',
@@ -21,7 +21,7 @@ export const mockChildren: Child[] = [
     // parent: mockParents[0],
   },
   {
-    id: 'child_002',
+    id: 'aad9fb5f-e379-4ebe-85f4-f071dcae91b3',
     gender: UserGender.MALE,
     firstName: 'Liam',
     lastName: 'Smith',
@@ -31,7 +31,7 @@ export const mockChildren: Child[] = [
     // parent: mockParents[1],
   },
   {
-    id: 'child_003',
+    id: '99badc40-14c3-47cf-88a1-106b1681dd0d',
     gender: UserGender.FEMALE,
     firstName: 'Emma',
     lastName: 'Brown',
@@ -41,7 +41,7 @@ export const mockChildren: Child[] = [
     // parent: mockParents[2],
   },
   {
-    id: 'child_004',
+    id: '14f19792-a737-47d5-8944-c5db92d43c44',
     gender: UserGender.MALE,
     firstName: 'Noah',
     lastName: 'Davis',
@@ -51,7 +51,7 @@ export const mockChildren: Child[] = [
     // parent: mockParents[3],
   },
   {
-    id: 'child_005',
+    id: '1ac8bc7a-3d83-4f9d-8715-d2170dfe251f',
     gender: UserGender.FEMALE,
     firstName: 'Olly',
     lastName: 'Miller',
@@ -61,7 +61,7 @@ export const mockChildren: Child[] = [
     updatedAt: new Date('2021-10-12T22:45:00Z'),
   },
   {
-    id: 'child_006',
+    id: '20a8d80f-eb67-4e3b-922f-8a52c68548d7',
     gender: UserGender.MALE,
     firstName: 'Aiden',
     lastName: 'Wilson',
@@ -71,7 +71,7 @@ export const mockChildren: Child[] = [
     updatedAt: new Date('2021-10-12T22:45:00Z'),
   },
   {
-    id: 'child_007',
+    id: '3e176eae-a716-4855-b87e-41e0a65e9a5b',
     gender: UserGender.FEMALE,
     firstName: 'Isabella',
     lastName: 'Taylor',
@@ -81,7 +81,7 @@ export const mockChildren: Child[] = [
     updatedAt: new Date('2021-10-12T22:45:00Z'),
   },
   {
-    id: 'child_008',
+    id: 'd799795e-a6ef-462b-bb0a-d8ff9455311c',
     gender: UserGender.MALE,
     firstName: 'Mason',
     lastName: 'Anderson',
@@ -91,7 +91,7 @@ export const mockChildren: Child[] = [
     updatedAt: new Date('2021-10-12T22:45:00Z'),
   },
   {
-    id: 'child_009',
+    id: 'cb1e2535-df33-4f8d-8c34-391019a38074',
     gender: UserGender.FEMALE,
     firstName: 'Ava',
     lastName: 'Thomas',
@@ -101,7 +101,7 @@ export const mockChildren: Child[] = [
     updatedAt: new Date('2021-10-12T22:45:00Z'),
   },
   {
-    id: 'child_010',
+    id: 'e43c2cd6-db02-48b1-8741-425fd73bcbd4',
     gender: UserGender.MALE,
     firstName: 'Ethan',
     lastName: 'Jackson',

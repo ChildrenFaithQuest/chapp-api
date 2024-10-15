@@ -6,7 +6,7 @@ import { mockTeachers } from './teacher';
 
 export const mockAuths: Auth[] = [
   {
-    id: 'auth_001',
+    id: 'c6614cd8-ec2b-4802-ac3e-bad94207cec3',
     email: 'john.parent@example.com',
     password: 'password123',
     userType: UserType.PARENT,
@@ -15,7 +15,7 @@ export const mockAuths: Auth[] = [
     updatedAt: new Date('2021-10-12T22:45:00Z'),
   },
   {
-    id: 'auth_002',
+    id: '1072c6b9-7c9f-474c-bb51-2661285a2f62',
     email: 'mary.child@example.com',
     password: 'password123',
     userType: UserType.CHILD,
@@ -24,7 +24,7 @@ export const mockAuths: Auth[] = [
     updatedAt: new Date('2021-10-12T22:45:00Z'),
   },
   {
-    id: 'auth_003',
+    id: '3ef1c5be-cb54-429f-b880-d8693c6e0217',
     email: 'olivia.teacher@example.com',
     password: 'password123',
     userType: UserType.TEACHER,
@@ -33,7 +33,7 @@ export const mockAuths: Auth[] = [
     updatedAt: new Date('2021-10-12T22:45:00Z'),
   },
   {
-    id: 'auth_004',
+    id: '51b174a4-8747-4182-8850-1c5e0e99cbe5',
     email: 'david.parent@example.com',
     password: 'password123',
     userType: UserType.PARENT,
@@ -42,7 +42,7 @@ export const mockAuths: Auth[] = [
     updatedAt: new Date('2021-10-12T22:45:00Z'),
   },
   {
-    id: 'auth_005',
+    id: '16d8d248-e09d-4da3-bb2c-1529377298b1',
     email: 'liam.child@example.com',
     password: 'password123',
     userType: UserType.CHILD,
@@ -51,7 +51,7 @@ export const mockAuths: Auth[] = [
     updatedAt: new Date('2021-10-12T22:45:00Z'),
   },
   {
-    id: 'auth_006',
+    id: '071a4eaf-527b-40ab-9d3a-17c26d9a52fe',
     email: 'ethan.teacher@example.com',
     password: 'password123',
     userType: UserType.TEACHER,
@@ -69,7 +69,7 @@ export const mockAuths: Auth[] = [
     updatedAt: new Date('2021-10-12T22:45:00Z'),
   },
   {
-    id: 'auth_008',
+    id: 'e605110f-235e-4a09-8cca-bd5fa9586866',
     email: 'emma.child@example.com',
     password: 'password123',
     userType: UserType.CHILD,
@@ -78,7 +78,7 @@ export const mockAuths: Auth[] = [
     updatedAt: new Date('2021-10-12T22:45:00Z'),
   },
   {
-    id: 'auth_009',
+    id: '7aa5c338-372d-4213-bebb-77013b4ab05c',
     email: 'susan.teacher@example.com',
     password: 'password123',
     userType: UserType.TEACHER,
@@ -87,7 +87,7 @@ export const mockAuths: Auth[] = [
     updatedAt: new Date('2021-10-12T22:45:00Z'),
   },
   {
-    id: 'auth_010',
+    id: '509feaa9-2162-4268-bc24-15a251202717',
     email: 'daniel.parent@example.com',
     password: 'password123',
     userType: UserType.PARENT,
@@ -96,7 +96,7 @@ export const mockAuths: Auth[] = [
     updatedAt: new Date('2021-10-12T22:45:00Z'),
   },
   {
-    id: 'auth_011',
+    id: 'b7da8265-20d1-4567-a5ae-9c2e8576f746',
     email: 'noah.child@example.com',
     password: 'password123',
     userType: UserType.CHILD,
@@ -105,7 +105,7 @@ export const mockAuths: Auth[] = [
     updatedAt: new Date('2021-10-12T22:45:00Z'),
   },
   {
-    id: 'auth_012',
+    id: 'c5cfc90c-d6f0-4c3e-9a47-e80a257fd828',
     email: 'robert.teacher@example.com',
     password: 'password123',
     userType: UserType.TEACHER,
@@ -114,7 +114,7 @@ export const mockAuths: Auth[] = [
     updatedAt: new Date('2021-10-12T22:45:00Z'),
   },
   {
-    id: 'auth_013',
+    id: 'cae97d7d-78ca-4a57-9891-6f050e9edcf1',
     email: 'laura.parent@example.com',
     password: 'password123',
     userType: UserType.PARENT,
@@ -123,7 +123,7 @@ export const mockAuths: Auth[] = [
     updatedAt: new Date('2021-10-12T22:45:00Z'),
   },
   {
-    id: 'auth_014',
+    id: '9bbceba9-68a3-4f7c-ae0e-c146674aee92',
     email: 'olly.child@example.com',
     password: 'password123',
     userType: UserType.CHILD,
@@ -132,7 +132,7 @@ export const mockAuths: Auth[] = [
     updatedAt: new Date('2021-10-12T22:45:00Z'),
   },
   {
-    id: 'auth_015',
+    id: '0b6255a0-2254-4c50-b3d1-f31e3c0f97b5',
     email: 'rachel.teacher@example.com',
     password: 'password123',
     userType: UserType.TEACHER,
@@ -141,7 +141,7 @@ export const mockAuths: Auth[] = [
     updatedAt: new Date('2021-10-12T22:45:00Z'),
   },
   {
-    id: 'auth_016',
+    id: '1c47c2e1-ae80-4312-9444-62ce36cad843',
     email: 'thomas.parent@example.com',
     password: 'password123',
     userType: UserType.PARENT,
@@ -150,7 +150,7 @@ export const mockAuths: Auth[] = [
     updatedAt: new Date('2021-10-12T22:45:00Z'),
   },
   {
-    id: 'auth_017',
+    id: '389fef85-5af7-4758-bf1b-30109a09af06',
     email: 'aiden.child@example.com',
     password: 'password123',
     userType: UserType.CHILD,
@@ -159,7 +159,7 @@ export const mockAuths: Auth[] = [
     updatedAt: new Date('2021-10-12T22:45:00Z'),
   },
   {
-    id: 'auth_018',
+    id: '9dde622d-f19a-4b9c-aa50-fa4f6e4d44aa',
     email: 'jacob.teacher@example.com',
     password: 'password123',
     userType: UserType.TEACHER,
@@ -168,7 +168,7 @@ export const mockAuths: Auth[] = [
     updatedAt: new Date('2021-10-12T22:45:00Z'),
   },
   {
-    id: 'auth_019',
+    id: 'd2420b83-83f9-4685-bea6-19d96c597bb7',
     email: 'jessica.parent@example.com',
     password: 'password123',
     userType: UserType.PARENT,
@@ -177,7 +177,7 @@ export const mockAuths: Auth[] = [
     updatedAt: new Date('2021-10-12T22:45:00Z'),
   },
   {
-    id: 'auth_020',
+    id: 'd8922362-3888-4e3b-aed3-476fff8f84d7',
     email: 'isabella.child@example.com',
     password: 'password123',
     userType: UserType.CHILD,
@@ -186,7 +186,7 @@ export const mockAuths: Auth[] = [
     updatedAt: new Date('2021-10-12T22:45:00Z'),
   },
   {
-    id: 'auth_021',
+    id: 'd2420b83-83f9-4685-bea6-19d96c597bb7',
     email: 'ava.teacher@example.com',
     password: 'password123',
     userType: UserType.TEACHER,
@@ -195,7 +195,7 @@ export const mockAuths: Auth[] = [
     updatedAt: new Date('2021-10-12T22:45:00Z'),
   },
   {
-    id: 'auth_022',
+    id: 'd8922362-3888-4e3b-aed3-476fff8f84d7',
     email: 'noah.parent@example.com',
     password: 'password123',
     userType: UserType.PARENT,
@@ -213,7 +213,7 @@ export const mockAuths: Auth[] = [
     updatedAt: new Date('2021-10-12T22:45:00Z'),
   },
   {
-    id: 'auth_024',
+    id: '4a40f431-a09d-44c3-b013-2545dcbab172',
     email: 'james.teacher@example.com',
     password: 'password123',
     userType: UserType.TEACHER,
@@ -222,7 +222,7 @@ export const mockAuths: Auth[] = [
     updatedAt: new Date('2021-10-12T22:45:00Z'),
   },
   {
-    id: 'auth_025',
+    id: 'be8a9c53-54dc-4880-95b2-c34c7e1d1ed0',
     email: 'amanda.parent@example.com',
     password: 'password123',
     userType: UserType.PARENT,
@@ -231,7 +231,7 @@ export const mockAuths: Auth[] = [
     updatedAt: new Date('2021-10-12T22:45:00Z'),
   },
   {
-    id: 'auth_026',
+    id: 'cc326815-6fc9-4f12-89f8-7624143c3caf',
     email: 'ava.child@example.com',
     password: 'password123',
     userType: UserType.CHILD,
@@ -240,7 +240,7 @@ export const mockAuths: Auth[] = [
     updatedAt: new Date('2021-10-12T22:45:00Z'),
   },
   {
-    id: 'auth_027',
+    id: 'c0617194-8c57-4c27-b9b8-140db4f71167',
     email: 'mia.teacher@example.com',
     password: 'password123',
     userType: UserType.TEACHER,
@@ -249,7 +249,7 @@ export const mockAuths: Auth[] = [
     updatedAt: new Date('2021-10-12T22:45:00Z'),
   },
   {
-    id: 'auth_028',
+    id: 'f568dbfd-be08-48e2-a254-a356c0895eae',
     email: 'elijah.parent@example.com',
     password: 'password123',
     userType: UserType.PARENT,
@@ -258,7 +258,7 @@ export const mockAuths: Auth[] = [
     updatedAt: new Date('2021-10-12T22:45:00Z'),
   },
   {
-    id: 'auth_029',
+    id: 'f7a0c1a6-0f42-4f6e-ab1f-6955dbfbf06d',
     email: 'ethan.child@example.com',
     password: 'password123',
     userType: UserType.CHILD,
@@ -267,7 +267,7 @@ export const mockAuths: Auth[] = [
     updatedAt: new Date('2021-10-12T22:45:00Z'),
   },
   {
-    id: 'auth_030',
+    id: '6e53f99c-0156-47f4-ba78-11f5145ae0b3',
     email: 'james.teacher@example.com',
     password: 'password123',
     userType: UserType.TEACHER,

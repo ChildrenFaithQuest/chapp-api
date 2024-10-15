@@ -13,7 +13,7 @@ type ClassName =
 
 export const mockClass: { [key in ClassName]: Class } = {
   KINDNESS: {
-    id: 'class_005',
+    id: 'db6a6c2d-a9df-4651-9fdc-b4c9d44c4a2a',
     name: 'KINDNESS',
     ageGroup: '9-10',
     schedule: {
@@ -27,7 +27,7 @@ export const mockClass: { [key in ClassName]: Class } = {
     church: mockChurch.A,
   },
   GOODNESS: {
-    id: 'class_006',
+    id: '112044d4-400f-498c-b993-4b86100b111b',
     name: 'GOODNESS',
     ageGroup: '11-12',
     schedule: {
@@ -41,7 +41,7 @@ export const mockClass: { [key in ClassName]: Class } = {
     updatedAt: new Date('2023-06-10T15:00:00Z'),
   },
   LOVE: {
-    id: 'class_001',
+    id: 'f4207e12-9e2d-48a9-9583-e692d0c57dde',
     name: 'LOVE',
     ageGroup: '0-2',
     schedule: {
@@ -56,7 +56,7 @@ export const mockClass: { [key in ClassName]: Class } = {
     updatedAt: new Date('2023-01-10T10:00:00Z'),
   },
   JOY: {
-    id: 'class_001',
+    id: 'f9b55fa4-8cb4-4c7f-a018-1ecc6b616b6f',
     name: 'LOVE',
     ageGroup: '0-2',
     schedule: {
@@ -71,7 +71,7 @@ export const mockClass: { [key in ClassName]: Class } = {
     updatedAt: new Date('2023-01-10T10:00:00Z'),
   },
   FAITHFULNESS: {
-    id: 'class_004',
+    id: '8eff5ffa-d12d-4b47-9af9-5b2c69d38e6e',
     name: 'FAITHFULNESS',
     ageGroup: '7-8',
     schedule: {
@@ -86,7 +86,7 @@ export const mockClass: { [key in ClassName]: Class } = {
     updatedAt: new Date('2023-04-10T09:00:00Z'),
   },
   GENTLENESS: {
-    id: 'class_007',
+    id: 'd6f6090d-3f13-4a94-9c87-6ad2316a6294',
     name: 'GENTLENESS',
     ageGroup: 'TEENS',
     schedule: {
@@ -101,7 +101,7 @@ export const mockClass: { [key in ClassName]: Class } = {
     updatedAt: new Date('2023-07-10T17:00:00Z'),
   },
   PATIENCE: {
-    id: 'class_008',
+    id: '69fcebc6-7ce8-4814-8622-45b18bbfd034',
     name: 'PATIENCE',
     ageGroup: '0-2',
     schedule: {
@@ -115,7 +115,7 @@ export const mockClass: { [key in ClassName]: Class } = {
     updatedAt: new Date('2023-08-15T10:00:00Z'),
   },
   PEACE: {
-    id: 'class_003',
+    id: '57b1d09d-bd66-47d4-8780-7077ba8c7e8c',
     name: 'PEACE',
     ageGroup: '5-6',
     schedule: {
@@ -140,7 +140,7 @@ export const mockClasses: Class[] = [
   mockClass.GOODNESS,
   mockClass.PATIENCE,
   {
-    id: 'class_009',
+    id: '1136699c-88b0-4ec5-8e87-81e3a1599e13',
     name: 'PEACE',
     ageGroup: '5-6',
     schedule: {
@@ -155,7 +155,7 @@ export const mockClasses: Class[] = [
     updatedAt: new Date('2023-09-15T14:00:00Z'),
   },
   {
-    id: 'class_010',
+    id: '8ab095e0-0af9-43a5-8159-e0d5e5662f25',
     name: 'JOY',
     ageGroup: '3-4',
     schedule: {
