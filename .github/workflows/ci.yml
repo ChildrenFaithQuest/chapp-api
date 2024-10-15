@@ -1,35 +1,65 @@
 name: CI Test Workflow
 
-# Trigger this workflow on pull requests
+# Trigger the workflow on pull requests and pushes to the main branch
 on:
+  push:
+    branches:
+      - main
   pull_request:
     branches:
-      - main # Specify the branch you want to test against (e.g., `main`, `develop`)
+      - main
 
 jobs:
   test:
-    name: Run Tests
-    runs-on: ubuntu-latest # Use the latest Ubuntu runner
+    name: Run Tests with PostgreSQL
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:16 # Specify the PostgreSQL version
+        env:
+          POSTGRES_USER: test_user # Set the PostgreSQL user
+          POSTGRES_PASSWORD: test_pass # Set the PostgreSQL password
+          POSTGRES_DB: test_db # Set the PostgreSQL database
+        options: >- # Options to wait for PostgreSQL to start
+          --health-cmd "pg_isready -U test_user" 
+          --health-interval 10s 
+          --health-timeout 5s 
+          --health-retries 5
+        ports:
+          - 5432:5432
+
+    env:
+      DB_HOST: 127.0.0.1 # PostgreSQL is running locally in the container
+      DB_PORT: 5432 # PostgreSQL default port
+      DB_USER: test_user # Match the user set in the postgres service
+      DB_PASSWORD: test_pass # Match the password set in the postgres service
+      DB_NAME: test_db # Match the database set in the postgres service
+      NODE_ENV: test # Set the Node.js environment to test
 
     steps:
-      # Checkout the code
+      # Step 1: Checkout the code from the repository
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # Set up Node.js environment
+      # Step 2: Set up Node.js
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '22.4.0' # Specify your Node.js version
 
-      # Install dependencies
+      # Step 3: Install dependencies (npm or yarn)
       - name: Install dependencies
-        run: yarn install # Use yarn or npm, depending on your project
+        run: yarn install # or yarn install
 
-      # Run your tests (replace with the appropriate test command)
-      - name: Run Tests
-        run: yarn test # Change to your test command (e.g., `npm run test` or `yarn test`)
+      # Step 4: Run your database migrations or schema sync
+      - name: Generate migrations
+        run: yarn run migration:generate # Adjust to your migration command
 
-      # Optionally, you can add additional checks like linting
-      - name: Run Lint
-        run: yarn run lint # Only if you have linting configured
+      # Step 4: Run your database migrations or schema sync
+      - name: Run migrations
+        run: yarn run migration:run # Adjust to your migration command
+
+      # Step 5: Run your tests
+      - name: Run tests
+        run: yarn test # Adjust to your test command
