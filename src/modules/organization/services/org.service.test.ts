@@ -15,7 +15,6 @@ describe('Org Service', () => {
     orgRepository = {
       create: jest.fn(),
       find: jest.fn(), // Mocking the `find` method
-      delete: jest.fn(),
       update: jest.fn(),
       remove: jest.fn(),
     };
