@@ -1,12 +1,14 @@
-import { Church } from '@app-modules/church/entities/church.entity';
+import { Organization } from '@app-modules/organization/entities/organization.entity';
+import { OrgType } from '@app-types/module.types';
 
 type KeyValues = 'A' | 'B' | 'C' | 'D' | 'E' | 'F' | 'G' | 'H' | 'I' | 'J';
 
-export const mockChurch: { [key in KeyValues]: Church } = {
+export const mockOrg: { [key in KeyValues]: Organization } = {
   A: {
     id: '6a75d024-0aef-453e-8861-9f5e84dd72c6',
     name: 'Grace Community Church',
     address: '123 Main St, Springfield',
+    type: OrgType.CHURCH,
     description: 'A vibrant community of believers.',
     createdAt: new Date('2021-10-12T22:45:00Z'),
     updatedAt: new Date('2022-11-01T18:00:00Z'),
@@ -16,6 +18,7 @@ export const mockChurch: { [key in KeyValues]: Church } = {
   B: {
     id: 'a24adc5b-da6d-420d-b018-6bc5966ff9cc',
     name: 'Living Waters Church',
+    type: OrgType.CHURCH,
     address: '456 Oak Ave, Riverdale',
     description: 'A church committed to the word of God.',
     createdAt: new Date('2020-03-22T10:15:00Z'),
@@ -26,6 +29,7 @@ export const mockChurch: { [key in KeyValues]: Church } = {
   C: {
     id: '3fa545cb-fd3e-402e-a80a-e373c36a4d23',
     name: 'City of Refuge Church',
+    type: OrgType.CHURCH,
     address: '789 Pine St, Maplewood',
     description: 'A house of refuge and prayer.',
     createdAt: new Date('2019-07-10T14:00:00Z'),
@@ -36,6 +40,7 @@ export const mockChurch: { [key in KeyValues]: Church } = {
   D: {
     id: '985d8fa4-dd81-44ed-9e07-db038e88696d',
     name: 'New Hope Church',
+    type: OrgType.CHURCH,
     address: '321 Cedar St, Forest Hills',
     description: 'Bringing hope to the hopeless.',
     createdAt: new Date('2021-01-05T08:00:00Z'),
@@ -46,6 +51,7 @@ export const mockChurch: { [key in KeyValues]: Church } = {
   E: {
     id: 'f4a7aa42-b759-498a-853e-95de7cd7a48a',
     name: 'Faith Baptist Church',
+    type: OrgType.CHURCH,
     address: '654 Maple Ave, Brookhaven',
     description: 'A bible-based, faith-building community.',
     createdAt: new Date('2018-05-16T20:45:00Z'),
@@ -56,6 +62,7 @@ export const mockChurch: { [key in KeyValues]: Church } = {
   F: {
     id: 'e7491c4a-48b4-4774-887a-0ffed6584956',
     name: 'Riverside Fellowship',
+    type: OrgType.CHURCH,
     address: '987 Elm St, Green Valley',
     description: "Flowing with God's love and grace.",
     createdAt: new Date('2020-02-20T18:20:00Z'),
@@ -66,6 +73,7 @@ export const mockChurch: { [key in KeyValues]: Church } = {
   G: {
     id: '70c5db95-384e-4bda-a197-4430c557571c',
     name: 'Cornerstone Church',
+    type: OrgType.CHURCH,
     address: '231 Oakwood Rd, Hilltown',
     description: 'Building on the foundation of Christ.',
     createdAt: new Date('2017-10-12T10:30:00Z'),
@@ -86,6 +94,7 @@ export const mockChurch: { [key in KeyValues]: Church } = {
   I: {
     id: '41628a40-5da2-4b14-ad66-71e86c25eb31',
     name: 'Kingdom Life Church',
+    type: OrgType.CHURCH,
     address: '753 Walnut St, Palm Grove',
     description: 'Living the kingdom life on earth.',
     createdAt: new Date('2020-11-15T15:45:00Z'),
@@ -96,6 +105,7 @@ export const mockChurch: { [key in KeyValues]: Church } = {
   J: {
     id: '2971b549-fc6f-4489-8dce-ea07e71168a1',
     name: 'Christ the Redeemer Church',
+    type: OrgType.CHURCH,
     address: '654 Pinewood Ave, Clearfield',
     description: 'Redeemed by the blood of Christ.',
     createdAt: new Date('2018-08-30T12:20:00Z'),
@@ -105,15 +115,15 @@ export const mockChurch: { [key in KeyValues]: Church } = {
   },
 };
 
-export const mockChurchArray: Church[] = [
-  mockChurch.A,
-  mockChurch.B,
-  mockChurch.C,
-  mockChurch.D,
-  mockChurch.E,
-  mockChurch.F,
-  mockChurch.G,
-  mockChurch.H,
-  mockChurch.I,
-  mockChurch.J,
+export const mockOrgArray: Organization[] = [
+  mockOrg.A,
+  mockOrg.B,
+  mockOrg.C,
+  mockOrg.D,
+  mockOrg.E,
+  mockOrg.F,
+  mockOrg.G,
+  mockOrg.H,
+  mockOrg.I,
+  mockOrg.J,
 ];

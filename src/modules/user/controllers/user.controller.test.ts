@@ -5,7 +5,6 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { mockTeachers } from '@app-root/mocks/teacher';
 import { mockClass } from '@app-root/mocks/class';
-import { mockChurch } from '@app-root/mocks/church';
 import { UpdateUserDto } from '../dtos/update-user.dto';
 import { UsersController } from './user.controller';
 import { ParentService } from '../services/parent.service';
@@ -17,6 +16,7 @@ import { Teacher } from '../entities/teacher.entity';
 import { Parent } from '../entities/parent.entity';
 import { Child } from '../entities/child.entity';
 import { UpdateChildDto } from '../dtos/update-child.dto';
+import { mockOrg } from '@app-root/mocks/organization';
 
 const mockRepository = () => ({
   findOne: jest.fn(),
@@ -225,7 +225,7 @@ describe('UserController', () => {
         gender: UserGender.MALE, // Only updating gender
       };
 
-      const existingTeacher = {
+      const existingTeacher: Teacher = {
         id,
         gender: UserGender.FEMALE,
         firstName: 'Olivia',
@@ -235,7 +235,7 @@ describe('UserController', () => {
           address: '789 Elm St, Springfield',
         },
         classes: [mockClass.FAITHFULNESS],
-        church: mockChurch.A,
+        organization: mockOrg.A,
         createdAt: new Date('2021-10-12T22:45:00Z'),
         updatedAt: new Date('2021-10-12T22:45:00Z'),
       };

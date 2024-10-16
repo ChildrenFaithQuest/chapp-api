@@ -2,8 +2,8 @@ import { Type } from 'class-transformer';
 import { IsString, IsDate, IsArray, IsObject } from 'class-validator';
 
 import { AttendanceDto } from '@app-modules/attendance/dtos/attendance.dto';
-import { ChurchDto } from '@app-modules/church/dtos/church.dto';
 import { ChildDto } from '@app-modules/user/dtos/child.dto';
+import { OrgDto } from '@app-modules/organization/dtos/organization.dto';
 
 export class ClassDto {
   @IsString()
@@ -35,8 +35,8 @@ export class ClassDto {
   @Type(() => ChildDto)
   children?: ChildDto[];
 
-  @Type(() => ChurchDto)
-  church?: ChurchDto;
+  @Type(() => OrgDto)
+  organization?: OrgDto;
 
   @IsArray({})
   @Type(() => AttendanceDto)

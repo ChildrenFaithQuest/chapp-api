@@ -5,12 +5,12 @@ import { UserGender } from '@app-types/module.types';
 import { Parent } from './parent.entity';
 import { Attendance } from '@app-modules/attendance/entities/attendance.entity';
 import { Class } from '@app-modules/class/entities/class.entity';
-import { Church } from '@app-modules/church/entities/church.entity';
 import { Teacher } from './teacher.entity';
 import {
   closeTestModule,
   setupTestModule,
 } from '@app-root/mocks/setupTestModule';
+import { Organization } from '@app-modules/organization/entities/organization.entity';
 
 describe('Child Entity', () => {
   let dataSource: DataSource;
@@ -32,7 +32,7 @@ describe('Child Entity', () => {
       Parent,
       Attendance,
       Class,
-      Church,
+      Organization,
       Teacher,
     ]);
 

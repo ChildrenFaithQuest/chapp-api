@@ -7,11 +7,11 @@ import {
   ManyToOne,
   OneToOne,
 } from 'typeorm';
-import { Church } from '@app-modules/church/entities/church.entity';
 import { Class } from '@app-modules/class/entities/class.entity';
 import { ContactInfo } from '@app-modules/user/entities/contact-info.entity';
 import { UserBase } from './user-base.entity';
 import { Parent } from './parent.entity';
+import { Organization } from '@app-modules/organization/entities/organization.entity';
 
 @Entity()
 export class Teacher extends UserBase {
@@ -22,8 +22,8 @@ export class Teacher extends UserBase {
   @JoinTable()
   classes: Class[];
 
-  @ManyToOne(() => Church, (church) => church.teachers)
-  church: Church;
+  @ManyToOne(() => Organization, (org) => org.teachers)
+  organization: Organization;
 
   @OneToOne(() => Parent, { nullable: true })
   @JoinColumn()

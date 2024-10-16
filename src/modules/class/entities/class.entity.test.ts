@@ -2,7 +2,6 @@ import { DataSource } from 'typeorm';
 import { TestingModule } from '@nestjs/testing';
 import { Attendance } from '@app-modules/attendance/entities/attendance.entity';
 import { Class } from '@app-modules/class/entities/class.entity';
-import { Church } from '@app-modules/church/entities/church.entity';
 import {
   closeTestModule,
   setupTestModule,
@@ -11,6 +10,7 @@ import { Child } from '@app-modules/user/entities/child.entity';
 import { Parent } from '@app-modules/user/entities/parent.entity';
 import { Teacher } from '@app-modules/user/entities/teacher.entity';
 import { mockClass } from '@app-root/mocks/class';
+import { Organization } from '@app-modules/organization/entities/organization.entity';
 
 describe('Class Entity', () => {
   let dataSource: DataSource;
@@ -21,7 +21,7 @@ describe('Class Entity', () => {
       Child,
       Attendance,
       Class,
-      Church,
+      Organization,
       Parent,
       Teacher,
     ]);
@@ -43,13 +43,15 @@ describe('Class Entity', () => {
     const ageGroup = table?.findColumnByName('ageGroup');
     const schedule = table?.findColumnByName('schedule');
 
-    const churchColumn = table?.columns.find((col) => col.name === 'churchId');
+    const orgColumn = table?.columns.find(
+      (col) => col.name === 'organizationId',
+    );
 
     const createdAtColumn = table?.findColumnByName('createdAt');
     const updatedAtColumn = table?.findColumnByName('updatedAt');
     expect(idColumn).toBeDefined();
     expect(name).toBeDefined();
-    expect(churchColumn).toBeDefined();
+    expect(orgColumn).toBeDefined();
     expect(ageGroup).toBeDefined();
     expect(schedule).toBeDefined();
     expect(createdAtColumn).toBeDefined();

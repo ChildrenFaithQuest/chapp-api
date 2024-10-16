@@ -3,6 +3,11 @@ export enum AttendanceStatus {
   ABSENT = 'absent',
 }
 
+export enum OrgType {
+  CHURCH = 'church',
+  SCHOOL = 'school',
+}
+
 export enum UserGender {
   FEMALE = 'female',
   MALE = 'male',
