@@ -3,7 +3,6 @@ import { TestingModule } from '@nestjs/testing';
 import { AttendanceStatus } from '@app-types/module.types';
 import { Attendance } from '@app-modules/attendance/entities/attendance.entity';
 import { Class } from '@app-modules/class/entities/class.entity';
-import { Church } from '@app-modules/church/entities/church.entity';
 import {
   closeTestModule,
   setupTestModule,
@@ -13,7 +12,8 @@ import { Parent } from '@app-modules/user/entities/parent.entity';
 import { Teacher } from '@app-modules/user/entities/teacher.entity';
 import { mockChildren } from '@app-root/mocks/child';
 import { mockClass } from '@app-root/mocks/class';
-import { mockChurch } from '@app-root/mocks/church';
+import { Organization } from '@app-modules/organization/entities/organization.entity';
+import { mockOrg } from '@app-root/mocks/organization';
 
 describe('Attendance Entity', () => {
   let dataSource: DataSource;
@@ -34,7 +34,7 @@ describe('Attendance Entity', () => {
       Child,
       Attendance,
       Class,
-      Church,
+      Organization,
       Parent,
       Teacher,
     ]);
@@ -80,10 +80,10 @@ describe('Attendance Entity', () => {
   it('should save and retrieve a Attendance entity successfully', async () => {
     const classRepository = dataSource.getRepository(Class);
     const childRepository = dataSource.getRepository(Child);
-    const churchRepository = dataSource.getRepository(Church);
+    const orgRepository = dataSource.getRepository(Organization);
 
     const attendanceRepository = dataSource.getRepository(Attendance);
-    await churchRepository.save(mockChurch.A);
+    await orgRepository.save(mockOrg.A);
     await classRepository.save(mockClass.FAITHFULNESS);
     await childRepository.save(mockChildren[0]);
 

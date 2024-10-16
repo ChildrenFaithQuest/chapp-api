@@ -3,9 +3,9 @@ import { IsString, IsOptional, IsArray } from 'class-validator';
 
 import { UserBaseDto } from './user-base.dto';
 import { ParentDto } from './parent.dto';
-import { ChurchDto } from '@app-modules/church/dtos/church.dto';
 import { ClassDto } from '@app-modules/class/dtos/class.dto';
 import { ContactInfoDto } from './contact-info.dto';
+import { OrgDto } from '@app-modules/organization/dtos/organization.dto';
 
 export class TeacherDto extends UserBaseDto {
   @IsOptional()
@@ -16,8 +16,8 @@ export class TeacherDto extends UserBaseDto {
   @Type(() => ClassDto)
   classes: ClassDto[];
 
-  @Type(() => ChurchDto)
-  church: ChurchDto;
+  @Type(() => OrgDto)
+  organization: OrgDto;
 
   @Type(() => ParentDto)
   parent?: ParentDto;

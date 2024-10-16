@@ -7,9 +7,9 @@ import { TeacherDetailsController } from './teacher.controller';
 import { TeacherService } from '../services/teacher.service';
 import { mockTeachers } from '@app-root/mocks/teacher';
 import { mockClass } from '@app-root/mocks/class';
-import { mockChurch } from '@app-root/mocks/church';
 import { Teacher } from '../entities/teacher.entity';
 import { UpdateUserDto } from '../dtos/update-user.dto';
+import { mockOrg } from '@app-root/mocks/organization';
 
 const mockteacherRepository = () => ({
   findOne: jest.fn(),
@@ -110,7 +110,7 @@ describe('TeacherController', () => {
         gender: UserGender.MALE, // Only updating gender
       };
 
-      const existingTeacher = {
+      const existingTeacher: Teacher = {
         id,
         gender: UserGender.FEMALE,
         firstName: 'Olivia',
@@ -120,7 +120,7 @@ describe('TeacherController', () => {
           address: '789 Elm St, Springfield',
         },
         classes: [mockClass.FAITHFULNESS],
-        church: mockChurch.A,
+        organization: mockOrg.A,
         createdAt: new Date('2021-10-12T22:45:00Z'),
         updatedAt: new Date('2021-10-12T22:45:00Z'),
       };

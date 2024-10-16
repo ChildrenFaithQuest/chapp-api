@@ -3,7 +3,6 @@ import { TestingModule } from '@nestjs/testing';
 import { UserType } from '@app-types/module.types';
 import { Attendance } from '@app-modules/attendance/entities/attendance.entity';
 import { Class } from '@app-modules/class/entities/class.entity';
-import { Church } from '@app-modules/church/entities/church.entity';
 import {
   closeTestModule,
   setupTestModule,
@@ -12,6 +11,7 @@ import { Child } from '@app-modules/user/entities/child.entity';
 import { Parent } from '@app-modules/user/entities/parent.entity';
 import { Teacher } from '@app-modules/user/entities/teacher.entity';
 import { Auth } from './auth.entity';
+import { Organization } from '@app-modules/organization/entities/organization.entity';
 
 describe('Auth Entity', () => {
   let dataSource: DataSource;
@@ -34,7 +34,7 @@ describe('Auth Entity', () => {
       Parent,
       Attendance,
       Class,
-      Church,
+      Organization,
       Teacher,
     ]);
 
