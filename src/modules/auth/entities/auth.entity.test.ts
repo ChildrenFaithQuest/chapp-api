@@ -111,7 +111,7 @@ describe('Auth Entity', () => {
     expect(foundAuth).toBeDefined();
   });
 
-  it.skip('should handle entity validation on creation', async () => {
+  it('should handle entity validation on creation', async () => {
     const authRepository = dataSource.getRepository(Auth);
 
     const invalidAuth = authRepository.create({
