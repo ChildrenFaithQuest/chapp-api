@@ -41,8 +41,8 @@ export class Organization {
   updatedAt: Date; // Last Updated date
 
   @OneToMany(() => Teacher, (teacher) => teacher.organization)
-  teachers: Teacher[];
+  teachers?: Teacher[];
 
   @OneToMany(() => Class, (teacher) => teacher.organization)
-  classes: Class[];
+  classes?: Class[];
 }

@@ -8,6 +8,7 @@ import { ClassModule } from './modules/class/class.module';
 import { AttendanceModule } from './modules/attendance/attendance.module';
 import { UserModule } from '@app-modules/user';
 import { AuthModule } from '@app-modules/auth/auth.module';
+import { OrgModule } from '@app-modules/organization/organization.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { AuthModule } from '@app-modules/auth/auth.module';
     AuthModule,
     ClassModule,
     AttendanceModule,
+    OrgModule,
   ],
   controllers: [AppController],
   providers: [AppService],
