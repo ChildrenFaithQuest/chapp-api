@@ -12,6 +12,8 @@ import { Parent } from '@app-modules/user/entities/parent.entity';
 import { Teacher } from '@app-modules/user/entities/teacher.entity';
 import { Auth } from './auth.entity';
 import { Organization } from '@app-modules/organization/entities/organization.entity';
+import { Role } from '@app-modules/role/entities/role.entity';
+import { mockRoles } from '@app-root/mocks/role';
 
 describe('Auth Entity', () => {
   let dataSource: DataSource;
@@ -21,6 +23,7 @@ describe('Auth Entity', () => {
     id: '4dca01c6-b834-4b47-88a1-c612dff74254',
     email: 'john.parent@example.com',
     password: 'password123',
+    roles: [mockRoles[0]],
     userType: UserType.PARENT,
     createdAt: new Date('2021-10-12T22:45:00Z'),
     updatedAt: new Date('2021-10-12T22:45:00Z'),
@@ -29,6 +32,7 @@ describe('Auth Entity', () => {
 
   beforeAll(async () => {
     module = await setupTestModule([
+      Role,
       Auth,
       Child,
       Parent,
@@ -98,8 +102,9 @@ describe('Auth Entity', () => {
   });
 
   it('should save and retrieve a Auth entity successfully', async () => {
+    const roleRepository = dataSource.getRepository(Role);
     const authRepository = dataSource.getRepository(Auth);
-
+    await roleRepository.save(mockRoles[0]);
     const authEntity = authRepository.create(mockAuth);
     const savedAuth = await authRepository.save(authEntity);
 

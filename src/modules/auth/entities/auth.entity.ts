@@ -1,3 +1,4 @@
+import { Role } from '@app-modules/role/entities/role.entity';
 import { Child } from '@app-modules/user/entities/child.entity';
 import { Parent } from '@app-modules/user/entities/parent.entity';
 import { Teacher } from '@app-modules/user/entities/teacher.entity';
@@ -10,6 +11,8 @@ import {
   JoinColumn,
   CreateDateColumn,
   UpdateDateColumn,
+  ManyToMany,
+  JoinTable,
 } from 'typeorm';
 
 @Entity()
@@ -37,6 +40,10 @@ export class Auth {
   @OneToOne(() => Teacher, { nullable: true })
   @JoinColumn()
   teacher?: Teacher;
+
+  @ManyToMany(() => Role, (role) => role.users)
+  @JoinTable()
+  roles: Role[];
 
   @CreateDateColumn()
   createdAt: Date; // Creation date

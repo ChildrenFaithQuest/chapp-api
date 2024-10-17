@@ -9,6 +9,7 @@ import { AttendanceModule } from './modules/attendance/attendance.module';
 import { UserModule } from '@app-modules/user';
 import { AuthModule } from '@app-modules/auth/auth.module';
 import { OrgModule } from '@app-modules/organization/organization.module';
+import { RoleModule } from '@app-modules/role/role.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { OrgModule } from '@app-modules/organization/organization.module';
     ClassModule,
     AttendanceModule,
     OrgModule,
+    RoleModule,
   ],
   controllers: [AppController],
   providers: [AppService],
