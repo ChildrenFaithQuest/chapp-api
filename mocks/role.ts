@@ -69,4 +69,15 @@ export const mockRoles: Role[] = [
     createdAt: new Date('2023-10-17T10:00:00Z'),
     updatedAt: new Date('2023-10-17T10:00:00Z'),
   },
+  {
+    id: 'c3c0d3b1-9a0d-4d29-81d5-70215a1734f8',
+    name: 'Child',
+    permissions: [
+      Permission.VIEW_HOMEWORK,
+      Permission.VIEW_CLASS_SCHEDULE,
+      Permission.VIEW_ATTENDANCE,
+    ],
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  },
 ];
