@@ -102,8 +102,9 @@ describe('Auth Entity', () => {
   });
 
   it('should save and retrieve a Auth entity successfully', async () => {
+    const roleRepository = dataSource.getRepository(Role);
     const authRepository = dataSource.getRepository(Auth);
-
+    await roleRepository.save(mockRoles[0]);
     const authEntity = authRepository.create(mockAuth);
     const savedAuth = await authRepository.save(authEntity);
 
