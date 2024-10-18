@@ -13,7 +13,7 @@ import { Role } from './role.entity';
 import { Auth } from '@app-modules/auth/entities/auth.entity';
 import { Organization } from '@app-modules/organization/entities/organization.entity';
 import { mockRoles } from '@app-root/mocks/role';
-import { Permission } from '@app-types/module.types';
+import { Permission, RoleType } from '@app-types/role.types';
 
 describe('Role Entity', () => {
   let dataSource: DataSource;
@@ -62,6 +62,11 @@ describe('Role Entity', () => {
 
     // Validate that certain constraints are set up properly
     const permissionsColumn = table?.findColumnByName('permissions');
+    const nameColumn = table?.findColumnByName('name');
+
+    expect(nameColumn?.type).toBe('enum');
+    expect(nameColumn?.isUnique).toBe(true);
+    expect(nameColumn?.default).toBe(`'${RoleType.GUEST}'`); // pg automatically wrap the default value in quotes
     expect(permissionsColumn?.type).toBe('enum');
   });
 
