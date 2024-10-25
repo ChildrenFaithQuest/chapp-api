@@ -43,7 +43,7 @@ export class Auth {
 
   @ManyToMany(() => Role, (role) => role.users)
   @JoinTable()
-  roles: Role[];
+  roles?: Role[];
 
   @CreateDateColumn()
   createdAt: Date; // Creation date

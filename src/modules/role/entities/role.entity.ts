@@ -1,5 +1,5 @@
 import { Auth } from '@app-modules/auth/entities/auth.entity';
-import { Permission } from '@app-types/module.types';
+import { Permission, RoleType } from '@app-types/role.types';
 import {
   Column,
   CreateDateColumn,
@@ -14,8 +14,13 @@ export class Role {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({ unique: true })
-  name: string; // e.g., 'Admin', 'Teacher', 'Parent'
+  @Column({
+    unique: true,
+    type: 'enum',
+    enum: RoleType,
+    default: RoleType.GUEST,
+  })
+  name: RoleType; // e.g., 'Admin', 'Teacher', 'Parent'
 
   @Column({ type: 'enum', array: true, enum: Permission })
   permissions: Permission[]; // List of permission strings like 'manage_users', 'view_classes'

@@ -3,6 +3,7 @@ import { UserType } from '@app-types/module.types';
 import { mockParents } from './parent';
 import { mockChildren } from './child';
 import { mockTeachers } from './teacher';
+import { mockRole } from './role';
 
 export const mockAuths: Auth[] = [
   {
@@ -11,7 +12,7 @@ export const mockAuths: Auth[] = [
     password: 'password123',
     userType: UserType.PARENT,
     parent: mockParents[0],
-    roles: [],
+    roles: [mockRole.PARENT],
     createdAt: new Date('2021-10-12T22:45:00Z'),
     updatedAt: new Date('2021-10-12T22:45:00Z'),
   },
@@ -20,7 +21,7 @@ export const mockAuths: Auth[] = [
     email: 'mary.child@example.com',
     password: 'password123',
     userType: UserType.CHILD,
-    roles: [],
+    roles: [mockRole.CHILD],
     child: mockChildren[0],
     createdAt: new Date('2021-10-12T22:45:00Z'),
     updatedAt: new Date('2021-10-12T22:45:00Z'),
@@ -30,7 +31,7 @@ export const mockAuths: Auth[] = [
     email: 'olivia.teacher@example.com',
     password: 'password123',
     userType: UserType.TEACHER,
-    roles: [],
+    roles: [mockRole.TEACHER],
     teacher: mockTeachers[0],
     createdAt: new Date('2021-10-12T22:45:00Z'),
     updatedAt: new Date('2021-10-12T22:45:00Z'),
@@ -40,7 +41,7 @@ export const mockAuths: Auth[] = [
     email: 'david.parent@example.com',
     password: 'password123',
     userType: UserType.PARENT,
-    roles: [],
+    roles: [mockRole.PARENT],
     parent: mockParents[1],
     createdAt: new Date('2021-10-12T22:45:00Z'),
     updatedAt: new Date('2021-10-12T22:45:00Z'),
@@ -50,7 +51,7 @@ export const mockAuths: Auth[] = [
     email: 'liam.child@example.com',
     password: 'password123',
     userType: UserType.CHILD,
-    roles: [],
+    roles: [mockRole.CHILD],
     child: mockChildren[1],
     createdAt: new Date('2021-10-12T22:45:00Z'),
     updatedAt: new Date('2021-10-12T22:45:00Z'),
@@ -60,7 +61,7 @@ export const mockAuths: Auth[] = [
     email: 'ethan.teacher@example.com',
     password: 'password123',
     userType: UserType.TEACHER,
-    roles: [],
+    roles: [mockRole.TEACHER],
     teacher: mockTeachers[1],
     createdAt: new Date('2021-10-12T22:45:00Z'),
     updatedAt: new Date('2021-10-12T22:45:00Z'),
@@ -70,7 +71,7 @@ export const mockAuths: Auth[] = [
     email: 'sarah.parent@example.com',
     password: 'password123',
     userType: UserType.PARENT,
-    roles: [],
+    roles: [mockRole.PARENT],
     parent: mockParents[2],
     createdAt: new Date('2021-10-12T22:45:00Z'),
     updatedAt: new Date('2021-10-12T22:45:00Z'),

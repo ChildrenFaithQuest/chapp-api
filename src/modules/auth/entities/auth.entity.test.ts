@@ -15,19 +15,18 @@ import { Organization } from '@app-modules/organization/entities/organization.en
 import { Role } from '@app-modules/role/entities/role.entity';
 import { mockRoles } from '@app-root/mocks/role';
 
+const mockAuth: Auth = {
+  id: '4dca01c6-b834-4b47-88a1-c612dff74254',
+  email: 'john.parent@example.com',
+  password: 'password123',
+  roles: [mockRoles[0]],
+  userType: UserType.PARENT,
+  createdAt: new Date('2021-10-12T22:45:00Z'),
+  updatedAt: new Date('2021-10-12T22:45:00Z'),
+};
+
 describe('Auth Entity', () => {
   let dataSource: DataSource;
-
-  // Mock child data
-  const mockAuth: Auth = {
-    id: '4dca01c6-b834-4b47-88a1-c612dff74254',
-    email: 'john.parent@example.com',
-    password: 'password123',
-    roles: [mockRoles[0]],
-    userType: UserType.PARENT,
-    createdAt: new Date('2021-10-12T22:45:00Z'),
-    updatedAt: new Date('2021-10-12T22:45:00Z'),
-  };
   let module: TestingModule;
 
   beforeAll(async () => {
@@ -97,7 +96,6 @@ describe('Auth Entity', () => {
     expect(parentColumn?.isNullable).toBe(true);
     expect(childColumn?.isNullable).toBe(true);
     expect(teacherColumn?.isNullable).toBe(true);
-
     expect(userTypeColumn?.type).toBe('enum');
   });
 
