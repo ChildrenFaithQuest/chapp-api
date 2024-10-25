@@ -1,9 +1,3 @@
-import { Role } from '@app-modules/role/entities/role.entity';
-import { SetMetadata } from '@nestjs/common';
-
-export const ROLES_KEY = 'roles';
-export const PERMISSIONS_KEY = 'permissions';
-
 export enum Permission {
   // Admin & SuperAdmin Permissions
   MANAGE_USERS = 'manage_users',
@@ -35,6 +29,13 @@ export enum Permission {
   // AssistantTeacher Permissions
   ASSIST_WITH_HOMEWORK = 'assist_with_homework',
   ASSIST_MATERIALS_PREPARATION = 'assist_materials_preparation',
+
+  VIEW_SELF = 'view_self',
+  VIEW_ASSIGNED_CHILDREN = 'view_assigned_children',
+  VIEW_ASSIGNED_PARENTS = 'view_assigned_parents',
+  EDIT_PROFILE = 'edit_profile',
+
+  VIEW_OWN_CHILD = 'view_own_child',
 }
 
 export enum RoleType {
@@ -45,5 +46,3 @@ export enum RoleType {
   CHILD = 'child',
   GUEST = 'guest',
 }
-
-export const Roles = (...roles: Role[]) => SetMetadata(ROLES_KEY, roles);
