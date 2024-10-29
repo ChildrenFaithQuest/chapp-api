@@ -1,6 +1,7 @@
 import { Attendance } from '@app-modules/attendance/entities/attendance.entity';
 import { Organization } from '@app-modules/organization/entities/organization.entity';
 import { Child } from '@app-modules/user/entities/child.entity';
+import { Teacher } from '@app-modules/user/entities/teacher.entity';
 import {
   Entity,
   Column,
@@ -9,6 +10,7 @@ import {
   UpdateDateColumn,
   OneToMany,
   ManyToOne,
+  ManyToMany,
 } from 'typeorm';
 
 @Entity()
@@ -38,6 +40,9 @@ export class Class {
 
   @OneToMany(() => Child, (child) => child.class)
   children: Child[];
+
+  @ManyToMany(() => Teacher)
+  teachers?: Teacher[];
 
   @ManyToOne(() => Organization, (org) => org.classes)
   organization: Organization;
