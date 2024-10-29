@@ -11,26 +11,26 @@ import { ParentService } from '../services/parent.service';
 import { Parent } from '../entities/parent.entity';
 import { UpdateUserDto } from '../dtos/update-user.dto';
 
-@Controller('parents')
+@Controller()
 export class ParentDetailsController {
   constructor(private readonly parentService: ParentService) {}
 
-  @Get()
+  @Get('parents')
   async getAll(): Promise<Parent[]> {
     return this.parentService.findAll();
   }
 
-  @Get(':id')
+  @Get('parent/:id')
   async findOne(@Param('id') id: string): Promise<Parent | null> {
     return this.parentService.findOne(id);
   }
 
-  @Put(':id')
+  @Put('parent/:id')
   update(@Param('id') id: string, @Body() updateParentDto: UpdateUserDto) {
     return this.parentService.update(id, updateParentDto);
   }
 
-  @Patch(':id')
+  @Patch('parent/:id')
   partialUpdate(
     @Param('id') id: string,
     @Body() partialData: Partial<UpdateUserDto>,
@@ -38,7 +38,7 @@ export class ParentDetailsController {
     return this.parentService.partialUpdate(id, partialData);
   }
 
-  @Delete(':id')
+  @Delete('parent/:id')
   delete(@Param('id') id: string) {
     return this.parentService.delete(id);
   }
