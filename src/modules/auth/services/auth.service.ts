@@ -16,6 +16,9 @@ import { LoginDto } from '../dtos/login.dto';
 import { CreateUserDto } from '@app-modules/user/dtos/create-user.dto';
 import { ForgotPasswordDto } from '../dtos/forgot-password.dto';
 import { ChangePasswordDto } from '../dtos/change-password.dto';
+import { UserType } from '@app-types/module.types';
+import { Role } from '@app-modules/role/entities/role.entity';
+import { RoleType } from '@app-types/role.types';
 
 @Injectable()
 export class AuthService {
@@ -158,5 +161,68 @@ export class AuthService {
       return 'Password successfully Changed';
     }
     throw new BadRequestException('No user Found');
+  }
+
+  /**
+   * Retrieves the userType for the given user by their ID.
+   */
+  async getUserType(userId: string): Promise<UserType> {
+    const user = await this.authRepository.findOne({
+      where: { id: userId },
+    });
+
+    if (!user) {
+      throw new Error('User not found');
+    }
+
+    return user.userType;
+  }
+
+  async getUserRoles(userId: string): Promise<Role[]> {
+    const user = await this.authRepository.findOne({
+      where: { id: userId },
+      relations: ['roles'], // Include roles in the query
+    });
+
+    if (!user || !user.roles) {
+      throw new Error('User or roles not found');
+    }
+
+    return user.roles;
+  }
+
+  async hasRole(userId: string, requiredRoles: RoleType[]): Promise<boolean> {
+    const user = await this.authRepository.findOne({
+      where: { id: userId },
+      relations: ['roles'],
+    });
+
+    if (!user || !user.roles) {
+      return false;
+    }
+
+    // Check if the user has any of the required roles
+    return user.roles.some((role) => requiredRoles.includes(role.name));
+  }
+
+  async hasPermission(
+    userId: string,
+    requiredPermissions: string[],
+  ): Promise<boolean> {
+    const user = await this.authRepository.findOne({
+      where: { id: userId },
+      relations: ['roles', 'roles.permissions'],
+    });
+
+    if (!user || !user.roles) {
+      return false;
+    }
+
+    // Check if any of the user's roles have the required permissions
+    return user.roles.some((role) =>
+      role.permissions?.some((permission) =>
+        requiredPermissions.includes(permission),
+      ),
+    );
   }
 }
