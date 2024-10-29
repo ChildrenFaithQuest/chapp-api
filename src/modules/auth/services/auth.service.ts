@@ -18,7 +18,7 @@ import { ForgotPasswordDto } from '../dtos/forgot-password.dto';
 import { ChangePasswordDto } from '../dtos/change-password.dto';
 import { UserType } from '@app-types/module.types';
 import { Role } from '@app-modules/role/entities/role.entity';
-import { RoleType } from '@app-types/role.types';
+import { Permission, RoleType } from '@app-types/role.types';
 
 @Injectable()
 export class AuthService {
@@ -207,7 +207,7 @@ export class AuthService {
 
   async hasPermission(
     userId: string,
-    requiredPermissions: string[],
+    requiredPermissions: Permission[],
   ): Promise<boolean> {
     const user = await this.authRepository.findOne({
       where: { id: userId },

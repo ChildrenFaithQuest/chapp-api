@@ -20,6 +20,7 @@ import { ForgotPasswordDto } from '../dtos/forgot-password.dto';
 import { ChangePasswordDto } from '../dtos/change-password.dto';
 import { mockParents } from '@app-root/mocks/parent';
 import { mockRole } from '@app-root/mocks/role';
+import { Permission, RoleType } from '@app-types/role.types';
 
 describe('Auth Service', () => {
   let authService: AuthService;
@@ -372,6 +373,69 @@ describe('Auth Service', () => {
       await expect(
         authService.getUserRoles('c6614cd8-ec2b-4802-ac3e-bad94207cec3'),
       ).rejects.toThrow(new Error('User or roles not found'));
+    });
+  });
+
+  describe('hasRole', () => {
+    it('should return true if user has required roles', async () => {
+      const testAuth = {
+        id: 'c6614cd8-ec2b-4802-ac3e-bad94207cec3',
+        email: 'john.parent@example.com',
+        password: 'password123',
+        userType: UserType.PARENT,
+        parent: mockParents[0],
+        roles: [mockRole.PARENT],
+        createdAt: new Date('2021-10-12T22:45:00Z'),
+        updatedAt: new Date('2021-10-12T22:45:00Z'),
+      };
+      mockAuthRepository.findOne = jest.fn().mockResolvedValue(testAuth);
+      expect(
+        await authService.hasRole('c6614cd8-ec2b-4802-ac3e-bad94207cec3', [
+          RoleType.PARENT,
+        ]),
+      ).toBe(true);
+    });
+
+    it('should false if user does not have all the required roles', async () => {
+      mockAuthRepository.findOne = jest.fn().mockResolvedValue(undefined);
+      expect(
+        await authService.hasRole('c6614cd8-ec2b-4802-ac3e-bad94207cec3', [
+          RoleType.CHILD,
+          RoleType.PARENT,
+        ]),
+      ).toBe(false);
+    });
+  });
+
+  describe('hasPermission', () => {
+    it('should return true if user has required permisions', async () => {
+      const testAuth = {
+        id: 'c6614cd8-ec2b-4802-ac3e-bad94207cec3',
+        email: 'john.parent@example.com',
+        password: 'password123',
+        userType: UserType.PARENT,
+        parent: mockParents[0],
+        roles: [mockRole.PARENT],
+        createdAt: new Date('2021-10-12T22:45:00Z'),
+        updatedAt: new Date('2021-10-12T22:45:00Z'),
+      };
+      mockAuthRepository.findOne = jest.fn().mockResolvedValue(testAuth);
+      expect(
+        await authService.hasPermission(
+          'c6614cd8-ec2b-4802-ac3e-bad94207cec3',
+          [Permission.ASSIGN_ROLES, Permission.VIEW_HOMEWORK],
+        ),
+      ).toBe(true);
+    });
+
+    it('should false if user does not have all the required permissions', async () => {
+      mockAuthRepository.findOne = jest.fn().mockResolvedValue(undefined);
+      expect(
+        await authService.hasPermission(
+          'c6614cd8-ec2b-4802-ac3e-bad94207cec3',
+          [Permission.ASSIGN_ROLES, Permission.VIEW_CLASSES],
+        ),
+      ).toBe(false);
     });
   });
 });
