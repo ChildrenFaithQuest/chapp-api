@@ -18,6 +18,8 @@ import { LoginDto } from '../dtos/login.dto';
 import { mockAuths } from '@app-root/mocks/auth';
 import { ForgotPasswordDto } from '../dtos/forgot-password.dto';
 import { ChangePasswordDto } from '../dtos/change-password.dto';
+import { mockParents } from '@app-root/mocks/parent';
+import { mockRole } from '@app-root/mocks/role';
 
 describe('Auth Service', () => {
   let authService: AuthService;
@@ -318,6 +320,58 @@ describe('Auth Service', () => {
       ).rejects.toThrow(
         new BadRequestException('Current password is incorrect'),
       );
+    });
+  });
+
+  describe('getUserType', () => {
+    it('should return the userType given the id', async () => {
+      const testAuth = {
+        id: 'c6614cd8-ec2b-4802-ac3e-bad94207cec3',
+        email: 'john.parent@example.com',
+        password: 'password123',
+        userType: UserType.PARENT,
+        parent: mockParents[0],
+        roles: [mockRole.PARENT],
+        createdAt: new Date('2021-10-12T22:45:00Z'),
+        updatedAt: new Date('2021-10-12T22:45:00Z'),
+      };
+      mockAuthRepository.findOne = jest.fn().mockResolvedValue(testAuth);
+      expect(
+        await authService.getUserType('c6614cd8-ec2b-4802-ac3e-bad94207cec3'),
+      ).toBe(UserType.PARENT);
+    });
+
+    it('should return error if user is not found', async () => {
+      mockAuthRepository.findOne = jest.fn().mockResolvedValue(undefined);
+      await expect(
+        authService.getUserType('c6614cd8-ec2b-4802-ac3e-bad94207cec3'),
+      ).rejects.toThrow(new Error('User not found'));
+    });
+  });
+
+  describe('getUserRoles', () => {
+    it('should return the roles of a user given the id', async () => {
+      const testAuth = {
+        id: 'c6614cd8-ec2b-4802-ac3e-bad94207cec3',
+        email: 'john.parent@example.com',
+        password: 'password123',
+        userType: UserType.PARENT,
+        parent: mockParents[0],
+        roles: [mockRole.PARENT],
+        createdAt: new Date('2021-10-12T22:45:00Z'),
+        updatedAt: new Date('2021-10-12T22:45:00Z'),
+      };
+      mockAuthRepository.findOne = jest.fn().mockResolvedValue(testAuth);
+      expect(
+        await authService.getUserRoles('c6614cd8-ec2b-4802-ac3e-bad94207cec3'),
+      ).toStrictEqual([mockRole.PARENT]);
+    });
+
+    it('should return error if user is not found', async () => {
+      mockAuthRepository.findOne = jest.fn().mockResolvedValue(undefined);
+      await expect(
+        authService.getUserRoles('c6614cd8-ec2b-4802-ac3e-bad94207cec3'),
+      ).rejects.toThrow(new Error('User or roles not found'));
     });
   });
 });
