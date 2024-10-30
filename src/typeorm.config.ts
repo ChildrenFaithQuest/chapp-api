@@ -33,5 +33,5 @@ export const AppDataSource = new DataSource({
     process.env.NODE_ENV === 'test'
       ? ['src/migrations/*.ts']
       : ['dist/src/migrations/*.js'], // Ensure this path is correct
-  synchronize: false,
+  synchronize: process.env.NODE_ENV === 'test' ? true : false,
 });
