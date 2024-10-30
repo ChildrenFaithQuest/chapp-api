@@ -11,26 +11,26 @@ import { Teacher } from '../entities/teacher.entity';
 import { TeacherService } from '../services/teacher.service';
 import { UpdateUserDto } from '../dtos/update-user.dto';
 
-@Controller('teachers')
+@Controller()
 export class TeacherDetailsController {
   constructor(private readonly teacherService: TeacherService) {}
 
-  @Get()
+  @Get('teachers')
   async getAll(): Promise<Teacher[]> {
     return this.teacherService.findAll();
   }
 
-  @Get(':id')
+  @Get('teacher/:id')
   async findOne(@Param('id') id: string): Promise<Teacher | null> {
     return this.teacherService.findOne(id);
   }
 
-  @Put(':id')
+  @Put('teacher/:id')
   update(@Param('id') id: string, @Body() updateTeacherDto: UpdateUserDto) {
     return this.teacherService.update(id, updateTeacherDto);
   }
 
-  @Patch(':id')
+  @Patch('teacher/:id')
   partialUpdate(
     @Param('id') id: string,
     @Body() partialData: Partial<UpdateUserDto>,
@@ -38,7 +38,7 @@ export class TeacherDetailsController {
     return this.teacherService.partialUpdate(id, partialData);
   }
 
-  @Delete(':id')
+  @Delete('teacher/:id')
   delete(@Param('id') id: string) {
     return this.teacherService.delete(id);
   }

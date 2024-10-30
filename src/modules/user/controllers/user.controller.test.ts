@@ -17,6 +17,10 @@ import { Parent } from '../entities/parent.entity';
 import { Child } from '../entities/child.entity';
 import { UpdateChildDto } from '../dtos/update-child.dto';
 import { mockOrg } from '@app-root/mocks/organization';
+import { AuthService } from '@app-modules/auth/services/auth.service';
+import { Auth } from '@app-modules/auth/entities/auth.entity';
+import { mock } from 'jest-mock-extended';
+import { PasswordService } from '@app-shared/services/password-service';
 
 const mockRepository = () => ({
   findOne: jest.fn(),
@@ -35,13 +39,17 @@ describe('UserController', () => {
   let parentRepository: Repository<Parent>;
   let teacherRepository: Repository<Teacher>;
   let childRepository: Repository<Child>;
+  let authRepository: jest.Mocked<Repository<Auth>>;
+  // let authRepository: Repository<Auth>;
 
   let userService: UserService;
   let parentService: ParentService;
   let teacherService: TeacherService;
   let childService: ChildService;
+  let authService: AuthService;
 
   beforeEach(async () => {
+    authRepository = mock<Repository<Auth>>();
     const module: TestingModule = await Test.createTestingModule({
       controllers: [UsersController],
       providers: [
@@ -64,6 +72,17 @@ describe('UserController', () => {
           provide: UserService,
           useValue: mockUserService(), // Use the mock user service
         },
+        AuthService,
+        {
+          provide: getRepositoryToken(Auth),
+          useValue: authRepository, // Mock repository
+        },
+        {
+          provide: PasswordService,
+          useValue: {
+            hashPassword: jest.fn(),
+          },
+        },
       ],
     }).compile();
 
@@ -71,6 +90,8 @@ describe('UserController', () => {
     teacherService = module.get<TeacherService>(TeacherService);
     parentService = module.get<ParentService>(ParentService);
     childService = module.get<ChildService>(ChildService);
+    authService = module.get<AuthService>(AuthService);
+
     teacherRepository = module.get<Repository<Teacher>>(
       getRepositoryToken(Teacher),
     );
@@ -79,6 +100,8 @@ describe('UserController', () => {
     );
 
     childRepository = module.get<Repository<Child>>(getRepositoryToken(Child));
+    // authRepository = module.get<Repository<Auth>>(getRepositoryToken(Auth));
+
     userService = module.get<UserService>(UserService);
   });
 
@@ -94,25 +117,27 @@ describe('UserController', () => {
   });
 
   describe('findOne', () => {
-    it('should return a teacher', async () => {
+    it('should return a child', async () => {
+      jest.spyOn(authService, 'getUserType').mockResolvedValue(UserType.CHILD);
       jest.spyOn(childService, 'findOne').mockResolvedValue(mockChildren[2]);
-      expect(await userController.findOne('child_003', UserType.CHILD)).toBe(
-        mockChildren[2],
-      );
+
+      expect(await userController.findOne('child_003')).toBe(mockChildren[2]);
     });
 
     it('should return a parent', async () => {
+      jest.spyOn(authService, 'getUserType').mockResolvedValue(UserType.PARENT);
       jest.spyOn(parentService, 'findOne').mockResolvedValue(mockParents[2]);
-      expect(await userController.findOne('parent_003', UserType.PARENT)).toBe(
-        mockParents[2],
-      );
+
+      expect(await userController.findOne('parent_003')).toBe(mockParents[2]);
     });
 
     it('should return a teacher', async () => {
+      jest
+        .spyOn(authService, 'getUserType')
+        .mockResolvedValue(UserType.TEACHER);
       jest.spyOn(teacherService, 'findOne').mockResolvedValue(mockTeachers[2]);
-      expect(
-        await userController.findOne('teacher_003', UserType.TEACHER),
-      ).toBe(mockTeachers[2]);
+
+      expect(await userController.findOne('teacher_003')).toBe(mockTeachers[2]);
     });
   });
 
@@ -135,12 +160,11 @@ describe('UserController', () => {
       };
       // Mock repository methods
       userService.update = jest.fn().mockResolvedValue(updatedTeacher);
+      jest
+        .spyOn(authService, 'getUserType')
+        .mockResolvedValue(UserType.TEACHER);
 
-      const result = await userController.update(
-        id,
-        UserType.TEACHER,
-        updateTeacherDto,
-      );
+      const result = await userController.update(id, updateTeacherDto);
 
       expect(result).toEqual(updatedTeacher);
 
@@ -171,10 +195,10 @@ describe('UserController', () => {
       };
       // Mock repository methods
       userService.update = jest.fn().mockImplementation(() => updatedParent);
-
+      jest.spyOn(authService, 'getUserType').mockResolvedValue(UserType.PARENT);
       const result = await userController.update(
         id,
-        UserType.PARENT,
+        // UserType.PARENT,
         updateParentDto,
       );
 
@@ -201,10 +225,11 @@ describe('UserController', () => {
       };
 
       userService.update = jest.fn().mockImplementation(() => updatedChild);
+      jest.spyOn(authService, 'getUserType').mockResolvedValue(UserType.CHILD);
 
       const result = await userController.update(
         id,
-        UserType.CHILD,
+        // UserType.CHILD,
         updateChildDto,
       );
 
@@ -247,10 +272,12 @@ describe('UserController', () => {
       userService.partialUpdate = jest
         .fn()
         .mockImplementation(() => updatedTeacher);
+      jest
+        .spyOn(authService, 'getUserType')
+        .mockResolvedValue(UserType.TEACHER);
 
       const result = await userController.partialUpdate(
         id,
-        UserType.TEACHER,
         partialUpdateTeacherDto,
       );
 
@@ -289,10 +316,11 @@ describe('UserController', () => {
       userService.partialUpdate = jest
         .fn()
         .mockImplementation(() => updatedParent);
+      jest.spyOn(authService, 'getUserType').mockResolvedValue(UserType.PARENT);
 
       const result = await userController.partialUpdate(
         id,
-        UserType.PARENT,
+
         partialUpdateParentDto,
       );
 
@@ -327,10 +355,10 @@ describe('UserController', () => {
       userService.partialUpdate = jest
         .fn()
         .mockImplementation(() => updatedChild);
+      jest.spyOn(authService, 'getUserType').mockResolvedValue(UserType.CHILD);
 
       const result = await userController.partialUpdate(
         id,
-        UserType.CHILD,
         partialUpdateChildDto,
       );
 
