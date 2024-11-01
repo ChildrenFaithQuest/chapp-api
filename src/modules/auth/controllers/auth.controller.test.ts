@@ -87,9 +87,18 @@ describe('AuthController', () => {
         password: 'password123',
         userType: UserType.PARENT,
       };
-      jest.spyOn(authService, 'login').mockResolvedValue(mockAuths[0]);
-      expect(await authController.login(loginDetails)).toBe(mockAuths[0]);
-      expect(authService.login).toHaveBeenCalledWith(loginDetails);
+
+      jest.spyOn(authService, 'validateUser').mockResolvedValue(mockAuths[0]);
+      jest
+        .spyOn(authService, 'generateToken')
+        .mockResolvedValue({ accessToken: 'testToken' });
+      const result = await authController.login(loginDetails);
+      expect(authService.validateUser).toHaveBeenCalledWith(loginDetails);
+      expect(authService.generateToken).toHaveBeenCalledWith(mockAuths[0]);
+
+      expect(result).toStrictEqual({
+        accessToken: 'testToken',
+      });
     });
 
     it('should successfully call the register service', async () => {
