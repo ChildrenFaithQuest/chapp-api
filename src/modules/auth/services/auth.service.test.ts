@@ -12,6 +12,8 @@ import { PasswordService } from '@app-shared/services/password-service';
 import {
   BadRequestException,
   ConflictException,
+  HttpException,
+  HttpStatus,
   UnauthorizedException,
 } from '@nestjs/common';
 import { LoginDto } from '../dtos/login.dto';
@@ -21,6 +23,7 @@ import { ChangePasswordDto } from '../dtos/change-password.dto';
 import { mockParents } from '@app-root/mocks/parent';
 import { mockRole } from '@app-root/mocks/role';
 import { Permission, RoleType } from '@app-types/role.types';
+import { JwtService } from '@nestjs/jwt';
 
 describe('Auth Service', () => {
   let authService: AuthService;
@@ -28,6 +31,7 @@ describe('Auth Service', () => {
   let parentService: ParentService;
   let teacherService: TeacherService;
   let passwordService: PasswordService;
+  let jwtService: JwtService;
 
   let mockAuthRepository: Repository<Auth>;
   let transactionalEntityManager: EntityManager;
@@ -68,12 +72,19 @@ describe('Auth Service', () => {
             create: jest.fn(),
           },
         },
+        {
+          provide: JwtService,
+          useValue: {
+            signAsync: jest.fn(), // Mock the signAsync method
+          },
+        },
       ],
     }).compile();
     passwordService = module.get<PasswordService>(PasswordService);
     parentService = module.get<ParentService>(ParentService);
     childService = module.get<ChildService>(ChildService);
     teacherService = module.get<TeacherService>(TeacherService);
+    jwtService = module.get<JwtService>(JwtService);
     authService = module.get<AuthService>(AuthService);
     mockAuthRepository = module.get<Repository<Auth>>('AuthRepository');
 
@@ -233,17 +244,52 @@ describe('Auth Service', () => {
       password: 'password123',
     };
 
-    it('should login an authorized user', async () => {
+    it('should throw an HttpException if token generation fails', async () => {
+      // Mock signAsync to throw an error
+      const errorMessage = 'Token error';
+      jest
+        .spyOn(jwtService, 'signAsync')
+        .mockRejectedValue(new Error(errorMessage));
+
+      // Use .rejects.toThrow to test async error throwing with HttpException
+      await expect(authService.generateToken(mockAuths[0])).rejects.toThrow(
+        new HttpException(
+          'Failed to generate access token',
+          HttpStatus.INTERNAL_SERVER_ERROR,
+        ),
+      );
+    });
+
+    it('should generate accessToken to login user', async () => {
+      const mockAuth = mockAuths[0];
+      // Mock the jwtService's signAsync method to return a token string
+      const mockToken = 'mockAccessToken';
+      jest.spyOn(jwtService, 'signAsync').mockResolvedValue(mockToken);
+
+      const result = await authService.generateToken(mockAuth);
+
+      // Verify jwtService was called with correct payload
+      expect(jwtService.signAsync).toHaveBeenCalledWith({
+        sub: mockAuth.id,
+        username: mockAuth.email,
+        userType: mockAuth.userType,
+      });
+
+      // Verify the result has the expected accessToken
+      expect(result).toEqual({ accessToken: mockToken });
+    });
+
+    it('should validateUser an authorized user', async () => {
       mockAuthRepository.findOne = jest.fn().mockResolvedValue(mockAuths[0]);
       passwordService.comparePassword = jest.fn().mockResolvedValueOnce(true);
-      const result = await authService.login(loginDto);
+      const result = await authService.validateUser(loginDto);
       expect(mockAuthRepository.findOne).toHaveBeenCalled();
       expect(result).toEqual(mockAuths[0]);
     });
 
-    it('should not login an unauthorized user', async () => {
+    it('should not validate an unauthorized user', async () => {
       mockAuthRepository.findOne = jest.fn().mockResolvedValue(null);
-      await expect(authService.login(loginDto)).rejects.toThrow(
+      await expect(authService.validateUser(loginDto)).rejects.toThrow(
         new UnauthorizedException('Invalid credentials'),
       );
     });
@@ -251,7 +297,7 @@ describe('Auth Service', () => {
     it('should not login a user with invalid credentials', async () => {
       mockAuthRepository.findOne = jest.fn().mockResolvedValue(mockAuths[0]);
       passwordService.comparePassword = jest.fn().mockResolvedValueOnce(false);
-      await expect(authService.login(loginDto)).rejects.toThrow(
+      await expect(authService.validateUser(loginDto)).rejects.toThrow(
         new UnauthorizedException('Invalid credentials'),
       );
     });
