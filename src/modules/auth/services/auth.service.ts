@@ -107,6 +107,11 @@ export class AuthService {
     );
   }
 
+  async login(loginDto: LoginDto): Promise<{ accessToken: string }> {
+    const auth = await this.validateUser(loginDto);
+    return await this.generateToken(auth);
+  }
+
   async validateUser(loginDto: LoginDto): Promise<Auth> {
     const auth = await this.authRepository.findOne({
       where: { email: loginDto.email },

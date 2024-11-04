@@ -21,8 +21,7 @@ export class AuthController {
   async login(
     @Body() loginDetails: LoginDto,
   ): Promise<{ accessToken: string }> {
-    const user = await this.authService.validateUser(loginDetails);
-    return this.authService.generateToken(user);
+    return this.authService.login(loginDetails);
   }
 
   @Post('signup')

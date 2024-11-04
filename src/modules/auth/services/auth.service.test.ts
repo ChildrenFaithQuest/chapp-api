@@ -76,6 +76,7 @@ describe('Auth Service', () => {
           provide: JwtService,
           useValue: {
             signAsync: jest.fn(), // Mock the signAsync method
+            verifyAsync: jest.fn(),
           },
         },
       ],
@@ -243,43 +244,28 @@ describe('Auth Service', () => {
       email: 'john.parent@example.com',
       password: 'password123',
     };
-
-    it('should throw an HttpException if token generation fails', async () => {
-      // Mock signAsync to throw an error
-      const errorMessage = 'Token error';
-      jest
-        .spyOn(jwtService, 'signAsync')
-        .mockRejectedValue(new Error(errorMessage));
-
-      // Use .rejects.toThrow to test async error throwing with HttpException
-      await expect(authService.generateToken(mockAuths[0])).rejects.toThrow(
-        new HttpException(
-          'Failed to generate access token',
-          HttpStatus.INTERNAL_SERVER_ERROR,
-        ),
-      );
-    });
-
-    it('should generate accessToken to login user', async () => {
-      const mockAuth = mockAuths[0];
-      // Mock the jwtService's signAsync method to return a token string
+    it('should call validate and generate token when login service is called', async () => {
       const mockToken = 'mockAccessToken';
-      jest.spyOn(jwtService, 'signAsync').mockResolvedValue(mockToken);
+      jest.spyOn(authService, 'validateUser').mockResolvedValue(mockAuths[0]);
+      jest
+        .spyOn(authService, 'generateToken')
+        .mockResolvedValue({ accessToken: mockToken });
 
-      const result = await authService.generateToken(mockAuth);
-
-      // Verify jwtService was called with correct payload
-      expect(jwtService.signAsync).toHaveBeenCalledWith({
-        sub: mockAuth.id,
-        username: mockAuth.email,
-        userType: mockAuth.userType,
+      expect(await authService.login(loginDto)).toStrictEqual({
+        accessToken: mockToken,
       });
-
-      // Verify the result has the expected accessToken
-      expect(result).toEqual({ accessToken: mockToken });
+      expect(authService.validateUser).toHaveBeenCalledTimes(1);
+      expect(authService.validateUser).toHaveBeenCalledWith(loginDto);
+      expect(authService.generateToken).toHaveBeenCalledTimes(1);
+      expect(authService.generateToken).toHaveBeenCalledWith(mockAuths[0]);
     });
-
-    it('should validateUser an authorized user', async () => {
+  });
+  describe('validateUser', () => {
+    const loginDto: LoginDto = {
+      email: 'john.parent@example.com',
+      password: 'password123',
+    };
+    it('should validate an authorized user', async () => {
       mockAuthRepository.findOne = jest.fn().mockResolvedValue(mockAuths[0]);
       passwordService.comparePassword = jest.fn().mockResolvedValueOnce(true);
       const result = await authService.validateUser(loginDto);
@@ -299,6 +285,72 @@ describe('Auth Service', () => {
       passwordService.comparePassword = jest.fn().mockResolvedValueOnce(false);
       await expect(authService.validateUser(loginDto)).rejects.toThrow(
         new UnauthorizedException('Invalid credentials'),
+      );
+    });
+  });
+
+  describe('validateToken', () => {
+    it('should valdate accessToken', async () => {
+      const testPayload = {
+        sub: 'mockAuth.id',
+        username: 'mockAuth.email',
+        userType: 'mockAuth.userType',
+      };
+      // Mock the jwtService's signAsync method to return a token string
+      const mockToken = 'mockAccessToken';
+      jest.spyOn(jwtService, 'verifyAsync').mockResolvedValue(testPayload);
+      mockAuthRepository.findOne = jest.fn().mockResolvedValue(mockAuths[0]);
+
+      const result = await authService.validateToken(mockToken);
+      expect(jwtService.verifyAsync).toHaveBeenCalledWith(mockToken);
+      expect(result).toEqual(mockAuths[0]);
+    });
+
+    it('should throw error for an invalid token', async () => {
+      const mockToken = 'mockAccessToken';
+      jest
+        .spyOn(jwtService, 'verifyAsync')
+        .mockRejectedValue(new Error('Invalid token'));
+
+      await expect(authService.validateToken(mockToken)).rejects.toThrow(
+        new UnauthorizedException('Invalid token'),
+      );
+    });
+  });
+
+  describe('generateToken', () => {
+    it('should generate accessToken to login user', async () => {
+      const mockAuth = mockAuths[0];
+      // Mock the jwtService's signAsync method to return a token string
+      const mockToken = 'mockAccessToken';
+      jest.spyOn(jwtService, 'signAsync').mockResolvedValue(mockToken);
+
+      const result = await authService.generateToken(mockAuth);
+
+      // Verify jwtService was called with correct payload
+      expect(jwtService.signAsync).toHaveBeenCalledWith({
+        sub: mockAuth.id,
+        username: mockAuth.email,
+        userType: mockAuth.userType,
+      });
+
+      // Verify the result has the expected accessToken
+      expect(result).toEqual({ accessToken: mockToken });
+    });
+
+    it('should throw an HttpException if token generation fails', async () => {
+      // Mock signAsync to throw an error
+      const errorMessage = 'Token error';
+      jest
+        .spyOn(jwtService, 'signAsync')
+        .mockRejectedValue(new Error(errorMessage));
+
+      // Use .rejects.toThrow to test async error throwing with HttpException
+      await expect(authService.generateToken(mockAuths[0])).rejects.toThrow(
+        new HttpException(
+          'Failed to generate access token',
+          HttpStatus.INTERNAL_SERVER_ERROR,
+        ),
       );
     });
   });
