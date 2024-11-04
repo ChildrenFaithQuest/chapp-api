@@ -7,7 +7,6 @@ import {
   Patch,
 } from '@nestjs/common';
 import { LoginDto } from '../dtos/login.dto';
-import { Auth } from '../entities/auth.entity';
 import { AuthService } from '../services/auth.service';
 import { RegisterDto } from '../dtos/register.dto';
 import { ForgotPasswordDto } from '../dtos/forgot-password.dto';
@@ -21,19 +20,21 @@ export class AuthController {
   async login(
     @Body() loginDetails: LoginDto,
   ): Promise<{ accessToken: string }> {
-    return this.authService.login(loginDetails);
+    return await this.authService.login(loginDetails);
   }
 
   @Post('signup')
-  async register(@Body() signupDetails: RegisterDto): Promise<Auth> {
-    return this.authService.register(signupDetails);
+  async register(
+    @Body() signupDetails: RegisterDto,
+  ): Promise<{ accessToken: string }> {
+    return await this.authService.register(signupDetails);
   }
 
   @Post('forgot-password')
   async forgotPassword(
     @Body() forgotPasswordDto: ForgotPasswordDto,
   ): Promise<string> {
-    return this.authService.forgotPassword(forgotPasswordDto);
+    return await this.authService.forgotPassword(forgotPasswordDto);
   }
 
   @Patch('change-password')
@@ -43,7 +44,7 @@ export class AuthController {
   ): Promise<string> {
     const authId = req.auth.id;
     try {
-      return this.authService.changePassword(authId, changePasswordDto);
+      return await this.authService.changePassword(authId, changePasswordDto);
     } catch (error) {
       throw new BadRequestException(error.message);
     }

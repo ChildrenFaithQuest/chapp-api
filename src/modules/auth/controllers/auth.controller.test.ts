@@ -28,16 +28,6 @@ describe('AuthController', () => {
 
   let authController: AuthController;
   let authService: AuthService;
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  let passwordService: PasswordService;
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  let parentService: ParentService;
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  let userService: UserService;
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  let childService: ChildService;
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  let teacherService: TeacherService;
 
   beforeEach(async () => {
     mockAuthRepository = mock<Repository<Auth>>();
@@ -73,14 +63,9 @@ describe('AuthController', () => {
 
     authController = module.get<AuthController>(AuthController);
     authService = module.get<AuthService>(AuthService);
-    parentService = module.get<ParentService>(ParentService);
-    childService = module.get<ChildService>(ChildService);
-    passwordService = module.get<PasswordService>(PasswordService);
-    teacherService = module.get<TeacherService>(TeacherService);
-    userService = module.get<UserService>(UserService);
   });
 
-  describe('login', () => {
+  describe('Auth Controller', () => {
     it('should successfully call the login service', async () => {
       const loginDetails = {
         email: 'john.parent@example.com',
@@ -112,8 +97,12 @@ describe('AuthController', () => {
         lastName: '',
         gender: UserGender.FEMALE,
       };
-      jest.spyOn(authService, 'register').mockResolvedValue(mockAuths[0]);
-      expect(await authController.register(registerDetails)).toBe(mockAuths[0]);
+      jest
+        .spyOn(authService, 'register')
+        .mockResolvedValue({ accessToken: 'testToken' });
+      expect(await authController.register(registerDetails)).toStrictEqual({
+        accessToken: 'testToken',
+      });
       expect(authService.register).toHaveBeenCalledWith(registerDetails);
     });
 
