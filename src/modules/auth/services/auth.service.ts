@@ -3,8 +3,12 @@ import {
   ConflictException,
   UnauthorizedException,
   BadRequestException,
+  Optional,
+  HttpException,
+  HttpStatus,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { JwtService } from '@nestjs/jwt';
 import { Repository, EntityManager } from 'typeorm';
 import { Auth } from '../entities/auth.entity';
 import { PasswordService } from '@app-shared/services/password-service';
@@ -29,6 +33,7 @@ export class AuthService {
     private readonly parentService: ParentService,
     private readonly childService: ChildService,
     private readonly teacherService: TeacherService,
+    @Optional() private readonly jwtService: JwtService,
   ) {}
 
   async register(registerDto: RegisterDto): Promise<Auth> {
@@ -102,7 +107,12 @@ export class AuthService {
     );
   }
 
-  async login(loginDto: LoginDto): Promise<Auth> {
+  async login(loginDto: LoginDto): Promise<{ accessToken: string }> {
+    const auth = await this.validateUser(loginDto);
+    return await this.generateToken(auth);
+  }
+
+  async validateUser(loginDto: LoginDto): Promise<Auth> {
     const auth = await this.authRepository.findOne({
       where: { email: loginDto.email },
     });
@@ -116,6 +126,45 @@ export class AuthService {
       }
     }
     throw new UnauthorizedException('Invalid credentials');
+  }
+
+  async validateToken(token: string): Promise<Auth> {
+    try {
+      // Verify the token
+      const payload = await this.jwtService.verifyAsync(token);
+      // Here, you can add logic to fetch the user from the database using payload.sub (or other identifying fields)
+      const auth = await this.authRepository.findOne({
+        where: { id: payload.sub },
+      });
+
+      if (!auth) {
+        throw new UnauthorizedException('User not found');
+      }
+
+      return auth;
+    } catch (error) {
+      throw new UnauthorizedException('Invalid token');
+    }
+  }
+
+  async generateToken(auth: Auth): Promise<{ accessToken: string }> {
+    const payload = {
+      sub: auth.id, // Using auth id as the subject
+      username: auth.email,
+      userType: auth.userType,
+    };
+
+    try {
+      // Generate the JWT
+      const accessToken = await this.jwtService.signAsync(payload);
+      return { accessToken };
+    } catch (error) {
+      // Handle error during token generation
+      throw new HttpException(
+        'Failed to generate access token',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 
   async forgotPassword(forgotPasswordDto: ForgotPasswordDto): Promise<string> {
