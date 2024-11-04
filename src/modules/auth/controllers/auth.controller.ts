@@ -7,7 +7,6 @@ import {
   Patch,
 } from '@nestjs/common';
 import { LoginDto } from '../dtos/login.dto';
-import { Auth } from '../entities/auth.entity';
 import { AuthService } from '../services/auth.service';
 import { RegisterDto } from '../dtos/register.dto';
 import { ForgotPasswordDto } from '../dtos/forgot-password.dto';
@@ -25,7 +24,9 @@ export class AuthController {
   }
 
   @Post('signup')
-  async register(@Body() signupDetails: RegisterDto): Promise<Auth> {
+  async register(
+    @Body() signupDetails: RegisterDto,
+  ): Promise<{ accessToken: string }> {
     return this.authService.register(signupDetails);
   }
 

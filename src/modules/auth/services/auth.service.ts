@@ -36,7 +36,7 @@ export class AuthService {
     @Optional() private readonly jwtService: JwtService,
   ) {}
 
-  async register(registerDto: RegisterDto): Promise<Auth> {
+  async register(registerDto: RegisterDto): Promise<{ accessToken: string }> {
     const { email, password, userType, ...userDetails } = registerDto;
     return this.authRepository.manager.transaction(
       async (transactionalEntityManager: EntityManager) => {
@@ -102,7 +102,8 @@ export class AuthService {
         // Save the updated authentication record with user-specific details
         await transactionalEntityManager.save(Auth, auth);
 
-        return auth;
+        // return auth;
+        return await this.generateToken(auth);
       },
     );
   }

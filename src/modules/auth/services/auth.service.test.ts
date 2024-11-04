@@ -121,6 +121,8 @@ describe('Auth Service', () => {
       }),
     } as any;
 
+    const mockToken = 'mockAccessToken';
+
     it('should throw ConflictException if email already exists', async () => {
       transactionalEntityManager.findOne = jest
         .fn()
@@ -136,6 +138,9 @@ describe('Auth Service', () => {
     });
 
     it('should hash the password and create an Auth entity for a parent', async () => {
+      jest
+        .spyOn(authService, 'generateToken')
+        .mockResolvedValue({ accessToken: mockToken });
       registerDto.userType = UserType.PARENT;
       transactionalEntityManager.create = jest.fn().mockReturnValueOnce({
         ...createdUser,
@@ -160,16 +165,13 @@ describe('Auth Service', () => {
         userType: registerDto.userType,
       });
       expect(transactionalEntityManager.save).toHaveBeenCalledTimes(2);
-      expect(result).toEqual({
-        id: 'auth_001',
-        email: registerDto.email,
-        parent: { id: 'parent_001' },
-        password: 'hashedPassword',
-        userType: registerDto.userType,
-      });
+      expect(result).toEqual({ accessToken: mockToken });
     });
 
     it('should hash the password and create an Auth entity for a child', async () => {
+      jest
+        .spyOn(authService, 'generateToken')
+        .mockResolvedValue({ accessToken: mockToken });
       const childId = 'child_001';
       registerDto.userType = UserType.CHILD;
       transactionalEntityManager.create = jest.fn().mockReturnValueOnce({
@@ -193,16 +195,13 @@ describe('Auth Service', () => {
         userType: registerDto.userType,
       });
       expect(transactionalEntityManager.save).toHaveBeenCalledTimes(2);
-      expect(result).toEqual({
-        id: 'auth_001',
-        email: registerDto.email,
-        child: { id: childId },
-        password: 'hashedPassword',
-        userType: registerDto.userType,
-      });
+      expect(result).toEqual({ accessToken: mockToken });
     });
 
     it('should hash the password and create an Auth entity for a teacher', async () => {
+      jest
+        .spyOn(authService, 'generateToken')
+        .mockResolvedValue({ accessToken: mockToken });
       const teacherId = 'teacher_001';
       registerDto.userType = UserType.TEACHER;
 
@@ -229,13 +228,7 @@ describe('Auth Service', () => {
         userType: registerDto.userType,
       });
       expect(transactionalEntityManager.save).toHaveBeenCalledTimes(2);
-      expect(result).toEqual({
-        id: 'auth_001',
-        email: registerDto.email,
-        teacher: { id: teacherId },
-        password: 'hashedPassword',
-        userType: registerDto.userType,
-      });
+      expect(result).toEqual({ accessToken: mockToken });
     });
   });
 
