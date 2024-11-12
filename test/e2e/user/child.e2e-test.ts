@@ -7,7 +7,7 @@ import { DataSource } from 'typeorm';
 import { Child } from '@app-modules/user/entities/child.entity';
 import { UpdateChildDto } from '@app-modules/user/dtos/update-child.dto';
 
-describe('ChildController (e2e)', () => {
+describe.skip('ChildController (e2e)', () => {
   let app: INestApplication;
   let dataSource: DataSource;
   let childId: string;

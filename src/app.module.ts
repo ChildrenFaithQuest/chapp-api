@@ -13,6 +13,7 @@ import { RoleModule } from '@app-modules/role/role.module';
 import { AuthMiddleware } from './middlewares/auth.middleware';
 import { UsersController } from '@app-modules/user/controllers/user.controller';
 import { ChildDetailsController } from '@app-modules/user/controllers/child.controller';
+import { AppwriteClientService } from '@app-root/appwrite/src/appwrite-client.service';
 
 @Module({
   imports: [
@@ -28,7 +29,8 @@ import { ChildDetailsController } from '@app-modules/user/controllers/child.cont
     RoleModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, AppwriteClientService],
+  exports: [AppwriteClientService],
 })
 export class AppModule implements NestModule {
   constructor(private dataSource: DataSource) {}
