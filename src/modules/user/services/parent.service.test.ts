@@ -1,7 +1,7 @@
 import { NotFoundException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
-import { EntityManager, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 
 import { UserGender } from '@app-types/module.types';
 import { mockParentData, mockParents } from '@app-root/mocks/parent';
@@ -15,11 +15,6 @@ describe('Parent Service', () => {
   let parentService: ParentService;
   let mockParentRepository: Partial<Repository<Parent>>;
 
-  let mockTransactionalEntityManager: {
-    create: jest.Mock;
-    save: jest.Mock;
-  };
-
   let mockUserService: Partial<UserService>;
 
   beforeEach(async () => {
@@ -32,6 +27,8 @@ describe('Parent Service', () => {
       find: jest.fn(), // Mocking the `find` method
       findOneBy: jest.fn(),
       delete: jest.fn(),
+      create: jest.fn().mockReturnValue(mockParents[0]),
+      save: jest.fn().mockReturnValue(mockParents[0]),
     };
 
     const module: TestingModule = await Test.createTestingModule({
@@ -48,31 +45,14 @@ describe('Parent Service', () => {
       ],
     }).compile();
 
-    mockTransactionalEntityManager = {
-      create: jest.fn(),
-      save: jest.fn(),
-    };
-
-    // Mocking the transactionalEntityManager methods
-    mockTransactionalEntityManager.create!.mockReturnValue(mockParents[0]);
-    mockTransactionalEntityManager.save!.mockResolvedValue(mockParents[0]);
-
     parentService = module.get<ParentService>(ParentService);
   });
   it('should create a parent', async () => {
-    const result = await parentService.create(
-      mockParentData,
-      mockTransactionalEntityManager as unknown as EntityManager,
-    );
+    const result = await parentService.create(mockParentData);
 
-    expect(mockTransactionalEntityManager.create).toHaveBeenCalledWith(
-      Parent,
-      mockParentData,
-    );
-    expect(mockTransactionalEntityManager.save).toHaveBeenCalledWith(
-      Parent,
-      mockParents[0],
-    );
+    expect(mockParentRepository.create).toHaveBeenCalledTimes(1);
+    expect(mockParentRepository.save).toHaveBeenCalledWith(result);
+
     expect(result).toEqual(mockParents[0]);
   });
   it('should findAll parents', async () => {

@@ -15,9 +15,7 @@ export class ParentService {
   ) {}
 
   async create(parentDetails: CreateUserDto): Promise<Parent> {
-    const parent = this.parentsRepository.create({
-      ...parentDetails,
-    });
+    const parent = this.parentsRepository.create(parentDetails);
     return await this.parentsRepository.save(parent);
   }
 

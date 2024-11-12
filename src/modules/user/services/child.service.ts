@@ -15,9 +15,7 @@ export class ChildService {
   ) {}
 
   async create(childDetails: CreateUserDto): Promise<Child> {
-    const child = this.childRepository.create({
-      ...childDetails,
-    });
+    const child = this.childRepository.create(childDetails);
     return await this.childRepository.save(child);
   }
 

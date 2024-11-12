@@ -15,9 +15,7 @@ export class TeacherService {
   ) {}
 
   async create(teacherDetails: CreateUserDto): Promise<Teacher> {
-    const teacher = this.teacherRepository.create({
-      ...teacherDetails,
-    });
+    const teacher = this.teacherRepository.create(teacherDetails);
     return await this.teacherRepository.save(teacher);
   }
 

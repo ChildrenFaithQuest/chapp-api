@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { NotFoundException } from '@nestjs/common';
-import { EntityManager, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import { getRepositoryToken } from '@nestjs/typeorm';
 
 import { ChildService } from './child.service';
@@ -14,11 +14,6 @@ describe('Child Service', () => {
   let childService: ChildService;
   let mockChildRepository: Partial<Repository<Child>>;
 
-  let mockTransactionalEntityManager: {
-    create: jest.Mock;
-    save: jest.Mock;
-  };
-
   let mockUserService: Partial<UserService>;
 
   beforeEach(async () => {
@@ -31,6 +26,8 @@ describe('Child Service', () => {
       find: jest.fn(), // Mocking the `find` method
       findOneBy: jest.fn(),
       delete: jest.fn(),
+      create: jest.fn().mockReturnValue(mockChildren[0]),
+      save: jest.fn().mockReturnValue(mockChildren[0]),
     };
 
     const module: TestingModule = await Test.createTestingModule({
@@ -47,33 +44,16 @@ describe('Child Service', () => {
       ],
     }).compile();
 
-    mockTransactionalEntityManager = {
-      create: jest.fn(),
-      save: jest.fn(),
-    };
-
-    // Mocking the transactionalEntityManager methods
-    mockTransactionalEntityManager.create!.mockReturnValue(mockChildren[0]);
-    mockTransactionalEntityManager.save!.mockResolvedValue(mockChildren[0]);
-
     childService = module.get<ChildService>(ChildService);
   });
   it('should create a child', async () => {
-    const result = await childService.create(
-      mockChildData,
-      mockTransactionalEntityManager as unknown as EntityManager,
-    );
+    const result = await childService.create(mockChildData);
 
-    expect(mockTransactionalEntityManager.create).toHaveBeenCalledWith(
-      Child,
-      mockChildData,
-    );
-    expect(mockTransactionalEntityManager.save).toHaveBeenCalledWith(
-      Child,
-      mockChildren[0],
-    );
+    expect(mockChildRepository.create).toHaveBeenCalledTimes(1);
+    expect(mockChildRepository.save).toHaveBeenCalledWith(result);
     expect(result).toEqual(mockChildren[0]);
   });
+
   it('should findAll children', async () => {
     (mockChildRepository.find as jest.Mock).mockReturnValue(mockChildren);
     const result = await childService.findAll();

@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { NotFoundException } from '@nestjs/common';
-import { EntityManager, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 
 import { UserService } from './user.service';
 import { UserGender } from '@app-types/module.types';
@@ -13,11 +13,6 @@ import { mockTeacherData, mockTeachers } from '@app-root/mocks/teacher';
 describe('Teacher Service', () => {
   let teacherService: TeacherService;
   let mockTeacherRepository: Partial<Repository<Teacher>>;
-
-  let mockTransactionalEntityManager: {
-    create: jest.Mock;
-    save: jest.Mock;
-  };
 
   let mockUserService: Partial<UserService>;
 
@@ -31,6 +26,8 @@ describe('Teacher Service', () => {
       find: jest.fn(), // Mocking the `find` method
       findOneBy: jest.fn(),
       delete: jest.fn(),
+      create: jest.fn().mockReturnValue(mockTeachers[0]),
+      save: jest.fn().mockReturnValue(mockTeachers[0]),
     };
 
     const module: TestingModule = await Test.createTestingModule({
@@ -47,31 +44,12 @@ describe('Teacher Service', () => {
       ],
     }).compile();
 
-    mockTransactionalEntityManager = {
-      create: jest.fn(),
-      save: jest.fn(),
-    };
-
-    // Mocking the transactionalEntityManager methods
-    mockTransactionalEntityManager.create!.mockReturnValue(mockTeachers[0]);
-    mockTransactionalEntityManager.save!.mockResolvedValue(mockTeachers[0]);
-
     teacherService = module.get<TeacherService>(TeacherService);
   });
   it('should create a teacher', async () => {
-    const result = await teacherService.create(
-      mockTeacherData,
-      mockTransactionalEntityManager as unknown as EntityManager,
-    );
-
-    expect(mockTransactionalEntityManager.create).toHaveBeenCalledWith(
-      Teacher,
-      mockTeacherData,
-    );
-    expect(mockTransactionalEntityManager.save).toHaveBeenCalledWith(
-      Teacher,
-      mockTeachers[0],
-    );
+    const result = await teacherService.create(mockTeacherData);
+    expect(mockTeacherRepository.create).toHaveBeenCalledTimes(1);
+    expect(mockTeacherRepository.save).toHaveBeenCalledWith(result);
     expect(result).toEqual(mockTeachers[0]);
   });
   it('should findAll teachers', async () => {
