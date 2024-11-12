@@ -11,6 +11,11 @@ import {
 import { ContactInfoDto } from './contact-info.dto';
 
 export class CreateUserDto {
+  @IsOptional()
+  @IsNotEmpty()
+  @IsString()
+  appwriteId?: string;
+
   @IsString()
   @IsNotEmpty()
   @ApiProperty()

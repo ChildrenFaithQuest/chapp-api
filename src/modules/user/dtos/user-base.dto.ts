@@ -16,6 +16,9 @@ export class UserBaseDto {
   id: string;
 
   @IsString()
+  appwriteId: string;
+
+  @IsString()
   @IsNotEmpty()
   @ApiProperty()
   firstName: string;
