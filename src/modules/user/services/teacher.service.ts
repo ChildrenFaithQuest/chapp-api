@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { DeepPartial, EntityManager, Repository } from 'typeorm';
+import { DeepPartial, Repository } from 'typeorm';
 import { Teacher } from '../entities/teacher.entity';
 import { UpdateUserDto } from '../dtos/update-user.dto';
 import { UserService } from './user.service';
@@ -14,14 +14,11 @@ export class TeacherService {
     private readonly userService: UserService,
   ) {}
 
-  async create(
-    teacherDetails: CreateUserDto,
-    transactionalEntityManager: EntityManager,
-  ): Promise<Teacher> {
-    const teacher = transactionalEntityManager.create(Teacher, {
+  async create(teacherDetails: CreateUserDto): Promise<Teacher> {
+    const teacher = this.teacherRepository.create({
       ...teacherDetails,
     });
-    return transactionalEntityManager.save(Teacher, teacher);
+    return await this.teacherRepository.save(teacher);
   }
 
   findAll(): Promise<Teacher[]> {
