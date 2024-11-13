@@ -261,6 +261,7 @@ describe('UserController', () => {
         },
         classes: [mockClass.FAITHFULNESS],
         organization: mockOrg.A,
+        appwriteId: '616983b3b5b3d',
         createdAt: new Date('2021-10-12T22:45:00Z'),
         updatedAt: new Date('2021-10-12T22:45:00Z'),
       };

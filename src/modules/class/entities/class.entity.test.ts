@@ -11,6 +11,7 @@ import { Parent } from '@app-modules/user/entities/parent.entity';
 import { Teacher } from '@app-modules/user/entities/teacher.entity';
 import { mockClass } from '@app-root/mocks/class';
 import { Organization } from '@app-modules/organization/entities/organization.entity';
+import { mockOrg } from '@app-root/mocks/organization';
 
 describe('Class Entity', () => {
   let dataSource: DataSource;
@@ -60,8 +61,13 @@ describe('Class Entity', () => {
 
   it('should save and retrieve a Class entity successfully', async () => {
     const classRepository = dataSource.getRepository(Class);
+    const organizationRepository = dataSource.getRepository(Organization);
+    const organization = organizationRepository.create(mockOrg.A);
+    await organizationRepository.save(organization);
 
-    const classEntity = classRepository.create(mockClass.FAITHFULNESS);
+    const classEntity = classRepository.create({
+      ...mockClass.FAITHFULNESS,
+    });
     const savedClass = await classRepository.save(classEntity);
 
     expect(savedClass).toBeDefined();

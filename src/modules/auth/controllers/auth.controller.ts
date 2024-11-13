@@ -8,9 +8,9 @@ import {
 } from '@nestjs/common';
 import { LoginDto } from '../dtos/login.dto';
 import { AuthService } from '../services/auth.service';
-import { RegisterDto } from '../dtos/register.dto';
 import { ForgotPasswordDto } from '../dtos/forgot-password.dto';
 import { ChangePasswordDto } from '../dtos/change-password.dto';
+import { SignupDto } from '../dtos/signup.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -24,10 +24,10 @@ export class AuthController {
   }
 
   @Post('signup')
-  async register(
-    @Body() signupDetails: RegisterDto,
+  async signup(
+    @Body() signupDetails: SignupDto,
   ): Promise<{ accessToken: string }> {
-    return await this.authService.register(signupDetails);
+    return await this.authService.signup(signupDetails);
   }
 
   @Post('forgot-password')

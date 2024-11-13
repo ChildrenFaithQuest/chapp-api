@@ -2,7 +2,6 @@ import { UserGender, UserType } from '@app-types/module.types';
 import { Test, TestingModule } from '@nestjs/testing';
 import { AuthController } from './auth.controller';
 import { AuthService } from '../services/auth.service';
-import { mockAuths } from '@app-root/mocks/auth';
 import { Repository } from 'typeorm';
 import { Auth } from '../entities/auth.entity';
 import { getRepositoryToken } from '@nestjs/typeorm';
@@ -15,9 +14,10 @@ import { UserService } from '@app-modules/user/services/user.service';
 import { Parent } from '@app-modules/user/entities/parent.entity';
 import { Child } from '@app-modules/user/entities/child.entity';
 import { Teacher } from '@app-modules/user/entities/teacher.entity';
-import { RegisterDto } from '../dtos/register.dto';
 import { ForgotPasswordDto } from '../dtos/forgot-password.dto';
 import { ChangePasswordDto } from '../dtos/change-password.dto';
+import { SignupDto } from '../dtos/signup.dto';
+import { LoginDto } from '../dtos/login.dto';
 
 describe('AuthController', () => {
   let mockAuthRepository: jest.Mocked<Repository<Auth>>;
@@ -67,16 +67,14 @@ describe('AuthController', () => {
 
   describe('Auth Controller', () => {
     it('should successfully call the login service', async () => {
-      const loginDetails = {
+      const loginDetails: LoginDto = {
         email: 'john.parent@example.com',
         password: 'password123',
-        userType: UserType.PARENT,
       };
 
-      jest.spyOn(authService, 'validateUser').mockResolvedValue(mockAuths[0]);
       jest
         .spyOn(authService, 'login')
-        .mockResolvedValue({ accessToken: 'testToken' });
+        .mockResolvedValue({ accessToken: 'testToken', session: {} as any });
 
       jest
         .spyOn(authService, 'generateToken')
@@ -85,11 +83,12 @@ describe('AuthController', () => {
       expect(authService.login).toHaveBeenCalledWith(loginDetails);
       expect(result).toStrictEqual({
         accessToken: 'testToken',
+        session: {},
       });
     });
 
-    it('should successfully call the register service', async () => {
-      const registerDetails: RegisterDto = {
+    it('should successfully call the signup service', async () => {
+      const signupDto: SignupDto = {
         email: 'john.parent@example.com',
         password: 'password123',
         userType: UserType.PARENT,
@@ -98,12 +97,13 @@ describe('AuthController', () => {
         gender: UserGender.FEMALE,
       };
       jest
-        .spyOn(authService, 'register')
-        .mockResolvedValue({ accessToken: 'testToken' });
-      expect(await authController.register(registerDetails)).toStrictEqual({
+        .spyOn(authService, 'signup')
+        .mockResolvedValue({ accessToken: 'testToken', session: {} as any });
+      expect(await authController.signup(signupDto)).toStrictEqual({
         accessToken: 'testToken',
+        session: {},
       });
-      expect(authService.register).toHaveBeenCalledWith(registerDetails);
+      expect(authService.signup).toHaveBeenCalledWith(signupDto);
     });
 
     it('should successfully call the forgot password service', async () => {

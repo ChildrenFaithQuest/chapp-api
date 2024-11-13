@@ -16,7 +16,7 @@ describe('Teacher Entity', () => {
   let dataSource: DataSource;
 
   // Mock Teacher data
-  const mockTeacher = {
+  const mockTeacher: Teacher = {
     id: '4dca01c6-b834-4b47-88a1-c612dff74254',
     gender: UserGender.FEMALE,
     firstName: 'John',
@@ -25,7 +25,9 @@ describe('Teacher Entity', () => {
       phoneNumber: '+1234567890',
       address: '788 Elm St, Springfield',
     },
-    children: [],
+    classes: [],
+    organization: new Organization(),
+    appwriteId: 'testAppwriteId',
     createdAt: new Date('2021-10-12T22:45:00Z'),
     updatedAt: new Date('2021-10-12T22:45:00Z'),
   };

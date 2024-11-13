@@ -1,17 +1,15 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { EntityManager, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 
 import { AuthService } from './auth.service';
 import { Auth } from '../entities/auth.entity';
 import { ChildService } from '@app-modules/user/services/child.service';
 import { ParentService } from '@app-modules/user/services/parent.service';
 import { TeacherService } from '@app-modules/user/services/teacher.service';
-import { RegisterDto } from '../dtos/register.dto';
 import { UserGender, UserType } from '@app-types/module.types';
 import { PasswordService } from '@app-shared/services/password-service';
 import {
   BadRequestException,
-  ConflictException,
   HttpException,
   HttpStatus,
   UnauthorizedException,
@@ -24,6 +22,10 @@ import { mockParents } from '@app-root/mocks/parent';
 import { mockRole } from '@app-root/mocks/role';
 import { Permission, RoleType } from '@app-types/role.types';
 import { JwtService } from '@nestjs/jwt';
+import { AppwriteUserService } from '@app-root/appwrite/src/users/appwrite-user.service';
+import { SignupDto } from '../dtos/signup.dto';
+import { Models } from 'node-appwrite';
+import { CreateUserDto } from '@app-modules/user/dtos/create-user.dto';
 
 describe('Auth Service', () => {
   let authService: AuthService;
@@ -32,9 +34,9 @@ describe('Auth Service', () => {
   let teacherService: TeacherService;
   let passwordService: PasswordService;
   let jwtService: JwtService;
+  let appwriteUserService: AppwriteUserService;
 
   let mockAuthRepository: Repository<Auth>;
-  let transactionalEntityManager: EntityManager;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -79,6 +81,18 @@ describe('Auth Service', () => {
             verifyAsync: jest.fn(),
           },
         },
+        {
+          provide: AppwriteUserService,
+          useValue: {
+            registerUser: jest.fn().mockResolvedValue({
+              jwtToken: 'mockToken',
+              user: { $id: 'parent_001' },
+              session: { $id: 'testId' },
+            }),
+            loginUser: jest.fn(),
+            getUserType: jest.fn(),
+          },
+        },
       ],
     }).compile();
     passwordService = module.get<PasswordService>(PasswordService);
@@ -87,6 +101,8 @@ describe('Auth Service', () => {
     teacherService = module.get<TeacherService>(TeacherService);
     jwtService = module.get<JwtService>(JwtService);
     authService = module.get<AuthService>(AuthService);
+    appwriteUserService = module.get<AppwriteUserService>(AppwriteUserService);
+
     mockAuthRepository = module.get<Repository<Auth>>('AuthRepository');
 
     passwordService.hashPassword = jest
@@ -98,8 +114,8 @@ describe('Auth Service', () => {
     jest.clearAllMocks(); // or jest.resetAllMocks() to reset mocks entirely
   });
 
-  describe('register', () => {
-    const registerDto: RegisterDto = {
+  describe('signup', () => {
+    const signupDto: SignupDto = {
       email: 'john.parent@example.com',
       password: 'password123',
       userType: UserType.PARENT,
@@ -107,128 +123,141 @@ describe('Auth Service', () => {
       lastName: 'testLastName',
       gender: UserGender.FEMALE,
     };
-    const createdUser = {
-      id: 'auth_001',
-      email: registerDto.email,
-      password: 'hashedPassword',
-    };
-
-    transactionalEntityManager = {
-      findOne: jest.fn().mockResolvedValueOnce(null), // No existing auth
-      save: jest.fn().mockResolvedValueOnce({
-        id: 'auth_001',
-        email: registerDto.email,
-      }),
-    } as any;
 
     const mockToken = 'mockAccessToken';
 
-    it('should throw ConflictException if email already exists', async () => {
-      transactionalEntityManager.findOne = jest
-        .fn()
-        .mockResolvedValueOnce({ email: registerDto.email });
+    it('should signup a parent', async () => {
+      signupDto.userType = UserType.PARENT;
 
-      mockAuthRepository.manager.transaction = jest.fn().mockImplementationOnce(
-        async (callback) => callback(transactionalEntityManager), // Mock transaction callback
+      jest.spyOn(appwriteUserService, 'registerUser').mockResolvedValue({
+        session: { $id: 'testId' } as Models.Session,
+        appwriteUser: { $id: 'parent_001' } as Models.User<Models.Preferences>,
+        jwtToken: mockToken,
+      });
+
+      const { email, password, firstName, lastName, userType } = signupDto;
+      const result = await authService.signup(signupDto);
+      const registerDto = {
+        email,
+        password,
+        name: `${firstName} ${lastName}`,
+        userType,
+      };
+
+      const createUserDto: CreateUserDto = {
+        appwriteId: 'parent_001',
+        firstName: signupDto.firstName,
+        lastName: signupDto.lastName,
+        contact: signupDto.contact,
+        gender: signupDto.gender,
+        dateOfBirth: signupDto.dateOfBirth,
+      };
+
+      expect(appwriteUserService.registerUser).toHaveBeenCalledWith(
+        registerDto,
       );
 
-      await expect(authService.register(registerDto)).rejects.toThrow(
-        ConflictException,
-      );
+      expect(parentService.create).toHaveBeenCalledWith(createUserDto);
+      expect(result).toEqual({
+        accessToken: mockToken,
+        session: { $id: 'testId' },
+      });
     });
 
-    it('should hash the password and create an Auth entity for a parent', async () => {
-      jest
-        .spyOn(authService, 'generateToken')
-        .mockResolvedValue({ accessToken: mockToken });
-      registerDto.userType = UserType.PARENT;
-      transactionalEntityManager.create = jest.fn().mockReturnValueOnce({
-        ...createdUser,
-        userType: UserType.PARENT,
+    it('should signup a child', async () => {
+      signupDto.userType = UserType.CHILD;
+      const childID = 'child_001';
+
+      jest.spyOn(appwriteUserService, 'registerUser').mockResolvedValue({
+        session: { $id: 'testId' } as Models.Session,
+        appwriteUser: { $id: childID } as Models.User<Models.Preferences>,
+        jwtToken: mockToken,
       });
-      mockAuthRepository.manager.transaction = jest.fn().mockImplementationOnce(
-        async (callback) => callback(transactionalEntityManager), // Mock transaction callback
+
+      const { email, password, firstName, lastName, userType } = signupDto;
+      const result = await authService.signup(signupDto);
+      const registerDto = {
+        email,
+        password,
+        name: `${firstName} ${lastName}`,
+        userType,
+      };
+
+      const createUserDto: CreateUserDto = {
+        appwriteId: childID,
+        firstName: signupDto.firstName,
+        lastName: signupDto.lastName,
+        contact: signupDto.contact,
+        gender: signupDto.gender,
+        dateOfBirth: signupDto.dateOfBirth,
+      };
+
+      expect(appwriteUserService.registerUser).toHaveBeenCalledWith(
+        registerDto,
       );
 
-      parentService.create = jest
-        .fn()
-        .mockResolvedValueOnce({ id: 'parent_001' });
-
-      const result = await authService.register(registerDto);
-      expect(passwordService.hashPassword).toHaveBeenCalledWith(
-        registerDto.password,
-      );
-
-      expect(transactionalEntityManager.create).toHaveBeenCalledWith(Auth, {
-        email: registerDto.email,
-        password: 'hashedPassword',
-        userType: registerDto.userType,
+      expect(childService.create).toHaveBeenCalledWith(createUserDto);
+      expect(result).toEqual({
+        accessToken: mockToken,
+        session: { $id: 'testId' },
       });
-      expect(transactionalEntityManager.save).toHaveBeenCalledTimes(2);
-      expect(result).toEqual({ accessToken: mockToken });
     });
 
-    it('should hash the password and create an Auth entity for a child', async () => {
-      jest
-        .spyOn(authService, 'generateToken')
-        .mockResolvedValue({ accessToken: mockToken });
-      const childId = 'child_001';
-      registerDto.userType = UserType.CHILD;
-      transactionalEntityManager.create = jest.fn().mockReturnValueOnce({
-        ...createdUser,
-        userType: UserType.CHILD,
+    it('should signup a teacher', async () => {
+      signupDto.userType = UserType.TEACHER;
+      const id = 'teacher_001';
+
+      jest.spyOn(appwriteUserService, 'registerUser').mockResolvedValue({
+        session: { $id: 'testId' } as Models.Session,
+        appwriteUser: { $id: id } as Models.User<Models.Preferences>,
+        jwtToken: mockToken,
       });
-      mockAuthRepository.manager.transaction = jest.fn().mockImplementationOnce(
-        async (callback) => callback(transactionalEntityManager), // Mock transaction callback
+
+      const { email, password, firstName, lastName, userType } = signupDto;
+      const result = await authService.signup(signupDto);
+      const registerDto = {
+        email,
+        password,
+        name: `${firstName} ${lastName}`,
+        userType,
+      };
+
+      const createUserDto: CreateUserDto = {
+        appwriteId: id,
+        firstName: signupDto.firstName,
+        lastName: signupDto.lastName,
+        contact: signupDto.contact,
+        gender: signupDto.gender,
+        dateOfBirth: signupDto.dateOfBirth,
+      };
+
+      expect(appwriteUserService.registerUser).toHaveBeenCalledWith(
+        registerDto,
       );
 
-      childService.create = jest.fn().mockResolvedValueOnce({ id: childId });
-
-      const result = await authService.register(registerDto);
-      expect(passwordService.hashPassword).toHaveBeenCalledWith(
-        registerDto.password,
-      );
-
-      expect(transactionalEntityManager.create).toHaveBeenCalledWith(Auth, {
-        email: registerDto.email,
-        password: 'hashedPassword',
-        userType: registerDto.userType,
+      expect(teacherService.create).toHaveBeenCalledWith(createUserDto);
+      expect(result).toEqual({
+        accessToken: mockToken,
+        session: { $id: 'testId' },
       });
-      expect(transactionalEntityManager.save).toHaveBeenCalledTimes(2);
-      expect(result).toEqual({ accessToken: mockToken });
     });
 
-    it('should hash the password and create an Auth entity for a teacher', async () => {
+    it('should throw an error if signup fails', async () => {
+      // Mock `registerUser` to throw an error
       jest
-        .spyOn(authService, 'generateToken')
-        .mockResolvedValue({ accessToken: mockToken });
-      const teacherId = 'teacher_001';
-      registerDto.userType = UserType.TEACHER;
+        .spyOn(appwriteUserService, 'registerUser')
+        .mockRejectedValue(new Error('Appwrite registration failed'));
 
-      transactionalEntityManager.create = jest.fn().mockReturnValueOnce({
-        ...createdUser,
-        userType: UserType.TEACHER,
-      });
-      mockAuthRepository.manager.transaction = jest.fn().mockImplementationOnce(
-        async (callback) => callback(transactionalEntityManager), // Mock transaction callback
-      );
-
-      teacherService.create = jest
-        .fn()
-        .mockResolvedValueOnce({ id: teacherId });
-
-      const result = await authService.register(registerDto);
-      expect(passwordService.hashPassword).toHaveBeenCalledWith(
-        registerDto.password,
-      );
-
-      expect(transactionalEntityManager.create).toHaveBeenCalledWith(Auth, {
-        email: registerDto.email,
-        password: 'hashedPassword',
-        userType: registerDto.userType,
-      });
-      expect(transactionalEntityManager.save).toHaveBeenCalledTimes(2);
-      expect(result).toEqual({ accessToken: mockToken });
+      try {
+        // Act
+        await authService.signup(signupDto);
+      } catch (error) {
+        // Assert
+        expect(error).toBeInstanceOf(Error);
+        expect(error.message).toBe(
+          'Failed to signup user: Appwrite registration failed',
+        );
+      }
     });
   });
 
@@ -237,20 +266,35 @@ describe('Auth Service', () => {
       email: 'john.parent@example.com',
       password: 'password123',
     };
-    it('should call validate and generate token when login service is called', async () => {
+    it('should login a user and return token', async () => {
       const mockToken = 'mockAccessToken';
-      jest.spyOn(authService, 'validateUser').mockResolvedValue(mockAuths[0]);
-      jest
-        .spyOn(authService, 'generateToken')
-        .mockResolvedValue({ accessToken: mockToken });
+      jest.spyOn(appwriteUserService, 'loginUser').mockResolvedValue({
+        session: { $id: 'testId' } as Models.Session,
+        jwtToken: mockToken,
+      });
 
       expect(await authService.login(loginDto)).toStrictEqual({
         accessToken: mockToken,
+        session: { $id: 'testId' },
       });
-      expect(authService.validateUser).toHaveBeenCalledTimes(1);
-      expect(authService.validateUser).toHaveBeenCalledWith(loginDto);
-      expect(authService.generateToken).toHaveBeenCalledTimes(1);
-      expect(authService.generateToken).toHaveBeenCalledWith(mockAuths[0]);
+    });
+
+    it('should throw an error if login fails', async () => {
+      // Mock `registerUser` to throw an error
+      jest
+        .spyOn(appwriteUserService, 'loginUser')
+        .mockRejectedValue(new Error('Appwrite registration failed'));
+
+      try {
+        // Act
+        await authService.login(loginDto);
+      } catch (error) {
+        // Assert
+        expect(error).toBeInstanceOf(Error);
+        expect(error.message).toBe(
+          'Failed to login user: Appwrite registration failed',
+        );
+      }
     });
   });
   describe('validateUser', () => {
@@ -417,27 +461,29 @@ describe('Auth Service', () => {
 
   describe('getUserType', () => {
     it('should return the userType given the id', async () => {
-      const testAuth = {
-        id: 'c6614cd8-ec2b-4802-ac3e-bad94207cec3',
-        email: 'john.parent@example.com',
-        password: 'password123',
-        userType: UserType.PARENT,
-        parent: mockParents[0],
-        roles: [mockRole.PARENT],
-        createdAt: new Date('2021-10-12T22:45:00Z'),
-        updatedAt: new Date('2021-10-12T22:45:00Z'),
-      };
-      mockAuthRepository.findOne = jest.fn().mockResolvedValue(testAuth);
-      expect(
-        await authService.getUserType('c6614cd8-ec2b-4802-ac3e-bad94207cec3'),
-      ).toBe(UserType.PARENT);
+      jest
+        .spyOn(appwriteUserService, 'getUserType')
+        .mockResolvedValue(UserType.PARENT);
+
+      expect(await authService.getUserType('testID')).toStrictEqual(
+        UserType.PARENT,
+      );
     });
 
-    it('should return error if user is not found', async () => {
-      mockAuthRepository.findOne = jest.fn().mockResolvedValue(undefined);
-      await expect(
-        authService.getUserType('c6614cd8-ec2b-4802-ac3e-bad94207cec3'),
-      ).rejects.toThrow(new Error('User not found'));
+    it('should return error if getUserType fails', async () => {
+      jest
+        .spyOn(appwriteUserService, 'getUserType')
+        .mockRejectedValue(new Error('Appwrite getUserType failed'));
+      try {
+        // Act
+        await authService.getUserType('testId');
+      } catch (error) {
+        // Assert
+        expect(error).toBeInstanceOf(Error);
+        expect(error.message).toBe(
+          'Failed to get user type: Appwrite getUserType failed',
+        );
+      }
     });
   });
 
