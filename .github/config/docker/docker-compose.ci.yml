@@ -10,6 +10,10 @@ services:
       - _APP_USAGE_STATS=false
       - _APP_DOMAIN=http://localhost
       - _APP_PLATFORM_CONSOLE_HOSTNAME=http://localhost
+      - _APP_DATABASE_HOST=postgres
+      - _APP_DATABASE_USER=testuser
+      - _APP_DATABASE_PASSWORD=testpass
+      - _APP_DATABASE_NAME=testdb
     ports:
       - '80:80'
     healthcheck:
@@ -19,21 +23,17 @@ services:
       start_period: 10s
       timeout: 2s
 
-  database:
-    image: mariadb:latest
+  postgres:
+    image: postgres:16
     environment:
-      - MYSQL_ROOT_PASSWORD=root
-      - MYSQL_DATABASE=testdb
-      - MYSQL_USER=testuser
-      - MYSQL_PASSWORD=testpass
-      - MARIADB_AUTO_UPGRADE=1
+      - POSTGRES_USER=testuser
+      - POSTGRES_PASSWORD=testpass
+      - POSTGRES_DB=testdb
     ports:
-      - '3306:3306'
+      - '5432:5432'
     healthcheck:
-      test: ['CMD', 'mysqladmin', 'ping', '-h', 'localhost']
+      test: ['CMD', 'pg_isready', '-U', 'testuser']
       interval: 10s
       retries: 5
       start_period: 10s
       timeout: 2s
-
-  # Other services (e.g., your app) can be defined here
