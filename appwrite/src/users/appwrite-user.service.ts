@@ -2,24 +2,31 @@ import { Injectable } from '@nestjs/common';
 import { AppwriteClientService } from '../appwrite-client.service';
 import { LoginDto } from '@app-modules/auth/dtos/login.dto';
 import { UserType } from '@app-types/module.types';
+import { RegisterDto } from '@app-modules/auth/dtos/register.dto';
+import { Models } from 'node-appwrite';
 
 @Injectable()
 export class AppwriteUserService {
   constructor(private readonly appwriteClientService: AppwriteClientService) {}
 
   // Register a new user
-  async registerUser(
-    email: string,
-    password: string,
-    name: string,
-    userType: UserType,
-  ) {
+  async registerUser(registerDto: RegisterDto): Promise<{
+    appwriteUser: Models.User<Models.Preferences>;
+    session: Models.Session;
+    jwtToken: string;
+  }> {
+    const { email, password, userType, name } = registerDto;
     const account = this.appwriteClientService.getAccountService();
     const database = this.appwriteClientService.getDatabaseService();
 
     try {
       // Step 1: Create the user in Appwrite
-      const user = await account.create('unique()', email, password, name);
+      const appwriteUser = await account.create(
+        'unique()',
+        email,
+        password,
+        name,
+      );
 
       // Step 2: Authenticate the user to get a session token
       const session = await account.createSession(email, password);
@@ -41,10 +48,10 @@ export class AppwriteUserService {
         process.env.APPWRITE_DATABASE_ID, // Database ID in Appwrite
         process.env.APPWRITE_USER_COLLECTION_ID, // Collection ID
         'unique()', // Unique document ID
-        { userId: user.$id, userType }, // Document data
+        { userId: appwriteUser.$id, userType }, // Document data
       );
 
-      return { user, session: session, jwtToken: jwtResponse.jwt };
+      return { appwriteUser, session: session, jwtToken: jwtResponse.jwt };
     } catch (error) {
       throw new Error(
         `Failed to register and generate JWT for user: ${error.message}`,
