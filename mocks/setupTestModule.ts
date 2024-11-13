@@ -17,6 +17,8 @@ export async function setupTestModule(
         username: process.env.DB_USERNAME,
         entities: entities, // Entities to test
         synchronize: true, // Auto-sync schema
+        dropSchema: true,
+        logging: false,
       }),
       TypeOrmModule.forFeature(entities), // Register repositories for the entities
     ],
@@ -27,7 +29,7 @@ export async function setupTestModule(
 
 export async function closeTestModule(module: TestingModule) {
   const dataSource: DataSource = module.get<DataSource>(getDataSourceToken());
-  if (dataSource.isInitialized) {
+  if (dataSource && dataSource.isInitialized) {
     await dataSource.destroy(); // Close the DataSource after tests
   }
 }
