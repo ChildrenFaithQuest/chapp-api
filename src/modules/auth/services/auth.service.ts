@@ -1,6 +1,5 @@
 import {
   Injectable,
-  ConflictException,
   UnauthorizedException,
   BadRequestException,
   Optional,
@@ -9,7 +8,7 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { JwtService } from '@nestjs/jwt';
-import { Repository, EntityManager } from 'typeorm';
+import { Repository } from 'typeorm';
 import { Auth } from '../entities/auth.entity';
 import { PasswordService } from '@app-shared/services/password-service';
 import { ParentService } from '@app-modules/user/services/parent.service';
@@ -23,6 +22,9 @@ import { ChangePasswordDto } from '../dtos/change-password.dto';
 import { UserType } from '@app-types/module.types';
 import { Role } from '@app-modules/role/entities/role.entity';
 import { Permission, RoleType } from '@app-types/role.types';
+import { AppwriteUserService } from '@app-root/appwrite/src/users/appwrite-user.service';
+import { Models } from 'node-appwrite';
+import { SignupDto } from '../dtos/signup.dto';
 
 @Injectable()
 export class AuthService {
@@ -34,83 +36,51 @@ export class AuthService {
     private readonly childService: ChildService,
     private readonly teacherService: TeacherService,
     @Optional() private readonly jwtService: JwtService,
+    @Optional() private readonly appwriteUserService: AppwriteUserService,
   ) {}
 
-  async register(registerDto: RegisterDto): Promise<{ accessToken: string }> {
-    const { email, password, userType, ...userDetails } = registerDto;
-    return this.authRepository.manager.transaction(
-      async (transactionalEntityManager: EntityManager) => {
-        // Check if the email already exists
-        const existingAuth = await transactionalEntityManager.findOne(Auth, {
-          where: { email: registerDto.email },
-        });
-        if (existingAuth) {
-          throw new ConflictException('Email already in use');
-        }
+  async signup(
+    signupDto: SignupDto,
+  ): Promise<{ accessToken: string; session: Models.Session }> {
+    try {
+      const { email, password, userType, contact, ...userDetails } = signupDto;
+      const name = `${userDetails.firstName} ${userDetails.lastName}`;
+      const registerDto: RegisterDto = { email, password, userType, name };
+      const { appwriteUser, jwtToken, session } =
+        await this.appwriteUserService.registerUser(registerDto);
+      const { firstName, lastName, gender, dateOfBirth } = userDetails;
+      const appwriteId = appwriteUser.$id;
+      const createUserDto: CreateUserDto = {
+        appwriteId,
+        firstName,
+        lastName,
+        gender,
+        dateOfBirth,
+      };
 
-        // Hash the password
-        const hashedPassword =
-          await this.passwordService.hashPassword(password);
-
-        // Create authentication record
-        const auth = transactionalEntityManager.create(Auth, {
-          email,
-          password: hashedPassword,
-          userType, // Assuming userType is part of RegisterDto
-        });
-
-        // Save authentication record
-        await transactionalEntityManager.save(Auth, auth);
-
-        const { firstName, lastName, contact, gender, dateOfBirth } =
-          userDetails;
-
-        // Create user-specific record based on userType
-        let userSpecificRecord;
-        if (userType === 'parent') {
-          userSpecificRecord = await this.parentService.create(
-            {
-              firstName,
-              lastName,
-              contact,
-              gender,
-              dateOfBirth,
-            } as CreateUserDto,
-            transactionalEntityManager,
-          );
-          auth.parent = userSpecificRecord;
-        } else if (userType === 'child') {
-          userSpecificRecord = await this.childService.create(
-            { firstName, lastName, gender, dateOfBirth } as CreateUserDto,
-            transactionalEntityManager,
-          );
-          auth.child = userSpecificRecord;
-        } else if (registerDto.userType === 'teacher') {
-          userSpecificRecord = await this.teacherService.create(
-            {
-              firstName,
-              lastName,
-              contact,
-              gender,
-              dateOfBirth,
-            } as CreateUserDto,
-            transactionalEntityManager,
-          );
-          auth.teacher = userSpecificRecord;
-        }
-
-        // Save the updated authentication record with user-specific details
-        await transactionalEntityManager.save(Auth, auth);
-
-        // return auth;
-        return await this.generateToken(auth);
-      },
-    );
+      if (userType === UserType.PARENT) {
+        await this.parentService.create({ ...createUserDto, contact });
+      } else if (userType === UserType.CHILD) {
+        await this.childService.create(createUserDto);
+      } else if (registerDto.userType === UserType.TEACHER) {
+        await this.teacherService.create({ ...createUserDto, contact });
+      }
+      return { accessToken: jwtToken, session };
+    } catch (error) {
+      throw new Error(`Failed to signup user: ${error.message}`);
+    }
   }
 
-  async login(loginDto: LoginDto): Promise<{ accessToken: string }> {
-    const auth = await this.validateUser(loginDto);
-    return await this.generateToken(auth);
+  async login(
+    loginDto: LoginDto,
+  ): Promise<{ accessToken: string; session: Models.Session }> {
+    try {
+      const { session, jwtToken } =
+        await this.appwriteUserService.loginUser(loginDto);
+      return { accessToken: jwtToken, session };
+    } catch (error) {
+      throw new Error(`Failed to login user: ${error.message}`);
+    }
   }
 
   async validateUser(loginDto: LoginDto): Promise<Auth> {
@@ -216,16 +186,13 @@ export class AuthService {
   /**
    * Retrieves the userType for the given user by their ID.
    */
-  async getUserType(userId: string): Promise<UserType> {
-    const user = await this.authRepository.findOne({
-      where: { id: userId },
-    });
-
-    if (!user) {
-      throw new Error('User not found');
+  async getUserType(userId: string): Promise<UserType | null> {
+    try {
+      const userType = await this.appwriteUserService.getUserType(userId);
+      return userType;
+    } catch (error) {
+      throw new Error(`Failed to get user type: ${error.message}`);
     }
-
-    return user.userType;
   }
 
   async getUserRoles(userId: string): Promise<Role[]> {
