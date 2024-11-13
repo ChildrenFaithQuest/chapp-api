@@ -30,20 +30,20 @@ jobs:
           - 5432:5432
 
         # MariaDB service for Appwrite
-      mariadb:
-        image: mariadb:latest
-        env:
-          MYSQL_ROOT_PASSWORD: root # MariaDB-specific env variables
-          MYSQL_DATABASE: appwrite
-          MYSQL_USER: appwriteuser
-          MYSQL_PASSWORD: appwritepass
-        ports:
-          - 3306:3306
-        options: >-
-          --health-cmd="mysqladmin ping -h localhost"
-          --health-interval=10s
-          --health-timeout=5s
-          --health-retries=5
+      # mariadb:
+      #   image: mariadb:latest
+      #   env:
+      #     MYSQL_ROOT_PASSWORD: root # MariaDB-specific env variables
+      #     MYSQL_DATABASE: appwrite
+      #     MYSQL_USER: appwriteuser
+      #     MYSQL_PASSWORD: appwritepass
+      #   ports:
+      #     - 3306:3306
+      #   options: >-
+      #     --health-cmd="mysqladmin ping -h localhost"
+      #     --health-interval=10s
+      #     --health-timeout=5s
+      #     --health-retries=5
 
     env:
       DB_HOST: 127.0.0.1 # PostgreSQL is running locally in the container
