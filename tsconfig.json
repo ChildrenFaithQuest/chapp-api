@@ -26,6 +26,12 @@
     "forceConsistentCasingInFileNames": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src/**/*", "**/*.test.ts", "**/*.e2e-test.ts", "mocks/**/*"],
+  "include": [
+    "src/**/*",
+    "**/*.test.ts",
+    "**/*.e2e-test.ts",
+    "mocks/**/*",
+    "appwrite/**/*"
+  ],
   "exclude": ["node_modules", "jest.config.ts"]
 }
