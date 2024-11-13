@@ -5,7 +5,7 @@ services:
     image: appwrite/appwrite:latest
     environment:
       - _APP_ENV=testing
-      - _APP_OPENSSL_KEY_V1=${{ secrets.APPWRITE_OPENSSL_KEY_V1 }}
+      - _APP_OPENSSL_KEY_V1=$${{ secrets.APPWRITE_OPENSSL_KEY_V1 }}
       - _APP_STORAGE_DEVICE=local
       - _APP_USAGE_STATS=false
       - _APP_DOMAIN=http://localhost
