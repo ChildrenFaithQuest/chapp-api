@@ -30,7 +30,7 @@ services:
       - POSTGRES_PASSWORD=testpass
       - POSTGRES_DB=testdb
     ports:
-      - '5432:5432'
+      - '5433:5432'
     healthcheck:
       test: ['CMD', 'pg_isready', '-U', 'testuser']
       interval: 10s
