@@ -2,16 +2,17 @@ import { UserGender } from '@app-types/module.types';
 import { Parent } from '@app-modules/user/entities/parent.entity';
 import { mockChildren } from './child';
 import { mockClass } from './class';
+import { CreateUserDto } from '@app-modules/user/dtos/create-user.dto';
 
-export const mockParentData = {
+export const mockParentData: CreateUserDto = {
   gender: UserGender.FEMALE,
   firstName: 'John',
   lastName: 'Doe',
+  appwriteId: '6166b3b3b5bm',
   contact: {
     phoneNumber: '+1234567890',
     address: '788 Elm St, Springfield',
   },
-  children: [],
 };
 
 export const mockParents: Parent[] = [
@@ -25,6 +26,7 @@ export const mockParents: Parent[] = [
       address: '788 Elm St, Springfield',
     },
     children: [],
+    appwriteId: '6166b3b3b5bm',
     createdAt: new Date('2021-10-12T22:45:00Z'),
     updatedAt: new Date('2021-10-12T22:45:00Z'),
   },
@@ -33,6 +35,7 @@ export const mockParents: Parent[] = [
     gender: UserGender.MALE,
     firstName: 'David',
     lastName: 'Johnson',
+    appwriteId: '6166b3b855bm',
 
     contact: {
       phoneNumber: '+0987654321',
@@ -45,6 +48,7 @@ export const mockParents: Parent[] = [
         firstName: 'Liam',
         lastName: 'Smith',
         class: mockClass.LOVE,
+        appwriteId: '618733b3b5b3d',
         createdAt: new Date('2021-10-12T22:45:00Z'),
         updatedAt: new Date('2021-10-12T22:45:00Z'),
         // parent: mockParents[1],
@@ -58,6 +62,7 @@ export const mockParents: Parent[] = [
     gender: UserGender.FEMALE,
     firstName: 'Sarah',
     lastName: 'Taylor',
+    appwriteId: '6166b3b3b5ba',
     contact: {
       phoneNumber: '+1122334455',
       address: '123 Maple St, Greenfield',
@@ -71,6 +76,7 @@ export const mockParents: Parent[] = [
     gender: UserGender.MALE,
     firstName: 'Daniel',
     lastName: 'Johnson',
+    appwriteId: '6166b3b3b5bb',
     contact: {
       phoneNumber: '+5566778899',
       address: '321 Pine St, Rivertown',
@@ -84,6 +90,7 @@ export const mockParents: Parent[] = [
     gender: UserGender.FEMALE,
     firstName: 'Laura',
     lastName: 'Davis',
+    appwriteId: '6166b3b3b5bc',
     contact: {
       phoneNumber: '+2233445566',
       address: '654 Birch St, Lakewood',
@@ -97,6 +104,7 @@ export const mockParents: Parent[] = [
     gender: UserGender.MALE,
     firstName: 'Thomas',
     lastName: 'Wilson',
+    appwriteId: '6166b3b3b5bd',
     contact: {
       phoneNumber: '+6677889900',
       address: '987 Cedar St, Hilltown',
@@ -110,6 +118,7 @@ export const mockParents: Parent[] = [
     gender: UserGender.FEMALE,
     firstName: 'Jessica',
     lastName: 'Martinez',
+    appwriteId: '6166b3b3b5be',
     contact: {
       phoneNumber: '+3344556677',
       address: '852 Walnut St, Brookside',
@@ -123,6 +132,7 @@ export const mockParents: Parent[] = [
     gender: UserGender.MALE,
     firstName: 'Noah',
     lastName: 'Garcia',
+    appwriteId: '6166b3b3b5bf',
     contact: {
       phoneNumber: '+9988776655',
       address: '741 Spruce St, Meadowbrook',
@@ -136,6 +146,7 @@ export const mockParents: Parent[] = [
     gender: UserGender.FEMALE,
     firstName: 'Amanda',
     lastName: 'Rodriguez',
+    appwriteId: '6166b3b3b5bg',
     contact: {
       phoneNumber: '+2233445566',
       address: '963 Fir St, Grandview',
@@ -149,6 +160,7 @@ export const mockParents: Parent[] = [
     gender: UserGender.MALE,
     firstName: 'Elijah',
     lastName: 'Hernandez',
+    appwriteId: '6166b3b3b5bh',
     contact: {
       phoneNumber: '+4455667788',
       address: '159 Elm St, Crestwood',
