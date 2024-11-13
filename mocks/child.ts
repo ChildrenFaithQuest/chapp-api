@@ -2,8 +2,10 @@ import { Child } from '@app-modules/user/entities/child.entity';
 import { UserGender } from '@app-types/module.types';
 // import { mockParents } from './parent';
 import { mockClass } from './class';
+import { CreateUserDto } from '@app-modules/user/dtos/create-user.dto';
 
-export const mockChildData = {
+export const mockChildData: CreateUserDto = {
+  appwriteId: '6166b3b3b5b3d',
   gender: UserGender.FEMALE,
   firstName: 'Sophia',
   lastName: 'Johnson',
@@ -18,6 +20,7 @@ export const mockChildren: Child[] = [
     class: mockClass.FAITHFULNESS,
     createdAt: new Date('2021-10-12T22:45:00Z'),
     updatedAt: new Date('2021-10-12T22:45:00Z'),
+    appwriteId: '6166b3b3b5b3d',
     // parent: mockParents[0],
   },
   {
@@ -28,6 +31,7 @@ export const mockChildren: Child[] = [
     class: mockClass.LOVE,
     createdAt: new Date('2021-10-12T22:45:00Z'),
     updatedAt: new Date('2021-10-12T22:45:00Z'),
+    appwriteId: '6166b3b3b5b3e',
     // parent: mockParents[1],
   },
   {
@@ -38,6 +42,7 @@ export const mockChildren: Child[] = [
     class: mockClass.GOODNESS,
     createdAt: new Date('2021-10-12T22:45:00Z'),
     updatedAt: new Date('2021-10-12T22:45:00Z'),
+    appwriteId: '6166b3b3b5bf',
     // parent: mockParents[2],
   },
   {
@@ -48,6 +53,7 @@ export const mockChildren: Child[] = [
     class: mockClass.KINDNESS,
     createdAt: new Date('2021-10-12T22:45:00Z'),
     updatedAt: new Date('2021-10-12T22:45:00Z'),
+    appwriteId: '6166b3b3b5bg',
     // parent: mockParents[3],
   },
   {
@@ -56,6 +62,7 @@ export const mockChildren: Child[] = [
     firstName: 'Olly',
     lastName: 'Miller',
     class: mockClass.PATIENCE,
+    appwriteId: '6166b3b3b5bh',
     // parent: mockParents[4],
     createdAt: new Date('2021-10-12T22:45:00Z'),
     updatedAt: new Date('2021-10-12T22:45:00Z'),
@@ -67,6 +74,7 @@ export const mockChildren: Child[] = [
     lastName: 'Wilson',
     class: mockClass.GOODNESS,
     // parent: mockParents[5],
+    appwriteId: '6166b3b3b5bi',
     createdAt: new Date('2021-10-12T22:45:00Z'),
     updatedAt: new Date('2021-10-12T22:45:00Z'),
   },
@@ -76,6 +84,7 @@ export const mockChildren: Child[] = [
     firstName: 'Isabella',
     lastName: 'Taylor',
     class: mockClass.FAITHFULNESS,
+    appwriteId: '6166b3b3b5bj',
     // parent: mockParents[6],
     createdAt: new Date('2021-10-12T22:45:00Z'),
     updatedAt: new Date('2021-10-12T22:45:00Z'),
@@ -87,6 +96,7 @@ export const mockChildren: Child[] = [
     lastName: 'Anderson',
     class: mockClass.PEACE,
     // parent: mockParents[7],
+    appwriteId: '6166b3b3b5bk',
     createdAt: new Date('2021-10-12T22:45:00Z'),
     updatedAt: new Date('2021-10-12T22:45:00Z'),
   },
@@ -97,6 +107,7 @@ export const mockChildren: Child[] = [
     lastName: 'Thomas',
     class: mockClass.KINDNESS,
     // parent: mockParents[8],
+    appwriteId: '6166b3b3b5bl',
     createdAt: new Date('2021-10-12T22:45:00Z'),
     updatedAt: new Date('2021-10-12T22:45:00Z'),
   },
@@ -107,6 +118,7 @@ export const mockChildren: Child[] = [
     lastName: 'Jackson',
     class: mockClass.GENTLENESS,
     // parent: mockParents[9],
+    appwriteId: '6166b3b3b5bm',
     createdAt: new Date('2021-10-12T22:45:00Z'),
     updatedAt: new Date('2021-10-12T22:45:00Z'),
   },

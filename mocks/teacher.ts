@@ -8,6 +8,7 @@ export const mockTeacherData = {
   gender: UserGender.FEMALE,
   firstName: 'Olivia',
   lastName: 'Williams',
+  appwriteId: '616983b3b5b3d',
   contact: {
     phoneNumber: '+1234567890',
     address: '789 Elm St, Springfield',
@@ -18,6 +19,7 @@ export const mockTeacherData = {
 export const mockTeachers: Teacher[] = [
   {
     id: '3dbaac0a-1302-4f3e-b779-8426ff261e56',
+    appwriteId: '616983b3b5b3a',
     gender: UserGender.FEMALE,
     firstName: 'Olivia',
     lastName: 'Williams',
@@ -41,6 +43,7 @@ export const mockTeachers: Teacher[] = [
     },
     classes: [mockClass.FAITHFULNESS],
     organization: mockOrg.A,
+    appwriteId: '616983b3b5b3b',
     createdAt: new Date('2021-10-12T22:45:00Z'),
     updatedAt: new Date('2021-10-12T22:45:00Z'),
   },
@@ -49,6 +52,7 @@ export const mockTeachers: Teacher[] = [
     gender: UserGender.FEMALE,
     firstName: 'Susan',
     lastName: 'Johnson',
+    appwriteId: '616983b3b5b3c',
     contact: {
       phoneNumber: '+1122334455',
       address: '123 Maple St, Greenfield',
@@ -63,6 +67,7 @@ export const mockTeachers: Teacher[] = [
     gender: UserGender.MALE,
     firstName: 'Robert',
     lastName: 'Brown',
+    appwriteId: '616983b3b5b3e',
     contact: {
       phoneNumber: '+5566778899',
       address: '321 Pine St, Rivertown',
@@ -77,6 +82,7 @@ export const mockTeachers: Teacher[] = [
     gender: UserGender.FEMALE,
     firstName: 'Rachel',
     lastName: 'Davis',
+    appwriteId: '616983b3b5b3f',
     contact: {
       phoneNumber: '+2233445566',
       address: '654 Birch St, Lakewood',
@@ -91,6 +97,7 @@ export const mockTeachers: Teacher[] = [
     gender: UserGender.MALE,
     firstName: 'Jacob',
     lastName: 'Wilson',
+    appwriteId: '616983b3b5b3g',
     contact: {
       phoneNumber: '+6677889900',
       address: '987 Cedar St, Hilltown',
@@ -105,6 +112,7 @@ export const mockTeachers: Teacher[] = [
     gender: UserGender.FEMALE,
     firstName: 'Ava',
     lastName: 'Martinez',
+    appwriteId: '616983b3b5b3h',
     // email: 'ava.martinez@example.com',
     // password: 'password123',
     contact: {
@@ -121,6 +129,7 @@ export const mockTeachers: Teacher[] = [
     gender: UserGender.MALE,
     firstName: 'James',
     lastName: 'Garcia',
+    appwriteId: '616983b3b5b3i',
     contact: {
       phoneNumber: '+9988776655',
       address: '741 Spruce St, Meadowbrook',
@@ -135,6 +144,7 @@ export const mockTeachers: Teacher[] = [
     gender: UserGender.FEMALE,
     firstName: 'Mia',
     lastName: 'Rodriguez',
+    appwriteId: '616983b3b5b3j',
     contact: {
       phoneNumber: '+2233445566',
       address: '963 Fir St, Grandview',
@@ -149,6 +159,7 @@ export const mockTeachers: Teacher[] = [
     gender: UserGender.MALE,
     firstName: 'James',
     lastName: 'Hernandez',
+    appwriteId: '616983b3b5b3k',
     contact: {
       phoneNumber: '+4455667788',
       address: '159 Elm St, Crestwood',

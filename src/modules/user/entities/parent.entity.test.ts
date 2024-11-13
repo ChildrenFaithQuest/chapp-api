@@ -6,17 +6,17 @@ import { Parent } from './parent.entity';
 import { Attendance } from '@app-modules/attendance/entities/attendance.entity';
 import { Class } from '@app-modules/class/entities/class.entity';
 import { Teacher } from './teacher.entity';
+import { Organization } from '@app-modules/organization/entities/organization.entity';
 import {
   closeTestModule,
   setupTestModule,
 } from '@app-root/mocks/setupTestModule';
-import { Organization } from '@app-modules/organization/entities/organization.entity';
 
 describe('Parent Entity', () => {
   let dataSource: DataSource;
 
   // Mock parent data
-  const mockParent = {
+  const mockParent: Parent = {
     id: '4dca01c6-b834-4b47-88a1-c612dff74254',
     gender: UserGender.FEMALE,
     firstName: 'John',
@@ -25,6 +25,7 @@ describe('Parent Entity', () => {
       phoneNumber: '+1234567890',
       address: '788 Elm St, Springfield',
     },
+    appwriteId: 'testAppwriteId',
     children: [],
     createdAt: new Date('2021-10-12T22:45:00Z'),
     updatedAt: new Date('2021-10-12T22:45:00Z'),
@@ -45,7 +46,9 @@ describe('Parent Entity', () => {
   });
 
   afterAll(async () => {
-    await closeTestModule(module);
+    if (module) {
+      await closeTestModule(module);
+    }
   });
 
   it('should create a Parent entity table with proper columns', async () => {

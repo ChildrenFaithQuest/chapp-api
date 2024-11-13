@@ -1,16 +1,19 @@
 import { DataSource } from 'typeorm';
-import { Child } from './child.entity'; // Adjust this import based on your file structure
 import { TestingModule } from '@nestjs/testing';
-import { UserGender } from '@app-types/module.types';
+
 import { Parent } from './parent.entity';
-import { Attendance } from '@app-modules/attendance/entities/attendance.entity';
-import { Class } from '@app-modules/class/entities/class.entity';
+import { Child } from './child.entity'; // Adjust this import based on your file structure
 import { Teacher } from './teacher.entity';
+import { Class } from '@app-modules/class/entities/class.entity';
+import { Attendance } from '@app-modules/attendance/entities/attendance.entity';
+import { Organization } from '@app-modules/organization/entities/organization.entity';
+
+import { UserGender } from '@app-types/module.types';
+
 import {
   closeTestModule,
   setupTestModule,
 } from '@app-root/mocks/setupTestModule';
-import { Organization } from '@app-modules/organization/entities/organization.entity';
 
 describe('Child Entity', () => {
   let dataSource: DataSource;
@@ -23,24 +26,35 @@ describe('Child Entity', () => {
     email: 'emily.doe@example.com',
     password: 'password123',
     gender: UserGender.FEMALE,
+    appwriteId: 'testAppwriteId',
   };
   let module: TestingModule;
 
   beforeAll(async () => {
-    module = await setupTestModule([
-      Child,
-      Parent,
-      Attendance,
-      Class,
-      Organization,
-      Teacher,
-    ]);
-
-    dataSource = module.get<DataSource>(DataSource);
+    try {
+      module = await setupTestModule([
+        Teacher,
+        Parent,
+        Child,
+        Attendance,
+        Class,
+        Organization,
+      ]);
+      dataSource = module.get<DataSource>(DataSource);
+      await dataSource.runMigrations();
+    } catch (error) {
+      console.log('Error in beforeAll setup:', error);
+      throw error;
+    }
   });
 
   afterAll(async () => {
-    await closeTestModule(module);
+    try {
+      await closeTestModule(module);
+    } catch (error) {
+      console.error('Error in afterAll teardown:', error);
+      throw error;
+    }
   });
 
   it('should create a Child entity table with proper columns', async () => {
@@ -53,6 +67,7 @@ describe('Child Entity', () => {
     const lastNameColumn = table?.findColumnByName('lastName');
     const genderColumn = table?.findColumnByName('gender');
     const dateOfBirthColumn = table?.findColumnByName('dateOfBirth');
+    const appwriteIdColumn = table?.findColumnByName('appwriteId'); // Include if this column is expected
 
     const createdAtColumn = table?.findColumnByName('createdAt');
     const updatedAtColumn = table?.findColumnByName('updatedAt');
@@ -69,6 +84,7 @@ describe('Child Entity', () => {
     expect(dateOfBirthColumn).toBeDefined();
     expect(createdAtColumn).toBeDefined();
     expect(updatedAtColumn).toBeDefined();
+    expect(appwriteIdColumn).toBeDefined();
   });
 
   it('should validate that Child has all necessary fields constraints', async () => {

@@ -9,8 +9,6 @@ import {
 import { Child } from '@app-modules/user/entities/child.entity';
 import { Parent } from '@app-modules/user/entities/parent.entity';
 import { Teacher } from '@app-modules/user/entities/teacher.entity';
-import { mockChildren } from '@app-root/mocks/child';
-import { mockClass } from '@app-root/mocks/class';
 import { Organization } from './organization.entity';
 import { mockOrg } from '@app-root/mocks/organization';
 
@@ -56,12 +54,7 @@ describe('Organization Entity', () => {
   });
 
   it('should save and retrieve a Organization entity successfully', async () => {
-    const classRepository = dataSource.getRepository(Class);
-    const childRepository = dataSource.getRepository(Child);
     const orgRepository = dataSource.getRepository(Organization);
-    await classRepository.save(mockClass.FAITHFULNESS);
-    await childRepository.save(mockChildren[0]);
-
     const orgEntity = orgRepository.create(mockOrg.A);
     const savedOrg = await orgRepository.save(orgEntity);
 

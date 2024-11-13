@@ -1,21 +1,16 @@
-import { CreateUserDto } from '@app-modules/user/dtos/create-user.dto';
-import { UserType } from '@app-types/module.types';
-import { ApiProperty } from '@nestjs/swagger';
-import { IsEmail, IsString, MinLength, IsEnum } from 'class-validator';
+import { ApiProperty, OmitType } from '@nestjs/swagger';
+import { IsString, IsNotEmpty } from 'class-validator';
+import { SignupDto } from './signup.dto';
 
-export class RegisterDto extends CreateUserDto {
-  @ApiProperty()
-  @IsEmail()
-  email: string;
-
-  @ApiProperty()
+export class RegisterDto extends OmitType(SignupDto, [
+  'contact',
+  'dateOfBirth',
+  'gender',
+  'firstName',
+  'lastName',
+]) {
   @IsString()
-  @MinLength(6) // Example length constraints for password
-  password: string;
-
+  @IsNotEmpty()
   @ApiProperty()
-  @IsEnum(UserType, {
-    message: 'userType must be a valid enum value (parent, teacher, child)',
-  })
-  userType: UserType;
+  name: string;
 }

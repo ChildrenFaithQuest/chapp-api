@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { DeepPartial, EntityManager, Repository } from 'typeorm';
+import { DeepPartial, Repository } from 'typeorm';
 import { Child } from '../entities/child.entity';
 import { UserService } from './user.service';
 import { CreateUserDto } from '../dtos/create-user.dto';
@@ -14,14 +14,9 @@ export class ChildService {
     private readonly userService: UserService,
   ) {}
 
-  async create(
-    childDetails: CreateUserDto,
-    transactionalEntityManager: EntityManager,
-  ): Promise<Child> {
-    const parent = transactionalEntityManager.create(Child, {
-      ...childDetails,
-    });
-    return transactionalEntityManager.save(Child, parent);
+  async create(childDetails: CreateUserDto): Promise<Child> {
+    const child = this.childRepository.create(childDetails);
+    return await this.childRepository.save(child);
   }
 
   findAll(): Promise<Child[]> {
