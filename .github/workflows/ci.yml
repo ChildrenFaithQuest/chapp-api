@@ -69,7 +69,7 @@ jobs:
 
       # Step 6: Set up Docker Compose for CI (including Appwrite)
       - name: Start Appwrite and Dependencies
-        run: docker-compose -f ./.github/config/docker/docker-compose.ci.yml up -d
+        run: docker compose -f ./.github/config/docker/docker-compose.ci.yml up -d
 
       # Step 7: Wait for services to be healthy
       - name: Wait for Appwrite to be ready
@@ -87,4 +87,4 @@ jobs:
       # Step 9: Tear down the services
       - name: Stop and Remove Services
         if: always()
-        run: docker-compose -f ./.github/config/docker/docker-compose.ci.yml down
+        run: docker compose -f ./.github/config/docker/docker-compose.ci.yml down
