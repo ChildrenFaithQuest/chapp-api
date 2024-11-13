@@ -11,7 +11,7 @@ export abstract class UserBase {
   id: string;
 
   @Column()
-  appwriteId?: string;
+  appwriteId: string;
 
   @Column()
   firstName: string;
