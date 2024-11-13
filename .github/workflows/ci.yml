@@ -105,6 +105,6 @@ jobs:
         run: yarn test
 
       # Step 9: Tear down the services
-      - name: Stop and Remove Services
-        if: always()
-        run: docker compose -f ./.github/config/docker/docker-compose.ci.yml down
+      # - name: Stop and Remove Services
+      #   if: always()
+      #   run: docker compose -f ./.github/config/docker/docker-compose.ci.yml down
