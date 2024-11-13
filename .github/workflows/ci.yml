@@ -43,6 +43,10 @@ jobs:
       APPWRITE_API_KEY: ${{ secrets.APPWRITE_API_KEY }}
       APPWRITE_DATABASE_ID: ${{ secrets.APPWRITE_DATABASE_ID }}
       APPWRITE_USER_COLLECTION_ID: ${{ secrets.APPWRITE_USER_COLLECTION_ID }}
+      APPWRITE_DB_HOST: mariadb
+      APPWRITE_DB_USERNAME: appwriteuser
+      APPWRITE_DB_PASSWORD: appwritepass
+      APPWRITE_DB_NAME: appwrite
 
     steps:
       # Step 1: Checkout the code from the repository
