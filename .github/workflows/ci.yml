@@ -37,6 +37,13 @@ jobs:
       DB_NAME: testdb # Match the database set in the postgres service
       NODE_ENV: test # Set the Node.js environment to test
 
+      # Appwrite-specific environment variables
+      APPWRITE_ENDPOINT: ${{ secrets.APPWRITE_ENDPOINT }}
+      APPWRITE_PROJECT_ID: ${{ secrets.APPWRITE_PROJECT_ID }}
+      APPWRITE_API_KEY: ${{ secrets.APPWRITE_API_KEY }}
+      APPWRITE_DATABASE_ID: ${{ secrets.APPWRITE_DATABASE_ID }}
+      APPWRITE_USER_COLLECTION_ID: ${{ secrets.APPWRITE_USER_COLLECTION_ID }}
+
     steps:
       # Step 1: Checkout the code from the repository
       - name: Checkout code
@@ -56,10 +63,28 @@ jobs:
       - name: Generate migrations
         run: yarn run migration:generate
 
-      # Step 4: Run database migrations
+      # Step 5: Run database migrations
       - name: Run migrations
         run: yarn run migration:run
 
-      # Step 5: Run tests
+      # Step 6: Set up Docker Compose for CI (including Appwrite)
+      - name: Start Appwrite and Dependencies
+        run: docker-compose -f ./.github/config/docker/docker-compose.ci.yml up -d
+
+      # Step 7: Wait for services to be healthy
+      - name: Wait for Appwrite to be ready
+        run: |
+          until curl -s -o /dev/null -w "%{http_code}" http://localhost/v1/health; do
+            echo "Waiting for Appwrite to be ready..."
+            sleep 5
+          done
+        timeout-minutes: 3
+
+      # Step 8: Run tests
       - name: Run tests
         run: yarn test
+
+      # Step 9: Tear down the services
+      - name: Stop and Remove Services
+        if: always()
+        run: docker-compose -f ./.github/config/docker/docker-compose.ci.yml down

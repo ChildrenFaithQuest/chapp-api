@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  appwrite:
+    image: appwrite/appwrite:latest
+    environment:
+      - _APP_ENV=testing
+      - _APP_OPENSSL_KEY_V1=${{ secrets.APPWRITE_OPENSSL_KEY_V1 }}
+      - _APP_STORAGE_DEVICE=local
+      - _APP_USAGE_STATS=false
+      - _APP_DOMAIN=http://localhost
+      - _APP_PLATFORM_CONSOLE_HOSTNAME=http://localhost
+    ports:
+      - '80:80'
+    healthcheck:
+      test: ['CMD', 'curl', '-f', 'http://localhost/v1']
+      interval: 10s
+      retries: 5
+      start_period: 10s
+      timeout: 2s
+
+  database:
+    image: mariadb:latest
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=testdb
+      - MYSQL_USER=testuser
+      - MYSQL_PASSWORD=testpass
+      - MARIADB_AUTO_UPGRADE=1
+    ports:
+      - '3306:3306'
+    healthcheck:
+      test: ['CMD', 'mysqladmin', 'ping', '-h', 'localhost']
+      interval: 10s
+      retries: 5
+      start_period: 10s
+      timeout: 2s
+
+  # Other services (e.g., your app) can be defined here
