@@ -3,11 +3,8 @@ import {
   UnauthorizedException,
   BadRequestException,
   Optional,
-  HttpException,
-  HttpStatus,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { JwtService } from '@nestjs/jwt';
 import { Repository } from 'typeorm';
 import { Auth } from '../entities/auth.entity';
 import { PasswordService } from '@app-shared/services/password-service';
@@ -22,9 +19,10 @@ import { ChangePasswordDto } from '../dtos/change-password.dto';
 import { UserType } from '@app-types/module.types';
 import { Role } from '@app-modules/role/entities/role.entity';
 import { Permission, RoleType } from '@app-types/role.types';
-import { AppwriteUserService } from '@app-root/appwrite/src/users/appwrite-user.service';
+import { AppwriteAuthService } from '@app-root/appwrite/src/services/users/appwrite-auth.service';
 import { Models } from 'node-appwrite';
 import { SignupDto } from '../dtos/signup.dto';
+import { AppwriteUserService } from '@app-root/appwrite/src/services/users/appwrite-user.service';
 
 @Injectable()
 export class AuthService {
@@ -35,7 +33,7 @@ export class AuthService {
     private readonly parentService: ParentService,
     private readonly childService: ChildService,
     private readonly teacherService: TeacherService,
-    @Optional() private readonly jwtService: JwtService,
+    @Optional() private readonly appwriteAuthService: AppwriteAuthService,
     @Optional() private readonly appwriteUserService: AppwriteUserService,
   ) {}
 
@@ -47,7 +45,7 @@ export class AuthService {
       const name = `${userDetails.firstName} ${userDetails.lastName}`;
       const registerDto: RegisterDto = { email, password, userType, name };
       const { appwriteUser, jwtToken, session } =
-        await this.appwriteUserService.registerUser(registerDto);
+        await this.appwriteAuthService.registerUser(registerDto);
       const { firstName, lastName, gender, dateOfBirth } = userDetails;
       const appwriteId = appwriteUser.$id;
       const createUserDto: CreateUserDto = {
@@ -76,7 +74,7 @@ export class AuthService {
   ): Promise<{ accessToken: string; session: Models.Session }> {
     try {
       const { session, jwtToken } =
-        await this.appwriteUserService.loginUser(loginDto);
+        await this.appwriteAuthService.loginUser(loginDto);
       return { accessToken: jwtToken, session };
     } catch (error) {
       throw new Error(`Failed to login user: ${error.message}`);
@@ -97,45 +95,6 @@ export class AuthService {
       }
     }
     throw new UnauthorizedException('Invalid credentials');
-  }
-
-  async validateToken(token: string): Promise<Auth> {
-    try {
-      // Verify the token
-      const payload = await this.jwtService.verifyAsync(token);
-      // Here, you can add logic to fetch the user from the database using payload.sub (or other identifying fields)
-      const auth = await this.authRepository.findOne({
-        where: { id: payload.sub },
-      });
-
-      if (!auth) {
-        throw new UnauthorizedException('User not found');
-      }
-
-      return auth;
-    } catch (error) {
-      throw new UnauthorizedException('Invalid token');
-    }
-  }
-
-  async generateToken(auth: Auth): Promise<{ accessToken: string }> {
-    const payload = {
-      sub: auth.id, // Using auth id as the subject
-      username: auth.email,
-      userType: auth.userType,
-    };
-
-    try {
-      // Generate the JWT
-      const accessToken = await this.jwtService.signAsync(payload);
-      return { accessToken };
-    } catch (error) {
-      // Handle error during token generation
-      throw new HttpException(
-        'Failed to generate access token',
-        HttpStatus.INTERNAL_SERVER_ERROR,
-      );
-    }
   }
 
   async forgotPassword(forgotPasswordDto: ForgotPasswordDto): Promise<string> {
