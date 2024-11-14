@@ -1,7 +1,7 @@
 // src/types/express-request.interface.ts
-import { Auth } from '@app-modules/auth/entities/auth.entity';
 import { Request } from 'express';
+import { Models } from 'node-appwrite';
 
 export interface CustomRequest extends Request {
-  user?: Auth;
+  user?: Models.User<Models.Preferences>;
 }

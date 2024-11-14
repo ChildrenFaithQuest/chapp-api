@@ -81,6 +81,14 @@ export class AuthService {
     }
   }
 
+  async validateToken(token: string): Promise<Models.User<Models.Preferences>> {
+    try {
+      return await this.appwriteAuthService.validateToken(token);
+    } catch (error) {
+      throw new Error(`Failed to validate token: ${error.message}`);
+    }
+  }
+
   async validateUser(loginDto: LoginDto): Promise<Auth> {
     const auth = await this.authRepository.findOne({
       where: { email: loginDto.email },
