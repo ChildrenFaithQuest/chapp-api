@@ -13,7 +13,7 @@ import { RoleModule } from '@app-modules/role/role.module';
 import { AuthMiddleware } from './middlewares/auth.middleware';
 import { UsersController } from '@app-modules/user/controllers/user.controller';
 import { ChildDetailsController } from '@app-modules/user/controllers/child.controller';
-import { AppwriteClientService } from '@app-root/appwrite/src/appwrite-client.service';
+import { AppwriteClientService } from '@app-root/appwrite/src/services/appwrite-client.service';
 
 @Module({
   imports: [
