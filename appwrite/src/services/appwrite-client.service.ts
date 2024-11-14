@@ -44,4 +44,8 @@ export class AppwriteClientService implements OnModuleInit {
   getAccountService() {
     return this.account;
   }
+
+  setJWT(token: string): void {
+    this.client.setJWT(token);
+  }
 }
