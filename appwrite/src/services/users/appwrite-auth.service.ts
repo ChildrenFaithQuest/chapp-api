@@ -37,7 +37,7 @@ export class AppwriteAuthService {
       const jwtResponse = await account.createJWT();
 
       // Step 4: Store the user type in the UserProfiles collection
-      await this.appwriteUserService.setUserType(userType, appwriteUser);
+      await this.appwriteUserService.setUserProfile(userType, appwriteUser.$id);
 
       return { appwriteUser, session: session, jwtToken: jwtResponse.jwt };
     } catch (error) {
