@@ -14,8 +14,8 @@ import { RoleModule } from '@app-modules/role/role.module';
 import { AuthMiddleware } from './middlewares/auth.middleware';
 import { UsersController } from '@app-modules/user/controllers/user.controller';
 import { ChildDetailsController } from '@app-modules/user/controllers/child.controller';
-import { AppwriteClientService } from '@app-root/appwrite/src/services/appwrite-client.service';
 import { envValidationSchema } from './config/env.validation';
+import { AppwriteModule } from '@app-root/appwrite/appwrite.module';
 
 @Module({
   imports: [
@@ -32,6 +32,7 @@ import { envValidationSchema } from './config/env.validation';
       ...AppDataSource.options,
       autoLoadEntities: true,
     }),
+    AppwriteModule,
     UserModule,
     AuthModule,
     ClassModule,
@@ -41,8 +42,8 @@ import { envValidationSchema } from './config/env.validation';
   ],
 
   controllers: [AppController],
-  providers: [AppService, AppwriteClientService],
-  exports: [AppwriteClientService],
+  providers: [AppService],
+  exports: [],
 })
 export class AppModule implements NestModule {
   constructor(private dataSource: DataSource) {}
