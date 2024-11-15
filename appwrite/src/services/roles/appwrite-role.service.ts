@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { AppwriteClientService } from '../appwrite-client.service';
 import { Permission, RoleType } from '@app-types/role.types';
 import { AppwriteUserService } from '../users/appwrite-user.service';
@@ -13,6 +13,7 @@ export class AppwriteRoleService {
   constructor(
     private readonly configService: ConfigService,
     private readonly appwriteClientService: AppwriteClientService,
+    @Inject(forwardRef(() => AppwriteUserService))
     private readonly appwriteUserService: AppwriteUserService,
   ) {
     this.databaseId =
@@ -28,7 +29,7 @@ export class AppwriteRoleService {
       ) || '';
   }
 
-  async getRoleIdByName(roleName: RoleType): Promise<string | null> {
+  async fetchRoleIdByName(roleName: RoleType): Promise<string | null> {
     const database = this.appwriteClientService.getDatabaseService();
     try {
       const roleDocument = await database.listDocuments(
@@ -49,13 +50,14 @@ export class AppwriteRoleService {
     }
   }
 
-  async getUserRoles(
+  async fetchUserRoles(
     userId: string,
   ): Promise<{ roleIds: string[]; roles: RoleType[] }> {
     const database = this.appwriteClientService.getDatabaseService();
     try {
       const userProfile = await this.appwriteUserService.getUserProfile(userId);
-      const roleIds = userProfile?.roleIds || []; // assuming `roleIds` is an array
+      const roleIds = userProfile?.roleIds || [];
+      if (roleIds.length === 0) return { roleIds, roles: [] };
       const roles = await Promise.all(
         roleIds.map(async (roleId: string) => {
           const role = await database.getDocument(
@@ -73,12 +75,39 @@ export class AppwriteRoleService {
     }
   }
 
-  async getUserRolesAndPermissions(
+  async fetchUserPermissions(
+    userId: string,
+  ): Promise<{ permissionIds: string[]; permissions: Permission[] }> {
+    const database = this.appwriteClientService.getDatabaseService();
+    try {
+      const userProfile = await this.appwriteUserService.getUserProfile(userId);
+      const permissionIds = userProfile?.permissionIds || [];
+      if (permissionIds.length === 0) return { permissionIds, permissions: [] };
+      const permissions = await Promise.all(
+        permissionIds.map(async (permissionId: string) => {
+          const permission = await database.getDocument(
+            this.databaseId,
+            this.permissionsCollectionId,
+            permissionId,
+          );
+          return permission.name;
+        }),
+      );
+      return { permissionIds, permissions };
+    } catch (error) {
+      console.error('Error fetching user permissions:', error);
+      throw new Error('Failed to retrieve user permissions');
+    }
+  }
+
+  async fetchUserRolesAndPermissions(
     userId: string,
   ): Promise<{ roles: RoleType[] | null; permissions: Permission[] }> {
     try {
-      const { roleIds, roles } = await this.getUserRoles(userId);
-      const permissions = await this.getUserPermissions(roleIds);
+      const { roleIds, roles } = await this.fetchUserRoles(userId);
+      const rolePermissions = await this.fetchRolePermissions(roleIds);
+      const userPermissions = await this.fetchUserPermissions(userId);
+      const permissions = [...rolePermissions, ...userPermissions.permissions];
       return { roles, permissions };
     } catch (error) {
       console.error('Error fetching user roles and permissions:', error);
@@ -86,13 +115,16 @@ export class AppwriteRoleService {
     }
   }
 
-  async getUserPermissions(roleIds: string[]): Promise<Permission[]> {
+  async fetchRolePermissions(
+    roleIds: string | string[],
+  ): Promise<Permission[]> {
     const database = this.appwriteClientService.getDatabaseService();
-    if (roleIds.length === 0) return [];
+    const roleIdsArray = Array.isArray(roleIds) ? roleIds : [roleIds];
+    if (roleIdsArray.length === 0) return [];
     try {
       // Fetch role permissions
       const permissionIds = await Promise.all(
-        roleIds.map(async (roleId: string) => {
+        roleIdsArray.map(async (roleId: string) => {
           const result = await database.listDocuments(
             this.databaseId,
             this.rolePermissionsCollectionId,
