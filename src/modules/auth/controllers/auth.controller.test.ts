@@ -76,9 +76,6 @@ describe('AuthController', () => {
         .spyOn(authService, 'login')
         .mockResolvedValue({ accessToken: 'testToken', session: {} as any });
 
-      jest
-        .spyOn(authService, 'generateToken')
-        .mockResolvedValue({ accessToken: 'testToken' });
       const result = await authController.login(loginDetails);
       expect(authService.login).toHaveBeenCalledWith(loginDetails);
       expect(result).toStrictEqual({

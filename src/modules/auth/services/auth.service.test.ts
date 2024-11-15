@@ -89,6 +89,12 @@ describe('Auth Service', () => {
             getUserType: jest.fn(),
           },
         },
+        {
+          provide: AppwriteUserService,
+          useValue: {
+            getUserType: jest.fn(),
+          },
+        },
       ],
     }).compile();
     passwordService = module.get<PasswordService>(PasswordService);

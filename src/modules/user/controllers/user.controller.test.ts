@@ -21,6 +21,10 @@ import { AuthService } from '@app-modules/auth/services/auth.service';
 import { Auth } from '@app-modules/auth/entities/auth.entity';
 import { mock } from 'jest-mock-extended';
 import { PasswordService } from '@app-shared/services/password-service';
+import { RoleService } from '@app-modules/role/services/role.service';
+import { RoleGuard } from '@app-shared/guards/role.guard';
+import { Reflector } from '@nestjs/core';
+// import { RoleModule } from '@app-modules/role/role.module';
 
 const mockRepository = () => ({
   findOne: jest.fn(),
@@ -34,13 +38,16 @@ const mockUserService = () => ({
   partialUpdate: jest.fn(),
 });
 
+const mockRoleService = {
+  hasPermission: jest.fn(() => true), // Mock the method you expect to call
+};
+
 describe('UserController', () => {
   let userController: UsersController;
   let parentRepository: Repository<Parent>;
   let teacherRepository: Repository<Teacher>;
   let childRepository: Repository<Child>;
   let authRepository: jest.Mocked<Repository<Auth>>;
-  // let authRepository: Repository<Auth>;
 
   let userService: UserService;
   let parentService: ParentService;
@@ -51,6 +58,7 @@ describe('UserController', () => {
   beforeEach(async () => {
     authRepository = mock<Repository<Auth>>();
     const module: TestingModule = await Test.createTestingModule({
+      // imports: [RoleModule],
       controllers: [UsersController],
       providers: [
         TeacherService,
@@ -83,6 +91,17 @@ describe('UserController', () => {
             hashPassword: jest.fn(),
           },
         },
+        {
+          provide: RoleService,
+          useValue: mockRoleService, // Provide a mock RoleService
+        },
+        RoleGuard, // Explicitly provide the RoleGuard
+        {
+          provide: Reflector,
+          useValue: {
+            get: jest.fn(() => []), // Mock the reflector's get method
+          },
+        },
       ],
     }).compile();
 
@@ -100,7 +119,6 @@ describe('UserController', () => {
     );
 
     childRepository = module.get<Repository<Child>>(getRepositoryToken(Child));
-    // authRepository = module.get<Repository<Auth>>(getRepositoryToken(Auth));
 
     userService = module.get<UserService>(UserService);
   });
