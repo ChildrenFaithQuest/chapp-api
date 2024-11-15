@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { AppwriteClientService } from '../appwrite-client.service';
 import { UserType } from '@app-types/module.types';
 import { RoleType } from '@app-types/role.types';
@@ -13,6 +13,7 @@ export class AppwriteUserService {
   constructor(
     private readonly configService: ConfigService,
     private readonly appwriteClientService: AppwriteClientService,
+    @Inject(forwardRef(() => AppwriteRoleService))
     private readonly appwriteRoleService: AppwriteRoleService,
   ) {
     this.databaseId =
@@ -41,7 +42,7 @@ export class AppwriteUserService {
   async setUserProfile(userType: UserType, userId: string): Promise<void> {
     const database = this.appwriteClientService.getDatabaseService();
     const roleName = this.userTypeToRoleMap[userType];
-    const roleId = await this.appwriteRoleService.getRoleIdByName(roleName);
+    const roleId = await this.appwriteRoleService.fetchRoleIdByName(roleName);
     try {
       await database.createDocument(
         this.databaseId, // Database ID in Appwrite
@@ -99,7 +100,7 @@ export class AppwriteUserService {
     roleName: RoleType;
   }): Promise<void> {
     const database = this.appwriteClientService.getDatabaseService();
-    const roleId = await this.appwriteRoleService.getRoleIdByName(roleName);
+    const roleId = await this.appwriteRoleService.fetchRoleIdByName(roleName);
     try {
       const userProfile = await this.getUserProfile(userId);
       if (!userProfile) {
