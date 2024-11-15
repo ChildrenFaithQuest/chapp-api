@@ -2,15 +2,15 @@ import { RoleGuard } from './role.guard';
 import { ExecutionContext, ForbiddenException } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { Test, TestingModule } from '@nestjs/testing';
-import { Role } from '@app-modules/role/entities/role.entity';
-import { Permission } from '@app-types/role.types';
+import { Permission, RoleType } from '@app-types/role.types';
 import { mockRole } from '@app-root/mocks/role';
+import { RoleService } from '@app-modules/role/services/role.service';
 
 // Helper function to create mock execution context
 function createMockExecutionContext({
   user,
 }: {
-  user: { roles: Role[] };
+  user: { $id: string };
 }): ExecutionContext {
   return {
     switchToHttp: jest.fn().mockReturnValue({
@@ -21,9 +21,14 @@ function createMockExecutionContext({
   } as unknown as ExecutionContext;
 }
 
+const mockRoleService = {
+  getUserRolesAndPermissions: jest.fn(), // Mock the method you expect to call
+};
+
 describe('RoleGuard', () => {
   let roleGuard: RoleGuard;
   let reflector: Reflector;
+  let roleService: RoleService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -35,11 +40,16 @@ describe('RoleGuard', () => {
             getAllAndOverride: jest.fn(),
           },
         },
+        {
+          provide: RoleService,
+          useValue: mockRoleService, // Provide a mock RoleService
+        },
       ],
     }).compile();
 
     roleGuard = module.get<RoleGuard>(RoleGuard);
     reflector = module.get<Reflector>(Reflector);
+    roleService = module.get<RoleService>(RoleService);
   });
 
   it('should be defined', () => {
@@ -48,7 +58,7 @@ describe('RoleGuard', () => {
 
   it('should allow access if no roles or permissions are required', async () => {
     const mockContext = createMockExecutionContext({
-      user: { roles: [] },
+      user: { $id: 'testId' },
     });
 
     // Mock that no roles or permissions are required for the route
@@ -60,13 +70,14 @@ describe('RoleGuard', () => {
 
   it('should throw ForbiddenException if user does not have required role', async () => {
     const mockContext = createMockExecutionContext({
-      user: {
-        roles: [mockRole.CHILD],
-      },
+      user: { $id: 'testId' },
     });
 
     // Mock the required roles
     jest.spyOn(reflector, 'getAllAndOverride').mockReturnValueOnce(['admin']);
+    jest
+      .spyOn(roleService, 'getUserRolesAndPermissions')
+      .mockResolvedValueOnce({ roles: [mockRole.CHILD.name], permissions: [] });
 
     await expect(roleGuard.canActivate(mockContext)).rejects.toThrow(
       new ForbiddenException('User does not have the required role'),
@@ -75,7 +86,7 @@ describe('RoleGuard', () => {
 
   it('should throw ForbiddenException if user does not have required permissions', async () => {
     const mockContext = createMockExecutionContext({
-      user: { roles: [mockRole.ADMIN] },
+      user: { $id: 'testId' },
     });
 
     // Mock the required permissions
@@ -84,6 +95,13 @@ describe('RoleGuard', () => {
       .spyOn(reflector, 'getAllAndOverride')
       .mockReturnValueOnce([Permission.EDIT_PROFILE]);
 
+    jest
+      .spyOn(roleService, 'getUserRolesAndPermissions')
+      .mockResolvedValueOnce({
+        roles: [],
+        permissions: [Permission.MANAGE_HOMEWORK],
+      });
+
     await expect(roleGuard.canActivate(mockContext)).rejects.toThrow(
       new ForbiddenException('You do not have the necessary permissions.'),
     );
@@ -91,7 +109,7 @@ describe('RoleGuard', () => {
 
   it('should allow access if user has the required roles and permissions', async () => {
     const mockContext = createMockExecutionContext({
-      user: { roles: [mockRole.ADMIN] },
+      user: { $id: 'testId' },
     });
 
     // Mock required roles and permissions
@@ -99,6 +117,13 @@ describe('RoleGuard', () => {
       .spyOn(reflector, 'getAllAndOverride')
       .mockReturnValueOnce(['admin']) // Roles
       .mockReturnValueOnce([Permission.MANAGE_USERS]); // Permissions;
+
+    jest
+      .spyOn(roleService, 'getUserRolesAndPermissions')
+      .mockResolvedValueOnce({
+        roles: [RoleType.ADMIN],
+        permissions: [Permission.MANAGE_USERS],
+      });
 
     const result = await roleGuard.canActivate(mockContext);
     expect(result).toBe(true); // Access should be granted

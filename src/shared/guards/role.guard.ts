@@ -8,13 +8,13 @@ import {
 import { Reflector } from '@nestjs/core';
 import { PERMISSIONS_KEY, ROLES_KEY } from './role.decorator';
 import { CustomRequest } from '@app-types/express-request.types';
-import { AppwriteRoleService } from '@app-root/appwrite/src/services/roles/appwrite-role.service';
+import { RoleService } from '@app-modules/role/services/role.service';
 
 @Injectable()
 export class RoleGuard implements CanActivate {
   constructor(
     private readonly reflector: Reflector,
-    private readonly appwriteRoleService: AppwriteRoleService,
+    private readonly roleService: RoleService,
   ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
@@ -40,28 +40,33 @@ export class RoleGuard implements CanActivate {
 
     try {
       const { roles, permissions } =
-        await this.appwriteRoleService.getUserRolesAndPermissions(userId);
-      const hasRole =
-        roles?.some((role) => requiredRoles.includes(role)) ?? false;
+        await this.roleService.getUserRolesAndPermissions(userId);
+      if (requiredRoles && requiredRoles.length > 0) {
+        const hasRole =
+          roles?.some((role) => requiredRoles.includes(role)) ?? false;
 
-      if (!hasRole) {
-        throw new ForbiddenException(
-          'You do not have the necessary permissions or roles.',
-        );
+        if (!hasRole) {
+          throw new ForbiddenException('User does not have the required role');
+        }
       }
 
-      const hasPermission = requiredPermissions.some((permission) =>
-        permissions.includes(permission),
-      );
-
-      if (!hasPermission) {
-        throw new ForbiddenException(
-          'You do not have the necessary permissions.',
+      if (requiredPermissions && requiredPermissions.length > 0) {
+        const hasPermission = requiredPermissions.some((permission) =>
+          permissions.includes(permission),
         );
+
+        if (!hasPermission) {
+          throw new ForbiddenException(
+            'You do not have the necessary permissions.',
+          );
+        }
       }
 
-      return hasRole && hasPermission;
+      return true;
     } catch (error) {
+      if (error instanceof ForbiddenException) {
+        throw error; // Re-throw the ForbiddenException
+      }
       console.error('Error in RoleGuard:', error);
       throw new ForbiddenException('Access denied.');
     }
