@@ -1,3 +1,4 @@
+import * as path from 'path';
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -17,11 +18,13 @@ import { ChildDetailsController } from '@app-modules/user/controllers/child.cont
 import { envValidationSchema } from './config/env.validation';
 import { AppwriteModule } from '@app-root/appwrite/appwrite.module';
 
+const env = process.env.NODE_ENV || 'development'; // Default to 'development' if NODE_ENV is undefined
+
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true, // Makes ConfigModule available across the app
-      envFilePath: '.env', // Path to the .env file
+      envFilePath: path.resolve(process.cwd(), `.env.${env}.local`), // Path to the .env file
       validationSchema: envValidationSchema,
       validationOptions: {
         abortEarly: true, // Stop validation on the first error
