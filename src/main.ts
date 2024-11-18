@@ -1,13 +1,10 @@
 import 'tsconfig-paths/register';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import * as dotenv from 'dotenv';
 import * as tsConfigPaths from 'tsconfig-paths';
 import { resolve } from 'path';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { ValidationPipe } from '@nestjs/common';
-
-dotenv.config();
 
 // Register the paths defined in tsconfig.json
 tsConfigPaths.register({

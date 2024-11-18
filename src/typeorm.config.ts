@@ -1,6 +1,5 @@
 import 'tsconfig-paths/register';
 import { DataSource } from 'typeorm';
-import * as dotenv from 'dotenv';
 import { Class } from '@app-modules/class/entities/class.entity';
 import { Attendance } from '@app-modules/attendance/entities/attendance.entity';
 import { Auth } from '@app-modules/auth/entities/auth.entity';
@@ -9,8 +8,6 @@ import { Parent } from '@app-modules/user/entities/parent.entity';
 import { Teacher } from '@app-modules/user/entities/teacher.entity';
 import { Organization } from '@app-modules/organization/entities/organization.entity';
 import { Role } from '@app-modules/role/entities/role.entity';
-
-dotenv.config();
 
 export const AppDataSource = new DataSource({
   type: 'postgres',
