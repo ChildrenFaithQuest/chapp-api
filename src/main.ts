@@ -27,6 +27,7 @@ async function bootstrap() {
     .setTitle('Chapp Api')
     .setDescription('The Chapp API description')
     .setVersion('1.0')
+    .addBearerAuth()
     .addTag('chapp')
     .build();
 
