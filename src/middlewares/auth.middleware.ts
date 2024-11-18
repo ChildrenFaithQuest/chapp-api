@@ -10,6 +10,10 @@ export class AuthMiddleware implements NestMiddleware {
   async use(req: CustomRequest, res: Response, next: NextFunction) {
     const token = req.headers.authorization?.split(' ')[1]; // Assuming Bearer token
 
+    if (!token) {
+      return res.status(401).json({ message: 'Unauthorized' });
+    }
+
     if (token) {
       try {
         // Decode the token and fetch user details
