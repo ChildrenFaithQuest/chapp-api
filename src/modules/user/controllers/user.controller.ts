@@ -9,6 +9,7 @@ import {
   SetMetadata,
   UseGuards,
 } from '@nestjs/common';
+import { ApiBearerAuth } from '@nestjs/swagger';
 import { ParentService } from '../services/parent.service';
 import { Parent } from '../entities/parent.entity';
 import { UpdateUserDto } from '../dtos/update-user.dto';
@@ -25,6 +26,7 @@ import { Permissions, Roles } from '@app-shared/guards/role.decorator';
 export type User = Parent | Teacher | Child;
 
 @Controller('users')
+@ApiBearerAuth()
 @UseGuards(RoleGuard)
 export class UsersController {
   constructor(
