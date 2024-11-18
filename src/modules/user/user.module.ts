@@ -12,13 +12,22 @@ import { ParentDetailsController } from './controllers/parent.controller';
 import { ChildDetailsController } from './controllers/child.controller';
 import { TeacherDetailsController } from './controllers/teacher.controller';
 import { AuthModule } from '@app-modules/auth/auth.module';
+import { RoleService } from '@app-modules/role/services/role.service';
+import { AppwriteModule } from '@app-root/appwrite/appwrite.module';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([Parent, Teacher, Child]),
     forwardRef(() => AuthModule),
+    AppwriteModule,
   ],
-  providers: [ParentService, ChildService, TeacherService, UserService],
+  providers: [
+    ParentService,
+    ChildService,
+    TeacherService,
+    UserService,
+    RoleService,
+  ],
   controllers: [
     ParentDetailsController,
     ChildDetailsController,

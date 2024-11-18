@@ -1,3 +1,4 @@
+import { ConfigModule } from '@nestjs/config';
 import { Test, TestingModule } from '@nestjs/testing';
 import { TypeOrmModule, getDataSourceToken } from '@nestjs/typeorm';
 import { DataSource, EntitySchema } from 'typeorm';
@@ -8,6 +9,10 @@ export async function setupTestModule(
 ): Promise<TestingModule> {
   const module: TestingModule = await Test.createTestingModule({
     imports: [
+      ConfigModule.forRoot({
+        isGlobal: true,
+        envFilePath: '.env.test.local',
+      }),
       TypeOrmModule.forRoot({
         type: 'postgres',
         database: process.env.DB_NAME, // Use in-memory database for testing

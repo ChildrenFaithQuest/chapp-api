@@ -8,12 +8,7 @@ import { ParentService } from '@app-modules/user/services/parent.service';
 import { TeacherService } from '@app-modules/user/services/teacher.service';
 import { UserGender, UserType } from '@app-types/module.types';
 import { PasswordService } from '@app-shared/services/password-service';
-import {
-  BadRequestException,
-  HttpException,
-  HttpStatus,
-  UnauthorizedException,
-} from '@nestjs/common';
+import { BadRequestException, UnauthorizedException } from '@nestjs/common';
 import { LoginDto } from '../dtos/login.dto';
 import { mockAuths } from '@app-root/mocks/auth';
 import { ForgotPasswordDto } from '../dtos/forgot-password.dto';
@@ -22,10 +17,11 @@ import { mockParents } from '@app-root/mocks/parent';
 import { mockRole } from '@app-root/mocks/role';
 import { Permission, RoleType } from '@app-types/role.types';
 import { JwtService } from '@nestjs/jwt';
-import { AppwriteUserService } from '@app-root/appwrite/src/users/appwrite-user.service';
+import { AppwriteAuthService } from '@app-root/appwrite/src/services/users/appwrite-auth.service';
 import { SignupDto } from '../dtos/signup.dto';
 import { Models } from 'node-appwrite';
 import { CreateUserDto } from '@app-modules/user/dtos/create-user.dto';
+import { AppwriteUserService } from '@app-root/appwrite/src/services/users/appwrite-user.service';
 
 describe('Auth Service', () => {
   let authService: AuthService;
@@ -33,7 +29,7 @@ describe('Auth Service', () => {
   let parentService: ParentService;
   let teacherService: TeacherService;
   let passwordService: PasswordService;
-  let jwtService: JwtService;
+  let appwriteAuthService: AppwriteAuthService;
   let appwriteUserService: AppwriteUserService;
 
   let mockAuthRepository: Repository<Auth>;
@@ -82,7 +78,7 @@ describe('Auth Service', () => {
           },
         },
         {
-          provide: AppwriteUserService,
+          provide: AppwriteAuthService,
           useValue: {
             registerUser: jest.fn().mockResolvedValue({
               jwtToken: 'mockToken',
@@ -93,16 +89,21 @@ describe('Auth Service', () => {
             getUserType: jest.fn(),
           },
         },
+        {
+          provide: AppwriteUserService,
+          useValue: {
+            getUserType: jest.fn(),
+          },
+        },
       ],
     }).compile();
     passwordService = module.get<PasswordService>(PasswordService);
     parentService = module.get<ParentService>(ParentService);
     childService = module.get<ChildService>(ChildService);
     teacherService = module.get<TeacherService>(TeacherService);
-    jwtService = module.get<JwtService>(JwtService);
     authService = module.get<AuthService>(AuthService);
+    appwriteAuthService = module.get<AppwriteAuthService>(AppwriteAuthService);
     appwriteUserService = module.get<AppwriteUserService>(AppwriteUserService);
-
     mockAuthRepository = module.get<Repository<Auth>>('AuthRepository');
 
     passwordService.hashPassword = jest
@@ -129,7 +130,7 @@ describe('Auth Service', () => {
     it('should signup a parent', async () => {
       signupDto.userType = UserType.PARENT;
 
-      jest.spyOn(appwriteUserService, 'registerUser').mockResolvedValue({
+      jest.spyOn(appwriteAuthService, 'registerUser').mockResolvedValue({
         session: { $id: 'testId' } as Models.Session,
         appwriteUser: { $id: 'parent_001' } as Models.User<Models.Preferences>,
         jwtToken: mockToken,
@@ -153,7 +154,7 @@ describe('Auth Service', () => {
         dateOfBirth: signupDto.dateOfBirth,
       };
 
-      expect(appwriteUserService.registerUser).toHaveBeenCalledWith(
+      expect(appwriteAuthService.registerUser).toHaveBeenCalledWith(
         registerDto,
       );
 
@@ -168,7 +169,7 @@ describe('Auth Service', () => {
       signupDto.userType = UserType.CHILD;
       const childID = 'child_001';
 
-      jest.spyOn(appwriteUserService, 'registerUser').mockResolvedValue({
+      jest.spyOn(appwriteAuthService, 'registerUser').mockResolvedValue({
         session: { $id: 'testId' } as Models.Session,
         appwriteUser: { $id: childID } as Models.User<Models.Preferences>,
         jwtToken: mockToken,
@@ -192,7 +193,7 @@ describe('Auth Service', () => {
         dateOfBirth: signupDto.dateOfBirth,
       };
 
-      expect(appwriteUserService.registerUser).toHaveBeenCalledWith(
+      expect(appwriteAuthService.registerUser).toHaveBeenCalledWith(
         registerDto,
       );
 
@@ -207,7 +208,7 @@ describe('Auth Service', () => {
       signupDto.userType = UserType.TEACHER;
       const id = 'teacher_001';
 
-      jest.spyOn(appwriteUserService, 'registerUser').mockResolvedValue({
+      jest.spyOn(appwriteAuthService, 'registerUser').mockResolvedValue({
         session: { $id: 'testId' } as Models.Session,
         appwriteUser: { $id: id } as Models.User<Models.Preferences>,
         jwtToken: mockToken,
@@ -231,7 +232,7 @@ describe('Auth Service', () => {
         dateOfBirth: signupDto.dateOfBirth,
       };
 
-      expect(appwriteUserService.registerUser).toHaveBeenCalledWith(
+      expect(appwriteAuthService.registerUser).toHaveBeenCalledWith(
         registerDto,
       );
 
@@ -245,7 +246,7 @@ describe('Auth Service', () => {
     it('should throw an error if signup fails', async () => {
       // Mock `registerUser` to throw an error
       jest
-        .spyOn(appwriteUserService, 'registerUser')
+        .spyOn(appwriteAuthService, 'registerUser')
         .mockRejectedValue(new Error('Appwrite registration failed'));
 
       try {
@@ -268,7 +269,7 @@ describe('Auth Service', () => {
     };
     it('should login a user and return token', async () => {
       const mockToken = 'mockAccessToken';
-      jest.spyOn(appwriteUserService, 'loginUser').mockResolvedValue({
+      jest.spyOn(appwriteAuthService, 'loginUser').mockResolvedValue({
         session: { $id: 'testId' } as Models.Session,
         jwtToken: mockToken,
       });
@@ -282,7 +283,7 @@ describe('Auth Service', () => {
     it('should throw an error if login fails', async () => {
       // Mock `registerUser` to throw an error
       jest
-        .spyOn(appwriteUserService, 'loginUser')
+        .spyOn(appwriteAuthService, 'loginUser')
         .mockRejectedValue(new Error('Appwrite registration failed'));
 
       try {
@@ -295,100 +296,6 @@ describe('Auth Service', () => {
           'Failed to login user: Appwrite registration failed',
         );
       }
-    });
-  });
-  describe('validateUser', () => {
-    const loginDto: LoginDto = {
-      email: 'john.parent@example.com',
-      password: 'password123',
-    };
-    it('should validate an authorized user', async () => {
-      mockAuthRepository.findOne = jest.fn().mockResolvedValue(mockAuths[0]);
-      passwordService.comparePassword = jest.fn().mockResolvedValueOnce(true);
-      const result = await authService.validateUser(loginDto);
-      expect(mockAuthRepository.findOne).toHaveBeenCalled();
-      expect(result).toEqual(mockAuths[0]);
-    });
-
-    it('should not validate an unauthorized user', async () => {
-      mockAuthRepository.findOne = jest.fn().mockResolvedValue(null);
-      await expect(authService.validateUser(loginDto)).rejects.toThrow(
-        new UnauthorizedException('Invalid credentials'),
-      );
-    });
-
-    it('should not login a user with invalid credentials', async () => {
-      mockAuthRepository.findOne = jest.fn().mockResolvedValue(mockAuths[0]);
-      passwordService.comparePassword = jest.fn().mockResolvedValueOnce(false);
-      await expect(authService.validateUser(loginDto)).rejects.toThrow(
-        new UnauthorizedException('Invalid credentials'),
-      );
-    });
-  });
-
-  describe('validateToken', () => {
-    it('should valdate accessToken', async () => {
-      const testPayload = {
-        sub: 'mockAuth.id',
-        username: 'mockAuth.email',
-        userType: 'mockAuth.userType',
-      };
-      // Mock the jwtService's signAsync method to return a token string
-      const mockToken = 'mockAccessToken';
-      jest.spyOn(jwtService, 'verifyAsync').mockResolvedValue(testPayload);
-      mockAuthRepository.findOne = jest.fn().mockResolvedValue(mockAuths[0]);
-
-      const result = await authService.validateToken(mockToken);
-      expect(jwtService.verifyAsync).toHaveBeenCalledWith(mockToken);
-      expect(result).toEqual(mockAuths[0]);
-    });
-
-    it('should throw error for an invalid token', async () => {
-      const mockToken = 'mockAccessToken';
-      jest
-        .spyOn(jwtService, 'verifyAsync')
-        .mockRejectedValue(new Error('Invalid token'));
-
-      await expect(authService.validateToken(mockToken)).rejects.toThrow(
-        new UnauthorizedException('Invalid token'),
-      );
-    });
-  });
-
-  describe('generateToken', () => {
-    it('should generate accessToken to login user', async () => {
-      const mockAuth = mockAuths[0];
-      // Mock the jwtService's signAsync method to return a token string
-      const mockToken = 'mockAccessToken';
-      jest.spyOn(jwtService, 'signAsync').mockResolvedValue(mockToken);
-
-      const result = await authService.generateToken(mockAuth);
-
-      // Verify jwtService was called with correct payload
-      expect(jwtService.signAsync).toHaveBeenCalledWith({
-        sub: mockAuth.id,
-        username: mockAuth.email,
-        userType: mockAuth.userType,
-      });
-
-      // Verify the result has the expected accessToken
-      expect(result).toEqual({ accessToken: mockToken });
-    });
-
-    it('should throw an HttpException if token generation fails', async () => {
-      // Mock signAsync to throw an error
-      const errorMessage = 'Token error';
-      jest
-        .spyOn(jwtService, 'signAsync')
-        .mockRejectedValue(new Error(errorMessage));
-
-      // Use .rejects.toThrow to test async error throwing with HttpException
-      await expect(authService.generateToken(mockAuths[0])).rejects.toThrow(
-        new HttpException(
-          'Failed to generate access token',
-          HttpStatus.INTERNAL_SERVER_ERROR,
-        ),
-      );
     });
   });
 
