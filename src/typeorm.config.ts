@@ -1,34 +1,41 @@
 import 'tsconfig-paths/register';
 import { DataSource } from 'typeorm';
-import { Class } from '@app-modules/class/entities/class.entity';
-import { Attendance } from '@app-modules/attendance/entities/attendance.entity';
-import { Auth } from '@app-modules/auth/entities/auth.entity';
-import { Child } from '@app-modules/user/entities/child.entity';
-import { Parent } from '@app-modules/user/entities/parent.entity';
-import { Teacher } from '@app-modules/user/entities/teacher.entity';
-import { Organization } from '@app-modules/organization/entities/organization.entity';
-import { Role } from '@app-modules/role/entities/role.entity';
+import * as dotenv from 'dotenv';
+import { ConfigService } from '@nestjs/config';
+import { getEnvPath } from './utils/env.setup';
 
-export const AppDataSource = new DataSource({
-  type: 'postgres',
-  host: process.env.DB_HOST,
-  port: process.env.DB_PORT ? parseInt(process.env.DB_PORT, 10) : 5432,
-  username: process.env.DB_USERNAME,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_NAME,
-  entities: [
-    Auth,
-    Child,
-    Parent,
-    Teacher,
-    Class,
-    Attendance,
-    Organization,
-    Role,
-  ], // Ensure this path is correct
-  migrations:
-    process.env.NODE_ENV === 'test'
-      ? ['src/migrations/*.ts']
-      : ['dist/src/migrations/*.js'], // Ensure this path is correct
-  synchronize: process.env.NODE_ENV === 'test' ? true : false,
-});
+dotenv.config({ path: getEnvPath() });
+
+const isCompiled = __dirname.includes('dist');
+
+// A function to create the DataSource dynamically
+export const createAppDataSource = (
+  configService?: ConfigService,
+): DataSource => {
+  const isTestEnvironment =
+    (configService?.get<string>('NODE_ENV') ?? process.env.NODE_ENV) === 'test';
+
+  return new DataSource({
+    type: 'postgres',
+    host: configService?.get<string>('DB_HOST') ?? process.env.DB_HOST,
+    port: configService
+      ? configService.get<number>('DB_PORT', 5432)
+      : parseInt(process.env.DB_PORT || '5432', 10),
+    username:
+      configService?.get<string>('DB_USERNAME') ?? process.env.DB_USERNAME,
+    password:
+      configService?.get<string>('DB_PASSWORD') ?? process.env.DB_PASSWORD,
+    database: configService?.get<string>('DB_NAME') ?? process.env.DB_NAME,
+    entities: isCompiled
+      ? ['dist/src/**/entities/*.entity.js'] // Only include .entity.js in dist
+      : ['src/**/entities/*.entity.ts'], // Only include .entity.ts in src
+    migrations: isCompiled
+      ? ['dist/src/migrations/*.js']
+      : ['src/migrations/*.ts'],
+    synchronize: isTestEnvironment,
+    dropSchema: isTestEnvironment,
+  });
+};
+
+// Default AppDataSource for CLI usage
+export const AppDataSource = createAppDataSource();
