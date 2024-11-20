@@ -18,14 +18,13 @@ import { AuthMiddleware } from './middlewares/auth.middleware';
 import { createAppDataSource } from './typeorm.config';
 import { AppService } from './app.service';
 import { envValidationSchema } from './config/env.validation';
-
-const env = process.env.NODE_ENV || 'development'; // Default to 'development' if NODE_ENV is undefined
+import { getEnvPath } from './utils/env.setup';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true, // Makes ConfigModule available across the app
-      envFilePath: path.resolve(process.cwd(), `.env.${env}.local`), // Path to the .env file
+      envFilePath: path.resolve(process.cwd(), getEnvPath()), // Path to the .env file
       validationSchema: envValidationSchema,
       validationOptions: {
         abortEarly: true, // Stop validation on the first error

@@ -2,8 +2,9 @@ import 'tsconfig-paths/register';
 import { DataSource } from 'typeorm';
 import * as dotenv from 'dotenv';
 import { ConfigService } from '@nestjs/config';
+import { getEnvPath } from './utils/env.setup';
 
-dotenv.config();
+dotenv.config({ path: getEnvPath() });
 
 const isCompiled = __dirname.includes('dist');
 
