@@ -2,7 +2,7 @@ import { Column, Entity, ManyToOne, OneToMany } from 'typeorm';
 import { Parent } from './parent.entity';
 import { Attendance } from '@app-modules/attendance/entities/attendance.entity';
 import { Class } from '@app-modules/class/entities/class.entity';
-import { UserBase } from './user-base.entity';
+import { UserBase } from './user-base.abstract';
 
 @Entity()
 export class Child extends UserBase {

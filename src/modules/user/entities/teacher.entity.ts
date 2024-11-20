@@ -9,7 +9,7 @@ import {
 } from 'typeorm';
 import { Class } from '@app-modules/class/entities/class.entity';
 import { ContactInfo } from '@app-modules/user/entities/contact-info.entity';
-import { UserBase } from './user-base.entity';
+import { UserBase } from './user-base.abstract';
 import { Parent } from './parent.entity';
 import { Organization } from '@app-modules/organization/entities/organization.entity';
 
